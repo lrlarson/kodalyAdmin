@@ -1,6 +1,8 @@
 <template>
 <v-container>
-	Home
+	<v-card>
+		HOME
+	</v-card>
 </v-container>
 </template>
 

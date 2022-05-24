@@ -1,10 +1,12 @@
 <template>
-$END$
+<v-container>
+	SONGS HOME
+</v-container>
 </template>
 
 <script>
 export default {
-name: "SongsHome"
+	name: "SongsHome"
 }
 </script>
 

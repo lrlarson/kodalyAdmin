@@ -19,6 +19,8 @@
 import {eventBus} from "@/main";
 import store from "@/store";
 import axios from "axios";
+import router from "@/router";
+
 
 export default {
 	data: () => ({
@@ -52,6 +54,7 @@ export default {
 						})
 						vm.logInUser();
 						console.log(vm.$user.name,vm.$user.logged);
+						router.push({name: "Home"});
 					} else {
 						eventBus.$emit("signInFail");
 						vm.secureMessage = "incorrect login";

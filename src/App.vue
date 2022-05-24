@@ -5,12 +5,23 @@
 				app
 		>
 			<v-list dense v-if="authenticated">
+				
 				<v-list-item link>
 					<v-list-item-action>
-						<v-icon>mdi-home</v-icon>
+						<router-link to="/home">Home</router-link>
 					</v-list-item-action>
 					<v-list-item-content>
 						<v-list-item-title>Home</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+				
+				
+				<v-list-item link>
+					<v-list-item-action>
+						<router-link to="/songs-home">Songs</router-link>
+					</v-list-item-action>
+					<v-list-item-content>
+						<v-list-item-title>Song List</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 			</v-list>
@@ -25,13 +36,15 @@
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+			<v-container>
+			<router-view></router-view>
+			</v-container>
     </v-main>
 		<v-footer
 				color="red"
 				app
 		>
-			<span class="white--text">&copy;  {{ currentYear }}</span>
+			<span class="white--text">&copy;  {{ currentYear }} Kodaly Center, HNU</span>
 		</v-footer>
   </v-app>
 </template>
@@ -41,8 +54,10 @@ import moment from "moment";
 import {eventBus} from "./main";
 
 export default {
-  name: 'App',
 
+	props: {
+		source: String,
+	},
   data: () => ({
 		drawer: null,
 		authenticated: false,     // temp sent to true,

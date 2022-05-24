@@ -1,10 +1,12 @@
 <template>
-
+<v-container>
+	MENU
+</v-container>
 </template>
 
 <script>
 export default {
-name: "Menu"
+	name: "Menu"
 }
 </script>
 
