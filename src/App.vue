@@ -1,28 +1,62 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+		<v-navigation-drawer
+				v-model="drawer"
+				app
+		>
+			<v-list dense v-if="authenticated">
+				<v-list-item link>
+					<v-list-item-action>
+						<v-icon>mdi-home</v-icon>
+					</v-list-item-action>
+					<v-list-item-content>
+						<v-list-item-title>Home</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</v-list>
+		</v-navigation-drawer>
+    <v-app-bar
+      app
+      color="red"
+      dark
+    >
+			<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+			<v-toolbar-title>Kodaly Song Database - Kodaly Center, HNU -- App Version 1 alpha</v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+      <router-view/>
+    </v-main>
+		<v-footer
+				color="red"
+				app
+		>
+			<span class="white--text">&copy;  {{ currentYear }}</span>
+		</v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import moment from "moment";
+import {eventBus} from "./main";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  data: () => ({
+		drawer: null,
+		authenticated: false,     // temp sent to true,
+		currentYear: ''
+  }),
+	created() {
+		eventBus.$on("signedIn", () => {
+			//console.log("signin");
+			this.authenticated = true;
+		});
+		eventBus.$on("signInFail", () => {
+			this.authenticated = false;
+		});
+		this.currentYear = moment().year();
+	}
+};
+</script>
