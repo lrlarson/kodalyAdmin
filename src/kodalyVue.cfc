@@ -7,6 +7,80 @@
     </cffunction>
 
 
+
+    <cffunction name="getSongDetails" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="songID" type="numeric" required="yes">
+        <cfquery name="songDetails" datasource="kodaly_4">
+       SELECT *
+            FROM [tbl_Titles]
+            WHERE ID = #songID#
+        </cfquery>  
+       <cfset arrGirls = QueryToStruct(songDetails)/>
+       <cfset objectWrapper = structNew()>
+       <cfset objectWrapper.results = #arrGirls#>
+       <cfreturn objectWrapper> 
+        </cffunction>
+
+        <cffunction name="getNotes" access="remote" returntype="any" returnformat="JSON">
+            <cfquery name="notes" datasource="kodaly_4">
+                SELECT Note_ID AS data , Note AS label
+                FROM dbo.Note_Table
+                ORDER BY Note_ID
+            </cfquery>
+            <cfset arrGirls = QueryToStruct(notes)/>
+            <cfset objectWrapper = structNew()>
+            <cfset objectWrapper.results = #arrGirls#>
+            <cfreturn objectWrapper> 
+            </cffunction>
+
+        <cffunction name="getEthnicities" access="remote" returntype="any" returnformat="JSON">
+            <cfquery name="ethicy" datasource="kodaly_4">
+            SELECT Ethnicity_ID AS data, Ethnicity AS label
+            FROM dbo.Ethnicity_Table
+            ORDER BY Ethnicity
+            </cfquery>
+           <cfset arrGirls = QueryToStruct(ethicy)/>
+           <cfset objectWrapper = structNew()>
+           <cfset objectWrapper.results = #arrGirls#>
+           <cfreturn objectWrapper> 
+            </cffunction>
+
+        <cffunction name="getRegions" access="remote" returntype="any" returnformat="JSON">
+            <cfquery name="regions" datasource="kodaly_4">
+            SELECT Region_ID AS data, Region AS label
+        FROM dbo.Region_Table
+        ORDER BY Region
+            </cfquery>
+           <cfset arrGirls = QueryToStruct(regions)/>
+           <cfset objectWrapper = structNew()>
+           <cfset objectWrapper.results = #arrGirls#>
+           <cfreturn objectWrapper> 
+            </cffunction>
+
+        <cffunction name="getStates" access="remote" returntype="any" returnformat="JSON">
+            <cfquery name="states" datasource="kodaly_4">
+                SELECT  State AS label, State_ID AS data
+                FROM dbo.State_Table
+                ORDER BY State
+            </cfquery>
+            <cfset arrGirls = QueryToStruct(states)/>
+            <cfset objectWrapper = structNew()>
+            <cfset objectWrapper.results = #arrGirls#>
+            <cfreturn objectWrapper> 
+        </cffunction>
+
+    <cffunction name="getSongs" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="queryName" datasource="kodaly_4">
+select ID, Title, Alt_Title_1, First_Line_Text,Notation_File_Name from tbl_Titles
+order by Title
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(queryName)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+    </cffunction>
+
+
     <cffunction name="checkSecure" access="remote" returntype="Any" returnformat="JSON">
         <cfargument name="email" type="any">
         <cfargument name="pword" type="any">
@@ -142,43 +216,13 @@
 		<cfreturn titles>
 	</cffunction>
 
-	<cffunction name="getSongDetails" access="remote" returntype="any">
-    <cfargument name="ID" type="numeric" required="yes">
-    <cfquery name="songDetails" datasource="kodaly_4">
-   SELECT *
-  FROM [tbl_Titles]
-  WHERE ID = #id#
-    </cfquery>  
-    <cfreturn songDetails>  
-    </cffunction>
+	
 
-	<cffunction name="getStates" access="remote" returntype="any">
-    <cfquery name="states" datasource="kodaly_4">
-    SELECT  State AS label, State_ID AS data
-
-FROM dbo.State_Table
-ORDER BY State
-    </cfquery>
-    <cfreturn states>
-    </cffunction>
+	
     
-    <cffunction name="getRegions" access="remote" returntype="any">
-    <cfquery name="regions" datasource="kodaly_4">
-    SELECT Region_ID AS data, Region AS label
-FROM dbo.Region_Table
-ORDER BY Region
-    </cfquery>
-    <cfreturn regions>
-    </cffunction>
     
-    <cffunction name="getEthnicity" access="remote" returntype="any">
-    <cfquery name="ethicy" datasource="kodaly_4">
-SELECT Ethnicity_ID AS data, Ethnicity AS label
-FROM dbo.Ethnicity_Table
-ORDER BY Ethnicity
-    </cfquery>
-    <cfreturn ethicy>
-    </cffunction>
+    
+    
     
      <cffunction name="getMotivesForSong" access="remote" returntype="Any">
          <cfargument name="title_ID" type="numeric" required="true">
@@ -229,14 +273,7 @@ ORDER BY Scale
     <cfreturn scales>
     </cffunction>
     
-     <cffunction name="getNotes" access="remote" returntype="any">
-    <cfquery name="notes" datasource="kodaly_4">
-SELECT Note_ID AS data , Note AS label
-FROM dbo.Note_Table
-ORDER BY Note_ID
-    </cfquery>
-    <cfreturn notes>
-    </cffunction>
+     
     
      <cffunction name="getRange" access="remote" returntype="any">
     <cfquery name="range" datasource="kodaly_4">

@@ -4,6 +4,7 @@ import Home from "@/components/Home";
 import SignIn from "@/components/SignIn";
 import SongsHome from "@/components/SongsHome";
 import Menu from "@/components/Menu";
+import songDetail from "@/components/SongDetail";
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path:'/menu',
     name: 'Menu',
     component: Menu
+  } ,
+  {
+    path: '/songDetail/:id',
+    name:'SongDetail',
+    component: songDetail
   }
 ]
 

@@ -7,10 +7,13 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
 import User from './model/user';
+import CKEditor from '@ckeditor/ckeditor5-vue2';
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
+Vue.use( CKEditor );
+
 
 import VueGlobalVariable from "vue-global-var";
 
