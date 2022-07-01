@@ -70,15 +70,16 @@
 		</v-col>
 	</v-row>
 	<v-row class="justify-center">
-		<v-btn v-if="editMode" color="green">Save Edits</v-btn>
+		<v-btn v-if="editMode" color="green">Save Basic Song Edits</v-btn>
 	</v-row>
 	<v-container v-if="editMode">
 		<v-card style="margin-top: 10px;">
 			<v-tabs>
 				<v-tab style="font-size: large" ripple key="1" >Musical Analysis</v-tab>
-			
+				<v-tab style="font-size: large" ripple key="2" >Rhythms</v-tab>
 			<v-tab-item key="1">
-				<v-col md4 style="margin-left: 10px;">
+				<v-layout row>
+				<v-col md3 style="margin-left: 10px;">
 					<v-select
 							v-model="songObject.TONALCENTERID"
 							label="Tonal Center"
@@ -88,7 +89,144 @@
 							return-object
 					></v-select>
 				</v-col>
+				<v-col md3 style="margin-left: 10px;">
+					<v-select
+							v-model="songObject.RANGEID"
+							label="Range"
+							:items="rangeArray"
+							item-text="LABEL"
+							item-value="DATA"
+							return-object
+					></v-select>
+				</v-col>
+					<v-col md3 style="margin-left: 10px;">
+						<v-select
+								v-model="songObject.SCALEID"
+								label="Scale"
+								:items="scaleArray"
+								item-text="LABEL"
+								item-value="DATA"
+								return-object
+						></v-select>
+					</v-col>
+				</v-layout>
+				<v-layout row>
+					<v-col md3 style="margin-left: 10px;">
+						<v-text-field v-model="songObject.TONESETID" label="Toneset"></v-text-field>
+					</v-col>
+					<v-col md3 style="margin-left: 10px;">
+						<v-select
+								v-model="songObject.STARTING_PITCHID"
+								label="Starting Pitch"
+								:items="startingPitchArray"
+								item-text="LABEL"
+								item-value="DATA"
+								return-object
+						></v-select>
+					</v-col>
+					<v-col md3 style="margin-left: 10px;">
+						<v-select
+								v-model="songObject.FORMTYPEID"
+								label="Form Type"
+								:items="formTypesArray"
+								item-text="LABEL"
+								item-value="DATA"
+								return-object
+						></v-select>
+					</v-col>
+				</v-layout>
+				<v-layout row>
+					<v-col md3 style="margin-left: 10px;">
+						<v-select
+								v-model="songObject.METERID"
+								label="Meter"
+								:items="metersArray"
+								item-text="LABEL"
+								item-value="DATA"
+								return-object
+						></v-select>
+					</v-col>
+					<v-col md3 style="margin-left: 10px;">
+						<v-select
+								v-model="songObject.FORMID"
+								label="Formal Analysis"
+								:items="formArray"
+								item-text="LABEL"
+								item-value="DATA"
+								return-object
+						></v-select>
+					</v-col>
+					<v-col md3 style="margin-left: 10px;">
+						<v-text-field v-model="songObject.FORMANALYSISSTR" label="Form Analysis String"></v-text-field>
+					</v-col>
+				</v-layout>
+				<v-layout>
+					<v-row class="justify-center" >
+						<v-btn class="justify-center" style="margin-bottom: 30px;" v-if="editMode" color="green">Save Musical Edits</v-btn>
+					</v-row>
+				</v-layout>
 			</v-tab-item>
+				<v-tab-item key="2">
+					<v-layout row>
+						<v-simple-table>
+							<tbody>
+							<tr>
+								<td><v-img src="../assets/ta.gif" max-height="40%" max-width="60%" ></v-img> </td>
+								<td style="font-size: 20px">ta</td>
+								<td><v-checkbox v-model="songObject.TA"></v-checkbox></td>
+						
+								<td><v-img src="../assets/tiri_tiri.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">tiri-tiri</td>
+								<td><v-checkbox v-model="songObject.TIRI_TIRI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tiri.gif" max-height="55%" max-width="65%" ></v-img> </td>
+								<td style="font-size: 20px">tiri</td>
+								<td><v-checkbox v-model="songObject.TIRI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ti_ti_ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ti-ti-ti</td>
+								<td><v-checkbox v-model="songObject.TI_TI_TI"></v-checkbox></td>
+							
+							</tr>
+							<tr>
+								<td><v-img src="../assets/ti-ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ti-ti</td>
+								<td><v-checkbox v-model="songObject.TI_TI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ti-tiri.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ti-tiri</td>
+								<td><v-checkbox v-model="songObject.TI_TIRI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tim-ri.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">tim-ri</td>
+								<td><v-checkbox v-model="songObject.TIM_RI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ta_ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ta-ti</td>
+								<td><v-checkbox v-model="songObject.TA_TI"></v-checkbox></td>
+							</tr>
+							<tr>
+								<td><v-img src="../assets/rest.gif" max-height="50%" max-width="58%" ></v-img> </td>
+								<td style="font-size: 20px">rest</td>
+								<td><v-checkbox v-model="songObject.REST"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tiri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">tiri-ti</td>
+								<td><v-checkbox v-model="songObject.TIRI_TI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ri-ti-ri</td>
+								<td><v-checkbox v-model="songObject.RI_TI_TI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
+								<td style="font-size: 20px">ti-ta</td>
+								<td><v-checkbox v-model="songObject.TI_TA"></v-checkbox></td>
+							</tr>
+							
+							</tbody>
+						</v-simple-table>
+					</v-layout>
+				</v-tab-item>
 			</v-tabs>
 		</v-card>
 	</v-container>
@@ -112,6 +250,12 @@ export default {
 		regionsArray:[],
 		ethnicityArray:[],
 		notesArray:[],
+		rangeArray:[],
+		scaleArray:[],
+		startingPitchArray:[],
+		formTypesArray:[],
+		metersArray:[],
+		formArray:[],
 		editorConfig:{
 		
 		},
@@ -154,6 +298,48 @@ export default {
 					.then(function (result){
 						vm.notesArray = result.data.results;
 					})
+		},
+		getRanges(){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getRange')
+					.then(function (result){
+						vm.rangeArray = result.data.results;
+					})
+		} ,
+		getScales(){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getScales')
+					.then(function (result){
+						vm.scaleArray = result.data.results;
+					})
+		},
+		getStartingPitches(){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getStartingPitch')
+					.then(function (result){
+						vm.startingPitchArray = result.data.results;
+					})
+		},
+		getFormTypes(){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getFormTypes')
+					.then(function (results){
+						vm.formTypesArray = results.data.results;
+					})
+		},
+		getForms(){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getForms')
+					.then(function (result){
+						vm.formArray = result.data.results;
+					})
+		},
+		getMeters(){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getMeters')
+					.then(function (results){
+						vm.metersArray = results.data.results;
+					})
 		}
 	},
 	created() {
@@ -162,6 +348,12 @@ export default {
 		this.getRegions();
 		this.getEthnicities();
 		this.getTonalCenters();
+		this.getRanges();
+		this.getScales();
+		this.getStartingPitches();
+		this.getFormTypes();
+		this.getMeters();
+		this.getForms();
 		if (this.songID > 0){
 			this.getSongDetails(this.songID);
 			this.editMode=true;
@@ -172,5 +364,7 @@ export default {
 </script>
 
 <style scoped>
-
+hr {
+	transform: rotate(90deg);
+}
 </style>
