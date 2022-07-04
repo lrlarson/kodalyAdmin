@@ -222,7 +222,43 @@
 								<td style="font-size: 20px">ti-ta</td>
 								<td><v-checkbox v-model="songObject.TI_TA"></v-checkbox></td>
 							</tr>
+							<tr>
+								<td><v-img src="../assets/ta_a.gif" max-height="40%" max-width="60%" ></v-img> </td>
+								<td style="font-size: 20px">ta-a</td>
+								<td><v-checkbox v-model="songObject.TA_A"></v-checkbox></td>
+								
+								<td><v-img src="../assets/syn_co_pa.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">syn-co-pa</td>
+								<td><v-checkbox v-model="songObject.TI_TA_TI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ri.gif" max-height="55%" max-width="44%" ></v-img> </td>
+								<td style="font-size: 20px">ri</td>
+								<td><v-checkbox v-model="songObject.RI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tim_ri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">tim-ri-ti</td>
+								<td><v-checkbox v-model="songObject.TIM_RI_TI"></v-checkbox></td>
 							
+							</tr>
+							
+							<tr>
+								<td><v-img src="../assets/half_rest.gif" max-height="40%" max-width="60%" ></v-img> </td>
+								<td style="font-size: 20px">half rest</td>
+								<td><v-checkbox v-model="songObject.HALF_REST"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tai_ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">tai-ti</td>
+								<td><v-checkbox v-model="songObject.TA_TI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tim.gif" max-height="55%" max-width="44%" ></v-img> </td>
+								<td style="font-size: 20px">tim</td>
+								<td><v-checkbox v-model="songObject.TIM"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ri_tim_ti.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ri-tim-ri</td>
+								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
+							
+							</tr>
 							</tbody>
 						</v-simple-table>
 					</v-layout>
