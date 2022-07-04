@@ -162,7 +162,7 @@
 				</v-layout>
 				<v-layout>
 					<v-row class="justify-center" >
-						<v-btn class="justify-center" style="margin-bottom: 30px;" v-if="editMode" color="green">Save Musical Edits</v-btn>
+						<v-btn class="justify-center" style="margin-bottom: 30px;" v-if="editMode" color="blue">Save Musical Analysis Edits</v-btn>
 					</v-row>
 				</v-layout>
 			</v-tab-item>
@@ -227,7 +227,7 @@
 								<td style="font-size: 20px">ta-a</td>
 								<td><v-checkbox v-model="songObject.TA_A"></v-checkbox></td>
 								
-								<td><v-img src="../assets/syn_co_pa.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td><v-img src="../assets/syn_co_pa.gif" max-height="58%" max-width="83%" ></v-img> </td>
 								<td style="font-size: 20px">syn-co-pa</td>
 								<td><v-checkbox v-model="songObject.TI_TA_TI"></v-checkbox></td>
 								
@@ -259,8 +259,32 @@
 								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
 							
 							</tr>
+							
+							<tr>
+								<td><v-img src="../assets/ta-a-a.gif" max-height="40%" max-width="60%" ></v-img> </td>
+								<td style="font-size: 20px">ta-a-a</td>
+								<td><v-checkbox v-model="songObject.TA_A_A"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ti_tai.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ti-tai</td>
+								<td><v-checkbox v-model="songObject.TI_TAI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ri_tim.gif" max-height="55%" max-width="64%" ></v-img> </td>
+								<td style="font-size: 20px">ri-tim</td>
+								<td><v-checkbox v-model="songObject.RI_TIM"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ti_tim_ri.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">ti-tim-ri</td>
+								<td><v-checkbox v-model="songObject.TI_TIM_RI"></v-checkbox></td>
+							
+							</tr>
 							</tbody>
 						</v-simple-table>
+					</v-layout>
+					<v-layout>
+						<v-row class="justify-center" >
+							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="blue">Save Rythmic Edits</v-btn>
+						</v-row>
 					</v-layout>
 				</v-tab-item>
 			</v-tabs>
