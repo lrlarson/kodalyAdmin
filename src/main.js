@@ -8,11 +8,13 @@ import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
 import User from './model/user';
 import CKEditor from '@ckeditor/ckeditor5-vue2';
+import vuetifyAudio  from "vuetify-audio";
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 Vue.use( CKEditor );
+Vue.use(vuetifyAudio)
 
 
 import VueGlobalVariable from "vue-global-var";
