@@ -216,7 +216,7 @@
 								
 								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ri-ti-ri</td>
-								<td><v-checkbox v-model="songObject.RI_TI_TI"></v-checkbox></td>
+								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
 								
 								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
 								<td style="font-size: 20px">ti-ta</td>
@@ -278,6 +278,48 @@
 								<td><v-checkbox v-model="songObject.TI_TIM_RI"></v-checkbox></td>
 							
 							</tr>
+							
+							<tr>
+								<td><v-img src="../assets/ta-a-a-a.gif" max-height="40%" max-width="60%" ></v-img> </td>
+								<td style="font-size: 20px">ta-a-a-a</td>
+								<td><v-checkbox v-model="songObject.TA_A_A_A"></v-checkbox></td>
+								
+								<td><v-img src="../assets/eighth_rest.gif" max-height="67%" max-width="51%" ></v-img> </td>
+								<td style="font-size: 20px">eighth rest</td>
+								<td><v-checkbox v-model="songObject.EIGHTH_REST"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tri_o_la.gif" max-height="55%" max-width="107%" ></v-img> </td>
+								<td style="font-size: 20px">tri-o-la</td>
+								<td><v-checkbox v-model="songObject.TRI_O_LA"></v-checkbox></td>
+								
+								<td><v-img src="../assets/anacrusis.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">anacrusis</td>
+								<td><v-checkbox v-model="songObject.ANAC"></v-checkbox></td>
+							</tr>
+							
+							<tr>
+								<td><v-img src="../assets/whole_rest.gif" max-height="40%" max-width="60%" ></v-img> </td>
+								<td style="font-size: 20px">whole rest</td>
+								<td><v-checkbox v-model="songObject.WHOLE_REST"></v-checkbox></td>
+								
+								<td><v-img src="../assets/ti.gif" max-height="67%" max-width="36%" ></v-img> </td>
+								<td style="font-size: 20px">ti</td>
+								<td><v-checkbox v-model="songObject.TI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tai.gif" max-height="62%" max-width="74%" ></v-img> </td>
+								<td style="font-size: 20px">tai</td>
+								<td><v-checkbox v-model="songObject.TAI"></v-checkbox></td>
+								
+								<td><v-img src="../assets/tie.gif" max-height="40" max-width="60" ></v-img> </td>
+								<td style="font-size: 20px">tie</td>
+								<td><v-checkbox v-model="songObject.TIE"></v-checkbox></td>
+							</tr>
+							
+<!--							<tr>-->
+<!--								<td><v-img src="../assets/other.gif" max-height="40%" max-width="60%" ></v-img> </td>-->
+<!--								<td style="font-size: 20px">other</td>-->
+<!--								<td><v-checkbox v-model="songObject.OTHER"></v-checkbox></td>-->
+<!--							</tr>-->
 							</tbody>
 						</v-simple-table>
 					</v-layout>
