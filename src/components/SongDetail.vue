@@ -77,6 +77,7 @@
 			<v-tabs>
 				<v-tab style="font-size: large" ripple key="1" >Musical Analysis</v-tab>
 				<v-tab style="font-size: large" ripple key="2" >Rhythms</v-tab>
+				<v-tab style="font-size: large" ripple key="3" @click="pedagogyClick" >Pedagogy</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -329,6 +330,65 @@
 						</v-row>
 					</v-layout>
 				</v-tab-item>
+				<v-tab-item key="3">
+					<v-layout row>
+						<v-col md1 style="max-width: fit-content">
+							<v-btn color="red" style="margin: 10px;">Delete Selected</v-btn>
+							<br />
+							<v-btn color="blue" style="margin: 10px;">Add New Mel Element</v-btn>
+							</v-col>
+						<v-col md8>
+							<v-simple-table>
+								<tbody>
+								<tr>
+									<td>Melodic Element</td>
+									<td>Melodic Context</td>
+									<td>Preparation</td>
+									<td>Practice</td>
+									<td>Tuning Up</td>
+									<td>Older</td>
+								</tr>
+								<tr
+										v-for="item in songMelodicElementsArrays"
+										:key="item.ID"
+										@click="handleMelodicClick(item.ID)"
+								>
+									<td>{{ item.TONEABBREVIATION }}</td>
+									<td>{{ item.CONTEXTNAME}}</td>
+									<td><v-checkbox v-model="item.MPREPARATION"></v-checkbox></td>
+									<td><v-checkbox v-model="item.MEARLYPRACTICE"></v-checkbox></td>
+									<td><v-checkbox v-model="item.MMIDDLEPRACTICE"></v-checkbox></td>
+									<td><v-checkbox v-model="item.MLATEPRACTICE"></v-checkbox></td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+					</v-layout>
+					<v-layout row>
+						<v-col md3>
+							<v-select
+									v-model="songMelodicContextObject.MEMELKEY"
+									label="Melodic Element"
+									:items="melodicElementsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="getCorrectContext()"
+									return-object
+							></v-select>
+						</v-col>
+						<v-col md3>
+							<v-select
+									v-model="songMelodicContextObject.SELECTEDMELODICCONTEXT"
+									label="Melodic Context"
+									:items="availableMelContextsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="selectMelodicContext()"
+									return-object
+							></v-select>
+						</v-col>
+					</v-layout>
+				</v-tab-item>
 			</v-tabs>
 		</v-card>
 	</v-container>
@@ -345,6 +405,9 @@ export default {
 		dataURL: "https://kodaly.hnu.edu/kodalyVue/kodalyVue.cfc?",
 		songArray:[],
 		songObject:{},
+		melodicElementsArray:[],
+		songMelodicElementsArrays:[],
+		availableMelContextsArray:[],
 		songID:'',
 		editMode:false,
 		addMode:false,
@@ -358,6 +421,9 @@ export default {
 		formTypesArray:[],
 		metersArray:[],
 		formArray:[],
+		addMelContextMode:false,
+		songMelodicContextArray:[],
+		songMelodicContextObject:{},
 		editorConfig:{
 		
 		},
@@ -365,6 +431,41 @@ export default {
 		editorData: '',
 	}),
 	methods:{
+		
+		selectMelodicContext(){
+			let vm=this;
+			vm.songMelodicContextObject.MELODICCONTEXTKEY = vm.songMelodicContextObject.SELECTEDMELODICCONTEXT.DATA;
+		},
+		
+		getCorrectContext(){
+			let vm=this;
+			console.log(vm.songMelodicContextObject.MEMELKEY.DATA);
+			axios.get(vm.dataURL+ 'method=getMelContextsForElement&element=' + vm.songMelodicContextObject.MEMELKEY.DATA)
+						.then(function (result){
+							vm.availableMelContextsArray = result.data.results;
+						})
+		},
+		
+		handleMelodicClick(id){
+			let vm=this;
+			axios.get(vm.dataURL + 'method=getMelodicContectRecord&melContextRecord=' + id)
+					.then(function (result){
+						vm.songMelodicContextArray = result.data.results;
+						vm.songMelodicContextObject = vm.songMelodicContextArray[0];
+					})
+		},
+		
+		pedagogyClick(){
+			let vm=this;
+			axios.get(vm.dataURL+'method=getMelodicElements')
+					.then(function (result){
+						vm.melodicElementsArray = result.data.results;
+					})
+			axios.get(vm.dataURL + 'method=getMelodicContextsForSong&titleKey=' + vm.songID )
+					.then(function (result){
+						vm.songMelodicElementsArrays = result.data.results;
+					})
+		},
 		getSongDetails(id){
 			let vm=this;
 			axios.get(vm.dataURL+'method=getSongDetails&songID=' + id)

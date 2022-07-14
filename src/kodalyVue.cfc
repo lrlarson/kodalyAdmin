@@ -7,6 +7,145 @@
     </cffunction>
 
 
+    <cffunction name="getMelodicContectRecord" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="melContextRecord" type="any" required="true" >
+            <cfquery  name="contextRecord" datasource="kodaly_4">
+                select [tbl Title Melodic Element].id, [Title Key], [tbl Title Melodic Element].[Melodic Element Key] as memElKey, [Melodic Element context], MPreparation, [MEarly Practice], [MMiddle Practice], [MLate Practice], MelodicContextKey,
+                    [tbl Melodic Elements].[Tone Abbreviation],tbl_NewMelodicContexts.contextName
+                from [tbl Title Melodic Element]
+                inner join [tbl Melodic Elements] on [tbl Melodic Elements].[Melodic Element Key] = [tbl Title Melodic Element].[Melodic Element Key]
+                left outer join tbl_NewMelodicContexts on [tbl Title Melodic Element].MelodicContextKey = tbl_NewMelodicContexts.ID
+                where [tbl Title Melodic Element].id=#melContextRecord#
+            </cfquery>
+         <cfset arrGirls = QueryToStruct(contextRecord)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper> 
+
+    </cffunction>
+
+
+
+    <cffunction name="getMelodicContextsForSong" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="titleKey" type="numeric" required="true">
+        <cfquery name="melodicContexts" datasource="kodaly_4">
+    SELECT     [tbl Title Melodic Element].id, [tbl Title Melodic Element].[Title Key] AS titleKey, [tbl Title Melodic Element].[Melodic Element Key] AS melodicElementKey, 
+                          [tbl Title Melodic Element].[Melodic Element context] AS melodicElementContext, [tbl Title Melodic Element].MPreparation, 
+                          [tbl Title Melodic Element].[MEarly Practice] AS MearlyPractice, [tbl Title Melodic Element].[MMiddle Practice] AS MMiddlePractice, 
+                          [tbl Title Melodic Element].[MLate Practice] AS MlatePractice, [tbl Melodic Elements].[Tone Abbreviation] AS toneAbbreviation, 
+                          [tbl Title Melodic Element].MelodicContextKey, [tbl Melodic Elements].[Tone Name] AS toneName, tbl_NewMelodicContexts.contextName
+    FROM         [tbl Title Melodic Element] INNER JOIN
+                          [tbl Melodic Elements] ON [tbl Title Melodic Element].[Melodic Element Key] = [tbl Melodic Elements].[Melodic Element Key] LEFT OUTER JOIN
+                          tbl_NewMelodicContexts ON [tbl Title Melodic Element].MelodicContextKey = tbl_NewMelodicContexts.ID
+    WHERE     ([tbl Title Melodic Element].[Title Key] = #titleKey#)
+         </cfquery>
+        <cfset arrGirls = QueryToStruct(melodicContexts)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+    </cffunction>
+
+    <cffunction name="getMelContextsForElement" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="element" type="numeric" required="true" >
+            <cfquery name="contexts" datasource="kodaly_4">
+                    SELECT     contextName as label,ID as data
+                    FROM         tbl_NewMelodicContexts
+                    WHERE     (melodicElementKey = #element#)
+                    ORDER BY elementSortIndex
+            </cfquery>
+            <cfset arrGirls = QueryToStruct(contexts)/>
+            <cfset objectWrapper = structNew()>
+            <cfset objectWrapper.results = #arrGirls#>
+            <cfreturn objectWrapper> 
+    </cffunction>
+
+    <cffunction name="getMelodicElements" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="elements" datasource="kodaly_4">
+            SELECT [Melodic Element Key] AS data
+                ,[Tone Abbreviation] AS label
+            FROM [tbl Melodic Elements]
+            where [Tone Abbreviation] <> '_None'
+            ORDER BY [Tone Sequence Number]
+    </cfquery>
+         <cfset arrGirls = QueryToStruct(elements)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper> 
+        </cffunction>
+
+    <cffunction name="getMeters" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="meters" datasource="kodaly_4">
+    SELECT      [tbl Meters].[Meter Key] AS data, [tbl Meters].Meter AS label
+    FROM          [tbl Meters]
+    order by [Meter Sequence Number]
+        </cfquery>
+       <cfset arrGirls = QueryToStruct(meters)/>
+       <cfset objectWrapper = structNew()>
+       <cfset objectWrapper.results = #arrGirls#>
+       <cfreturn objectWrapper> 
+        </cffunction>
+
+
+        <cffunction name="getForms" access="remote" returntype="any" returnformat="JSON">
+            <cfquery name="forms" datasource="kodaly_4">
+        SELECT      [tbl Forms].[Form Key] AS data, [tbl Forms].[Form Name] AS label
+        FROM          [tbl Forms]
+        ORDER BY [tbl Forms].[Form Sequence Number] 
+        </cfquery>
+            <cfset arrGirls = QueryToStruct(forms)/>
+            <cfset objectWrapper = structNew()>
+            <cfset objectWrapper.results = #arrGirls#>
+            <cfreturn objectWrapper> 
+            </cffunction>
+
+
+    <cffunction name="getFormTypes" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="formType" datasource="kodaly_4">
+    SELECT      [tbl_Form_Type].[Form_Type_Key] AS data, [tbl_Form_Type].[Form_Type] AS label
+    FROM          [tbl_Form_Type]
+    ORDER BY Form_Type
+    </cfquery>
+         <cfset arrGirls = QueryToStruct(formType)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper> 
+        </cffunction>
+
+    <cffunction name="getStartingPitch" access="remote" returntype="any" returnformat="JSON">
+            <cfquery name="startingPitch" datasource="kodaly_4">
+                SELECT      Starting_Pitch_Table.Starting_Pitch_ID AS data, Starting_Pitch_Table.Starting_Pitch AS label
+                FROM          Starting_Pitch_Table
+                ORDER BY sequence
+            </cfquery>
+        <cfset arrGirls = QueryToStruct(startingPitch)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+    </cffunction>
+
+    <cffunction name="getScales" access="remote" returntype="any"  returnformat="JSON">
+        <cfquery name="scales" datasource="kodaly_4">
+            SELECT [Scale Key] AS data, Scale AS label 
+            FROM dbo.[tbl Scales]
+            ORDER BY Scale
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(scales)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+        </cffunction>
+
+    <cffunction name="getRange" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="range" datasource="kodaly_4">
+            SELECT Range_ID AS data, Range AS label
+            FROM dbo.Table_Range
+            ORDER BY Sort_Order ASC
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(range)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+        </cffunction>
 
     <cffunction name="getSongDetails" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="songID" type="numeric" required="yes">
@@ -193,16 +332,7 @@ order by Title
 	</cffunction>
     
     
-        <cffunction name="getMelContextsForElement" access="remote" returntype="Any" >
-        	<cfargument name="element" type="numeric" required="true" >
-        		<cfquery name="contexts" datasource="kodaly_4">
-        				SELECT     contextName as label,ID as data
-						FROM         tbl_NewMelodicContexts
-						WHERE     (melodicElementKey = #element#)
-						ORDER BY elementSortIndex
-        		</cfquery>
-        		<cfreturn contexts>
-        </cffunction>
+       
         
         
         
@@ -264,76 +394,22 @@ WHERE motive = '#motive.motive#'  AND title_ID = #motive.title_ID#
      
      
      
-     <cffunction name="getScales" access="remote" returntype="any">
-    <cfquery name="scales" datasource="kodaly_4">
-SELECT [Scale Key] AS data, Scale AS label 
-FROM dbo.[tbl Scales]
-ORDER BY Scale
-    </cfquery>
-    <cfreturn scales>
-    </cffunction>
+     
     
      
     
-     <cffunction name="getRange" access="remote" returntype="any">
-    <cfquery name="range" datasource="kodaly_4">
-SELECT Range_ID AS data, Range AS label
-FROM dbo.Table_Range
-ORDER BY Sort_Order ASC
-    </cfquery>
-    <cfreturn range>
-    </cffunction>
+    
 
 
-     <cffunction name="getMeters" access="remote" returntype="any">
-    <cfquery name="meters" datasource="kodaly_4">
-SELECT      [tbl Meters].[Meter Key] AS data, [tbl Meters].Meter AS label
-FROM          [tbl Meters]
-order by [Meter Sequence Number]
-    </cfquery>
-    <cfreturn meters>
-    </cffunction>
+     
     
-     <cffunction name="getForms" access="remote" returntype="any">
-    <cfquery name="forms" datasource="kodaly_4">
-SELECT      [tbl Forms].[Form Key] AS data, [tbl Forms].[Form Name] AS label
-FROM          [tbl Forms]
-ORDER BY [tbl Forms].[Form Sequence Number] 
-</cfquery>
-    <cfreturn forms>
-    </cffunction>
+     
     
-      <cffunction name="getFormType" access="remote" returntype="any">
-    <cfquery name="formType" datasource="kodaly_4">
-SELECT      [tbl_Form_Type].[Form_Type_Key] AS data, [tbl_Form_Type].[Form_Type] AS label
-FROM          [tbl_Form_Type]
-ORDER BY Form_Type
-</cfquery>
-    <cfreturn formType>
-    </cffunction>
+     
     
-     <cffunction name="getStartingPitch" access="remote" returntype="any">
-    <cfquery name="startingPitch" datasource="kodaly_4">
-SELECT      Starting_Pitch_Table.Starting_Pitch_ID AS data, Starting_Pitch_Table.Starting_Pitch AS label
-FROM          Starting_Pitch_Table
-ORDER BY sequence
+     
+    
 
-</cfquery>
-    <cfreturn startingPitch>
-    </cffunction>
-    
-    <cffunction name="getMelodicElements" access="remote" returntype="any">
-    <cfquery name="elements" datasource="kodaly_4">
-SELECT [Melodic Element Key] AS data
-      ,[Tone Abbreviation] AS label
-  FROM [tbl Melodic Elements]
-  where [Tone Abbreviation] <> '_None'
-  ORDER BY [Tone Sequence Number]
-
-</cfquery>
-    <cfreturn elements>
-    </cffunction>
-    
     <cffunction name="getMelodicContexts" access="remote" returntype="any">
     <cfquery name="elements" datasource="kodaly_4">
 SELECT     id AS data, [melodic Context] AS label
@@ -343,21 +419,7 @@ FROM         tbl_MelodicContext
     <cfreturn elements>
     </cffunction>
     
-   <cffunction name="getMelodicContextsForSong" access="remote" returntype="Any">
-    <cfargument name="titleKey" type="numeric" required="true">
-    <cfquery name="melodicContexts" datasource="kodaly_4">
-SELECT     [tbl Title Melodic Element].id, [tbl Title Melodic Element].[Title Key] AS titleKey, [tbl Title Melodic Element].[Melodic Element Key] AS melodicElementKey, 
-                      [tbl Title Melodic Element].[Melodic Element context] AS melodicElementContext, [tbl Title Melodic Element].MPreparation, 
-                      [tbl Title Melodic Element].[MEarly Practice] AS MearlyPractice, [tbl Title Melodic Element].[MMiddle Practice] AS MMiddlePractice, 
-                      [tbl Title Melodic Element].[MLate Practice] AS MlatePractice, [tbl Melodic Elements].[Tone Abbreviation] AS toneAbbreviation, 
-                      [tbl Title Melodic Element].MelodicContextKey, [tbl Melodic Elements].[Tone Name] AS toneName, tbl_NewMelodicContexts.contextName
-FROM         [tbl Title Melodic Element] INNER JOIN
-                      [tbl Melodic Elements] ON [tbl Title Melodic Element].[Melodic Element Key] = [tbl Melodic Elements].[Melodic Element Key] LEFT OUTER JOIN
-                      tbl_NewMelodicContexts ON [tbl Title Melodic Element].MelodicContextKey = tbl_NewMelodicContexts.ID
-WHERE     ([tbl Title Melodic Element].[Title Key] = #titleKey#)
-     </cfquery>
-    <cfreturn melodicContexts>
-</cffunction>
+   
 
 <cffunction name="getRythmicContextsForSong" access="remote" returntype="Any">
     <cfargument name="titleKey" type="numeric" required="true">
