@@ -30,7 +30,7 @@
 		<v-col md6 sm12>
 			<v-text-field label="Informant" v-model="songObject.INFORMANT" ></v-text-field>
 			<v-text-field label="First Line" v-model="songObject.FIRST_LINE_TEXT" ></v-text-field>
-			<v-text-field label="Associated File Name. (Can be any length)" v-model="songObject.NOTATION_FILE_NAME" ></v-text-field>
+			<v-text-field label="Associated File Name. (Can be any length -- used for score and sound file names.)" v-model="songObject.NOTATION_FILE_NAME" ></v-text-field>
 		</v-col>
 		<v-col md6 sm12>
 			<v-select
@@ -77,7 +77,8 @@
 			<v-tabs>
 				<v-tab style="font-size: large" ripple key="1" >Musical Analysis</v-tab>
 				<v-tab style="font-size: large" ripple key="2" >Rhythms</v-tab>
-				<v-tab style="font-size: large" ripple key="3" @click="pedagogyClick" >Pedagogy</v-tab>
+				<v-tab style="font-size: large" ripple key="3" @click="pedagogyClick" >Melodic Cont.</v-tab>
+				<v-tab style="font-size: large" ripple key="4" @click="rhythmClick" >Rhythmic Cont.</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -326,7 +327,7 @@
 					</v-layout>
 					<v-layout>
 						<v-row class="justify-center" >
-							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="blue">Save Rythmic Edits</v-btn>
+							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="green">Save Rythmic Edits</v-btn>
 						</v-row>
 					</v-layout>
 				</v-tab-item>
@@ -335,7 +336,7 @@
 						<v-col md1 style="max-width: fit-content">
 							<v-btn color="red" style="margin: 10px;">Delete Selected</v-btn>
 							<br />
-							<v-btn color="blue" style="margin: 10px;">Add New Mel Element</v-btn>
+							<v-btn color="blue" style="margin: 10px;" @click="setMelContextAddMode">Add New Mel Element</v-btn>
 							</v-col>
 						<v-col md8>
 							<v-simple-table>
@@ -364,10 +365,10 @@
 							</v-simple-table>
 						</v-col>
 					</v-layout>
-					<v-layout row>
-						<v-col md3>
+					<v-layout row v-if="editMelContextMode">
+						<v-col md2 style="margin-left: 10px;">
 							<v-select
-									v-model="songMelodicContextObject.MEMELKEY"
+									v-model="songMelodicContextObject.MELODICELEMENTKEY"
 									label="Melodic Element"
 									:items="melodicElementsArray"
 									item-text="LABEL"
@@ -376,9 +377,9 @@
 									return-object
 							></v-select>
 						</v-col>
-						<v-col md3>
+						<v-col md2>
 							<v-select
-									v-model="songMelodicContextObject.SELECTEDMELODICCONTEXT"
+									v-model="songMelodicContextObject.MELODICCONTEXTKEY"
 									label="Melodic Context"
 									:items="availableMelContextsArray"
 									item-text="LABEL"
@@ -387,7 +388,60 @@
 									return-object
 							></v-select>
 						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MPREPARATION" label="Prep."></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MEARLYPRACTICE" label="Practice"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MMIDDLEPRACTICE" label="Tuning"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MLATEPRACTICE" label="Older"></v-checkbox>
+						</v-col>
 					</v-layout>
+					<v-layout row v-if="addMelContextMode">
+						<v-col md2 style="margin-left: 10px;">
+							<v-select
+									v-model="songMelodicContextObject.MELODICELEMENTKEY"
+									label="Melodic Element"
+									:items="melodicElementsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="getCorrectContext()"
+									return-object
+							></v-select>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="songMelodicContextObject.MELODICCONTEXTKEY"
+									label="Melodic Context"
+									:items="availableMelContextsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="selectMelodicContext()"
+									return-object
+							></v-select>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MPREPARATION" label="Prep."></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MEARLYPRACTICE" label="Practice"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MMIDDLEPRACTICE" label="Tuning"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.MLATEPRACTICE" label="Older"></v-checkbox>
+						</v-col>
+					</v-layout>
+					<v-row class="justify-center">
+						<v-btn v-if="editMelContextMode" @click="saveMelContextEdits" color="green" style="margin-bottom: 20px;">Save Mel. Context Edits</v-btn>
+						<v-btn v-if="editMelContextMode" @click="saveMelContextEdits" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Melodic Context </v-btn>
+						<v-btn v-if="addMelContextMode" @click="saveMelContextEdits" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
+					</v-row>
 				</v-tab-item>
 			</v-tabs>
 		</v-card>
@@ -422,6 +476,7 @@ export default {
 		metersArray:[],
 		formArray:[],
 		addMelContextMode:false,
+		editMelContextMode:false,
 		songMelodicContextArray:[],
 		songMelodicContextObject:{},
 		editorConfig:{
@@ -432,26 +487,68 @@ export default {
 	}),
 	methods:{
 		
+		rhythmClick(){
+		
+		},
+		
+		
+		setMelContextAddMode(){
+			this.editMelContextMode = false;
+			this.addMelContextMode= true;
+			this.clearMelContextObject();
+		},
+		
+		clearMelContextObject(){
+			let vm=this;
+			
+			vm.songMelodicContextObject.MELODICCONTEXTKEY = 0;
+			vm.songMelodicContextObject.MELODICELEMENTKEY = 0;
+			vm.songMelodicContextObject.MPREPARATION = 0;
+			vm.songMelodicContextObject.MEARLYPRACTICE = 0
+			vm.songMelodicContextObject.MMIDDLEPRACTICE = 0
+			vm.songMelodicContextObject.MLATEPRACTICE = 0;
+			
+		},
+		
+		saveMelContextEdits(){
+			let vm=this;
+			vm.editMelContextMode = false;
+		},
+		
 		selectMelodicContext(){
 			let vm=this;
-			vm.songMelodicContextObject.MELODICCONTEXTKEY = vm.songMelodicContextObject.SELECTEDMELODICCONTEXT.DATA;
+			vm.songMelodicContextObject.MELODICCONTEXTKEY = vm.songMelodicContextObject.MELODICCONTEXTKEY.DATA;
 		},
 		
 		getCorrectContext(){
 			let vm=this;
-			console.log(vm.songMelodicContextObject.MEMELKEY.DATA);
-			axios.get(vm.dataURL+ 'method=getMelContextsForElement&element=' + vm.songMelodicContextObject.MEMELKEY.DATA)
+			console.log(vm.songMelodicContextObject.MELODICCONTEXTKEY.DATA);
+			axios.get(vm.dataURL+ 'method=getMelContextsForElement&element=' + vm.songMelodicContextObject.MELODICELEMENTKEY.DATA)
 						.then(function (result){
 							vm.availableMelContextsArray = result.data.results;
 						})
 		},
 		
+		
+		getCorrectContextOnLoad(){
+			let vm=this;
+			console.log(vm.songMelodicContextObject.MELODICCONTEXTKEY);
+			axios.get(vm.dataURL+ 'method=getMelContextsForElement&element=' + vm.songMelodicContextObject.MELODICELEMENTKEY)
+					.then(function (result){
+						vm.availableMelContextsArray = result.data.results;
+					})
+		},
+		
 		handleMelodicClick(id){
 			let vm=this;
+			
 			axios.get(vm.dataURL + 'method=getMelodicContectRecord&melContextRecord=' + id)
 					.then(function (result){
 						vm.songMelodicContextArray = result.data.results;
 						vm.songMelodicContextObject = vm.songMelodicContextArray[0];
+						vm.getCorrectContextOnLoad();
+						vm.editMelContextMode = true;
+						vm.addMelContextMode = false;
 					})
 		},
 		
@@ -465,6 +562,7 @@ export default {
 					.then(function (result){
 						vm.songMelodicElementsArrays = result.data.results;
 					})
+			// vm.getCorrectContextOnLoad();
 		},
 		getSongDetails(id){
 			let vm=this;

@@ -10,8 +10,11 @@
     <cffunction name="getMelodicContectRecord" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="melContextRecord" type="any" required="true" >
             <cfquery  name="contextRecord" datasource="kodaly_4">
-                select [tbl Title Melodic Element].id, [Title Key], [tbl Title Melodic Element].[Melodic Element Key] as memElKey, [Melodic Element context], MPreparation, [MEarly Practice], [MMiddle Practice], [MLate Practice], MelodicContextKey,
-                    [tbl Melodic Elements].[Tone Abbreviation],tbl_NewMelodicContexts.contextName
+                    SELECT     [tbl Title Melodic Element].id, [tbl Title Melodic Element].[Title Key] AS titleKey, [tbl Title Melodic Element].[Melodic Element Key] AS melodicElementKey, 
+                          [tbl Title Melodic Element].[Melodic Element context] AS melodicElementContext, [tbl Title Melodic Element].MPreparation, 
+                          [tbl Title Melodic Element].[MEarly Practice] AS MearlyPractice, [tbl Title Melodic Element].[MMiddle Practice] AS MMiddlePractice, 
+                          [tbl Title Melodic Element].[MLate Practice] AS MlatePractice, [tbl Melodic Elements].[Tone Abbreviation] AS toneAbbreviation, 
+                          [tbl Title Melodic Element].MelodicContextKey, [tbl Melodic Elements].[Tone Name] AS toneName, tbl_NewMelodicContexts.contextName
                 from [tbl Title Melodic Element]
                 inner join [tbl Melodic Elements] on [tbl Melodic Elements].[Melodic Element Key] = [tbl Title Melodic Element].[Melodic Element Key]
                 left outer join tbl_NewMelodicContexts on [tbl Title Melodic Element].MelodicContextKey = tbl_NewMelodicContexts.ID
