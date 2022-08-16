@@ -4,7 +4,170 @@
     <cfheader name="Access-Control-Allow-Headers" value="Origin, X-Requested-With, Content-Type, Accept">
     <cffunction name="init" access="remote" returntype="any">
         <cfreturn this/>
+    </cffunction> 
+
+    
+    <cffunction name="getRhythmicContext" access="remote" returntype="any" returnformat="JSON" >
+          <cfargument name="id" required="true" type="numeric" >
+          <cfquery name="context" datasource="kodaly_4" >
+                SELECT   [tbl Title Rhythmic Element].id,   [tbl Title Rhythmic Element].[Title Key] AS titleKey, [tbl Title Rhythmic Element].RPreparation,
+           [tbl Title Rhythmic Element].[REarly Practice] AS rEarly, [tbl Rhythmic Elements].[Rhythm Name] AS rythmName,
+           [tbl Title Rhythmic Element].[RMiddle Practice] AS rMiddle, [tbl Title Rhythmic Element].[RLate Practice] AS rLate,
+           [tbl Rhythmic Elements].[Rhythm Key] AS rhythmKey
+FROM         [tbl Title Rhythmic Element] INNER JOIN
+             [tbl Rhythmic Elements] ON [tbl Title Rhythmic Element].[Rhythmic Element Key] = [tbl Rhythmic Elements].[Rhythm Key]
+WHERE     ([tbl Title Rhythmic Element].id= #id#)
+          </cfquery>
+           <cfset arrGirls = QueryToStruct(context)/>
+           <cfset objectWrapper = structNew()>
+           <cfset objectWrapper.results = #arrGirls#>
+           <cfreturn objectWrapper>
+     </cffunction>
+
+
+
+    <cffunction name="getRythmicContextsForSong" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="titleKey" type="numeric" required="true">
+        <cfquery name="rythmicContexts" datasource="kodaly_4">
+    SELECT     [tbl Title Rhythmic Element].id, [tbl Title Rhythmic Element].[Title Key] AS titleKey, [tbl Title Rhythmic Element].RPreparation, 
+                          [tbl Title Rhythmic Element].[REarly Practice] AS rEarly, [tbl Rhythmic Elements].[Rhythm Name] AS rythmName, 
+                          [tbl Title Rhythmic Element].[RMiddle Practice] AS rMiddle, [tbl Title Rhythmic Element].[RLate Practice] AS rLate, 
+                          [tbl Rhythmic Elements].[Rhythm Key] AS rhythmKey
+    FROM         [tbl Title Rhythmic Element] INNER JOIN
+                          [tbl Rhythmic Elements] ON [tbl Title Rhythmic Element].[Rhythmic Element Key] = [tbl Rhythmic Elements].[Rhythm Key]
+    WHERE     ([tbl Title Rhythmic Element].[Title Key] = #titleKey#)
+         </cfquery>
+         <cfset arrGirls = QueryToStruct(rythmicContexts)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>
     </cffunction>
+
+
+    <cffunction name="getRythmicContexts" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="elements" datasource="kodaly_4">
+    SELECT [Rhythm Key] as id, [Rhythm Name] as label
+    FROM dbo.[tbl Rhythmic Elements]
+    WHERE [Rhythm Name] IS NOT NULL
+    ORDER BY [Rhythm Name]
+    </cfquery>
+        <cfset arrGirls = QueryToStruct(elements)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+    
+
+    <cffunction name="deleteMelodicContext" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="id" required="true" type="numeric">
+
+        <cfquery name="del" datasource="kodaly_4" > 
+                delete from [tbl Title Melodic Element]
+                where id =#id#
+        </cfquery>
+       <cfreturn 1>     
+    </cffunction>
+
+
+    <cffunction name="updateRhythmicContext" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="rhythmicContext" type="any" required="yes">
+        <cfset rhythmicContext = DeserializeJSON(rhythmicContext)>
+            <cfif #rhythmicContext.REARLY# EQ true  || #rhythmicContext.REARLY# EQ 1  >
+            <cfset rhythmicContext.REARLY = 1>
+            <cfelse>
+            <cfset rhythmicContext.REARLY= 0>
+            </cfif>
+
+            <cfif #rhythmicContext.RLATE# EQ true || #rhythmicContext.RLATE# EQ 1>
+                <cfset rhythmicContext.RLATE = 1>
+                <cfelse>
+                <cfset rhythmicContext.RLATE = 0>
+            </cfif>
+
+            <cfif #rhythmicContext.RMIDDLE# EQ true || #rhythmicContext.RMIDDLE# EQ 1>
+                <cfset rhythmicContext.RMIDDLE = 1>
+                <cfelse>
+                <cfset rhythmicContext.RMIDDLE = 0>
+            </cfif>
+
+            <cfif #rhythmicContext.RPREPARATION# EQ true || #rhythmicContext.RPREPARATION# EQ 1>
+                <cfset rhythmicContext.RPREPARATION = 1>
+                <cfelse>
+                <cfset rhythmicContext.RPREPARATION = 0>
+            </cfif>
+
+        
+            <cfquery name="update" datasource="kodaly_4" > 
+                update [tbl Title Rhythmic Element]
+            set   [REarly Practice]=#rhythmicContext.REARLY#,
+                [Rhythmic Element context]='#rhythmicContext.RYTHMNAME.LABEL#',
+                [Rhythmic Element Key]=#rhythmicContext.RHYTHMKEY#,
+                [RLate Practice]=#rhythmicContext.RLATE#,
+                [RMiddle Practice]=#rhythmicContext.RMIDDLE# ,
+                RPreparation=#rhythmicContext.RPREPARATION#,
+                [Title Key] = #rhythmicContext.TITLEKEY#
+            where id = #rhythmicContext.ID#
+            select #rhythmicContext.ID#
+            </cfquery>
+        <cfset arrGirls = QueryToStruct(update)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+    </cffunction>
+
+    <cffunction name="insertMelodicContext" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="MelodicContext" type="any" required="yes">
+        <cfset MelodicContext = DeserializeJSON(MelodicContext)>
+        
+        <cfif #MelodicContext.MPREPARATION# EQ true  || #MelodicContext.MPREPARATION# EQ 1  >
+        <cfset MelodicContext.MPREPARATION = 1>
+        <cfelse>
+        <cfset MelodicContext.MPREPARATION = 0>
+        </cfif>
+        <cfif #MelodicContext.MEARLYPRACTICE# EQ true || #MelodicContext.MEARLYPRACTICE# EQ 1>
+        <cfset MelodicContext.MEARLYPRACTICE = 1>
+        <cfelse>
+        <cfset MelodicContext.MEARLYPRACTICE = 0>
+        </cfif>
+        <cfif #MelodicContext.MMIDDLEPRACTICE# EQ true || #MelodicContext.MMIDDLEPRACTICE# EQ  1 >
+        <cfset MelodicContext.MMIDDLEPRACTICE = 1>
+        <cfelse>
+        <cfset MelodicContext.MMIDDLEPRACTICE = 0>
+        </cfif>
+        <cfif #MelodicContext.MLATEPRACTICE# EQ true || #MelodicContext.MLATEPRACTICE# EQ 1 >
+        <cfset MelodicContext.MLATEPRACTICE = 1>
+        <cfelse>
+        <cfset MelodicContext.MLATEPRACTICE = 0>
+        </cfif>
+        <cfquery name="insert" datasource="kodaly_4">
+        INSERT INTO dbo.[tbl Title Melodic Element]
+            ( [Title Key] ,
+              [Melodic Element Key] ,
+               [Melodic Element context],
+              MPreparation ,
+              [MEarly Practice] ,
+              [MMiddle Practice] ,
+              [MLate Practice],
+              MelodicContextKey
+            )
+    VALUES  ( #MelodicContext.TITLE_KEY# ,
+              #MelodicContext.MELODICELEMENTKEY.DATA#, 
+    
+              '#MelodicContext.MELODICELEMENTKEY.LABEL#' , 
+              
+             #MelodicContext.MPREPARATION# , 
+              #MelodicContext.MEARLYPRACTICE# ,
+              #MelodicContext.MMIDDLEPRACTICE# ,
+             #MelodicContext.MLATEPRACTICE#,  
+              #MelodicContext.MELODICCONTEXTKEY#
+            )
+            select @@identity
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(insert)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+        </cffunction>
 
 
     <cffunction name="getMelodicContectRecord" access="remote" returntype="any" returnformat="JSON">
@@ -424,19 +587,7 @@ FROM         tbl_MelodicContext
     
    
 
-<cffunction name="getRythmicContextsForSong" access="remote" returntype="Any">
-    <cfargument name="titleKey" type="numeric" required="true">
-    <cfquery name="rythmicContexts" datasource="kodaly_4">
-SELECT     [tbl Title Rhythmic Element].id, [tbl Title Rhythmic Element].[Title Key] AS titleKey, [tbl Title Rhythmic Element].RPreparation, 
-                      [tbl Title Rhythmic Element].[REarly Practice] AS rEarly, [tbl Rhythmic Elements].[Rhythm Name] AS rythmName, 
-                      [tbl Title Rhythmic Element].[RMiddle Practice] AS rMiddle, [tbl Title Rhythmic Element].[RLate Practice] AS rLate, 
-                      [tbl Rhythmic Elements].[Rhythm Key] AS rhythmKey
-FROM         [tbl Title Rhythmic Element] INNER JOIN
-                      [tbl Rhythmic Elements] ON [tbl Title Rhythmic Element].[Rhythmic Element Key] = [tbl Rhythmic Elements].[Rhythm Key]
-WHERE     ([tbl Title Rhythmic Element].[Title Key] = #titleKey#)
-     </cfquery>
-    <cfreturn rythmicContexts>
-</cffunction>
+
 
 <cffunction name="deleteMelodicContextForSong" access="remote" returntype="any">
 <cfargument name="id" type="numeric" required="yes">
@@ -459,66 +610,9 @@ select 1
 
 
 
-    <cffunction name="getRythmicContexts" access="remote" returntype="any">
-    <cfquery name="elements" datasource="kodaly_4">
-SELECT [Rhythm Key] as id, [Rhythm Name] as label
-FROM dbo.[tbl Rhythmic Elements]
-WHERE [Rhythm Name] IS NOT NULL
-ORDER BY [Rhythm Name]
+   
 
-</cfquery>
-    <cfreturn elements>
-    </cffunction>
-
-
-	<cffunction name="insertMelodicContext" access="remote" returntype="any">
-    <cfargument name="MelodicContext" type="any" required="yes">
-    <cfif #MelodicContext.MPreparation# EQ "true">
-	<cfset MelodicContext.MPreparation = 1>
-    <cfelse>
-    <cfset MelodicContext.MPreparation = 0>
-	</cfif>
-    <cfif #MelodicContext.MearlyPractice# EQ "true">
-	<cfset MelodicContext.MearlyPractice = 1>
-    <cfelse>
-    <cfset MelodicContext.MearlyPractice = 0>
-	</cfif>
-    <cfif #MelodicContext.MMiddlePractice# EQ "true">
-	<cfset MelodicContext.MMiddlePractice = 1>
-    <cfelse>
-    <cfset MelodicContext.MMiddlePractice = 0>
-	</cfif>
-    <cfif #MelodicContext.MlatePractice# EQ "true">
-	<cfset MelodicContext.MlatePractice = 1>
-    <cfelse>
-    <cfset MelodicContext.MlatePractice = 0>
-	</cfif>
-    <cfquery name="insert" datasource="kodaly_4">
-    INSERT INTO dbo.[tbl Title Melodic Element]
-        ( [Title Key] ,
-          [Melodic Element Key] ,
-           [Melodic Element context],
-          MPreparation ,
-          [MEarly Practice] ,
-          [MMiddle Practice] ,
-          [MLate Practice],
-          MelodicContextKey
-        )
-VALUES  ( #MelodicContext.titleKey# , -- Title Key - int
-          #MelodicContext.melodicElementKey#, -- Melodic Element Key - int
-
-          '#MelodicContext.melodicContext#' , -- Melodic Element Context -- string
-          
-         #MelodicContext.MPreparation# , -- MPreparation - bit
-          #MelodicContext.MearlyPractice# , -- MEarly Practice - bit
-          #MelodicContext.MMiddlePractice# , -- MMiddle Practice - bit
-         #MelodicContext.MlatePractice#,  -- MLate Practice - bit,
-          #MelodicContext.MelodicContextKey#
-        )
-        select @@identity
-    </cfquery>
-    <cfreturn insert>
-    </cffunction>
+	
 
 	<cffunction name="insertRythmicContext" access="remote" returntype="any">
     <cfargument name="rythmicContext" required="yes" type="any">

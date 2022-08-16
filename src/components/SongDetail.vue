@@ -176,33 +176,33 @@
 								<td><v-img src="../assets/ta.gif" max-height="40%" max-width="60%" ></v-img> </td>
 								<td style="font-size: 20px">ta</td>
 								<td><v-checkbox v-model="songObject.TA"></v-checkbox></td>
-						
+
 								<td><v-img src="../assets/tiri_tiri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tiri-tiri</td>
 								<td><v-checkbox v-model="songObject.TIRI_TIRI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tiri.gif" max-height="55%" max-width="65%" ></v-img> </td>
 								<td style="font-size: 20px">tiri</td>
 								<td><v-checkbox v-model="songObject.TIRI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ti_ti_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ti-ti-ti</td>
 								<td><v-checkbox v-model="songObject.TI_TI_TI"></v-checkbox></td>
-							
+
 							</tr>
 							<tr>
 								<td><v-img src="../assets/ti-ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ti-ti</td>
 								<td><v-checkbox v-model="songObject.TI_TI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ti-tiri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ti-tiri</td>
 								<td><v-checkbox v-model="songObject.TI_TIRI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tim-ri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tim-ri</td>
 								<td><v-checkbox v-model="songObject.TIM_RI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ta_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ta-ti</td>
 								<td><v-checkbox v-model="songObject.TA_TI"></v-checkbox></td>
@@ -211,15 +211,15 @@
 								<td><v-img src="../assets/rest.gif" max-height="50%" max-width="58%" ></v-img> </td>
 								<td style="font-size: 20px">rest</td>
 								<td><v-checkbox v-model="songObject.REST"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tiri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tiri-ti</td>
 								<td><v-checkbox v-model="songObject.TIRI_TI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ri-ti-ri</td>
 								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
 								<td style="font-size: 20px">ti-ta</td>
 								<td><v-checkbox v-model="songObject.TI_TA"></v-checkbox></td>
@@ -228,95 +228,95 @@
 								<td><v-img src="../assets/ta_a.gif" max-height="40%" max-width="60%" ></v-img> </td>
 								<td style="font-size: 20px">ta-a</td>
 								<td><v-checkbox v-model="songObject.TA_A"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/syn_co_pa.gif" max-height="58%" max-width="83%" ></v-img> </td>
 								<td style="font-size: 20px">syn-co-pa</td>
 								<td><v-checkbox v-model="songObject.TI_TA_TI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ri.gif" max-height="55%" max-width="44%" ></v-img> </td>
 								<td style="font-size: 20px">ri</td>
 								<td><v-checkbox v-model="songObject.RI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tim_ri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tim-ri-ti</td>
 								<td><v-checkbox v-model="songObject.TIM_RI_TI"></v-checkbox></td>
-							
+
 							</tr>
-							
+
 							<tr>
 								<td><v-img src="../assets/half_rest.gif" max-height="40%" max-width="60%" ></v-img> </td>
 								<td style="font-size: 20px">half rest</td>
 								<td><v-checkbox v-model="songObject.HALF_REST"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tai_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tai-ti</td>
 								<td><v-checkbox v-model="songObject.TA_TI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tim.gif" max-height="55%" max-width="44%" ></v-img> </td>
 								<td style="font-size: 20px">tim</td>
 								<td><v-checkbox v-model="songObject.TIM"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ri_tim_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ri-tim-ri</td>
 								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
-							
+
 							</tr>
-							
+
 							<tr>
 								<td><v-img src="../assets/ta-a-a.gif" max-height="40%" max-width="60%" ></v-img> </td>
 								<td style="font-size: 20px">ta-a-a</td>
 								<td><v-checkbox v-model="songObject.TA_A_A"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ti_tai.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ti-tai</td>
 								<td><v-checkbox v-model="songObject.TI_TAI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ri_tim.gif" max-height="55%" max-width="64%" ></v-img> </td>
 								<td style="font-size: 20px">ri-tim</td>
 								<td><v-checkbox v-model="songObject.RI_TIM"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ti_tim_ri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ti-tim-ri</td>
 								<td><v-checkbox v-model="songObject.TI_TIM_RI"></v-checkbox></td>
-							
+
 							</tr>
-							
+
 							<tr>
 								<td><v-img src="../assets/ta-a-a-a.gif" max-height="40%" max-width="60%" ></v-img> </td>
 								<td style="font-size: 20px">ta-a-a-a</td>
 								<td><v-checkbox v-model="songObject.TA_A_A_A"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/eighth_rest.gif" max-height="67%" max-width="51%" ></v-img> </td>
 								<td style="font-size: 20px">eighth rest</td>
 								<td><v-checkbox v-model="songObject.EIGHTH_REST"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tri_o_la.gif" max-height="55%" max-width="107%" ></v-img> </td>
 								<td style="font-size: 20px">tri-o-la</td>
 								<td><v-checkbox v-model="songObject.TRI_O_LA"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/anacrusis.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">anacrusis</td>
 								<td><v-checkbox v-model="songObject.ANAC"></v-checkbox></td>
 							</tr>
-							
+
 							<tr>
 								<td><v-img src="../assets/whole_rest.gif" max-height="40%" max-width="60%" ></v-img> </td>
 								<td style="font-size: 20px">whole rest</td>
 								<td><v-checkbox v-model="songObject.WHOLE_REST"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/ti.gif" max-height="67%" max-width="36%" ></v-img> </td>
 								<td style="font-size: 20px">ti</td>
 								<td><v-checkbox v-model="songObject.TI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tai.gif" max-height="62%" max-width="74%" ></v-img> </td>
 								<td style="font-size: 20px">tai</td>
 								<td><v-checkbox v-model="songObject.TAI"></v-checkbox></td>
-								
+
 								<td><v-img src="../assets/tie.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tie</td>
 								<td><v-checkbox v-model="songObject.TIE"></v-checkbox></td>
 							</tr>
-							
+
 <!--							<tr>-->
 <!--								<td><v-img src="../assets/other.gif" max-height="40%" max-width="60%" ></v-img> </td>-->
 <!--								<td style="font-size: 20px">other</td>-->
@@ -327,15 +327,15 @@
 					</v-layout>
 					<v-layout>
 						<v-row class="justify-center" >
-							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="green">Save Rythmic Edits</v-btn>
+							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="green">Save Rhythmic Edits</v-btn>
 						</v-row>
 					</v-layout>
 				</v-tab-item>
 				<v-tab-item key="3">
 					<v-layout row>
 						<v-col md1 style="max-width: fit-content">
-							<v-btn color="red" style="margin: 10px;">Delete Selected</v-btn>
-							<br />
+<!--							<v-btn color="red" style="margin: 10px;">Delete Selected</v-btn>-->
+<!--							<br />-->
 							<v-btn color="blue" style="margin: 10px;" @click="setMelContextAddMode">Add New Mel Element</v-btn>
 							</v-col>
 						<v-col md8>
@@ -439,8 +439,94 @@
 					</v-layout>
 					<v-row class="justify-center">
 						<v-btn v-if="editMelContextMode" @click="saveMelContextEdits" color="green" style="margin-bottom: 20px;">Save Mel. Context Edits</v-btn>
-						<v-btn v-if="editMelContextMode" @click="saveMelContextEdits" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Melodic Context </v-btn>
-						<v-btn v-if="addMelContextMode" @click="saveMelContextEdits" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
+						<v-btn v-if="editMelContextMode" @click="delMelContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Melodic Context </v-btn>
+						<v-btn v-if="addMelContextMode" @click="insertNewMelContext" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
+					</v-row>
+				</v-tab-item>
+				<v-tab-item key="4">
+					<v-layout row>
+						<v-col md1 style="max-width: fit-content">
+							<!--							<v-btn color="red" style="margin: 10px;">Delete Selected</v-btn>-->
+							<!--							<br />-->
+							<v-btn color="blue" style="margin: 10px;" @click="setMelContextAddMode">Add New Rhythmic Element</v-btn>
+						</v-col>
+						<v-col md8>
+							<v-simple-table>
+								<tbody>
+								<tr>
+									<td>Rhythm Name</td>
+									<td>Preparation</td>
+									<td>Early</td>
+									<td>Tuning Up</td>
+									<td>Older</td>
+								</tr>
+								<tr
+										v-for="item in songRhythmicElementsArray"
+										:key="item.ID"
+										@click="handleRhythmicClick(item.ID)"
+								>
+									<td>{{ item.RYTHMNAME }}</td>
+									<td><v-checkbox v-model="item.RPREPARATION"></v-checkbox></td>
+									<td><v-checkbox v-model="item.REARLY"></v-checkbox></td>
+									<td><v-checkbox v-model="item.RMIDDLE"></v-checkbox></td>
+									<td><v-checkbox v-model="item.RLATE"></v-checkbox></td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+					</v-layout>
+					<v-layout row v-if="editRhythymicMode">
+						<v-col md2 style="margin-left: 10px;">
+							<v-select
+									v-model="rhythmicContextObject.RYTHMNAME"
+									label="Rhythmic Element"
+									:items="rhythmicContextsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+							></v-select>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="rhythmicContextObject.RPREPARATION" label="Prep."></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="rhythmicContextObject.REARLY" label="Practice"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="rhythmicContextObject.RMIDDLE" label="Tuning"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="rhythmicContextObject.RLATE" label="Older"></v-checkbox>
+						</v-col>
+					</v-layout>
+					<v-layout row v-if="addRhythymicMode">
+						<v-col md2 style="margin-left: 10px;">
+							<v-select
+									v-model="rhythmicContextObject.RYTHMNAME"
+									label="Rhythmic Element"
+									:items="rhythmicContextsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+							></v-select>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="rhythmicContextObject.RPREPARATION" label="Prep."></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="rhythmicContextObject.REARLY" label="Practice"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.RMIDDLE" label="Tuning"></v-checkbox>
+						</v-col>
+						<v-col md2>
+							<v-checkbox v-model="songMelodicContextObject.RLATE" label="Older"></v-checkbox>
+						</v-col>
+					</v-layout>
+					<v-row class="justify-center">
+						<v-btn v-if="editRhythymicMode" @click="saveRhythmicContextEdits" color="green" style="margin-bottom: 20px;">Save Rhythmic Context Edits</v-btn>
+						<v-btn v-if="editMelContextMode" @click="delMelContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Rhythmic Context </v-btn>
+						<v-btn v-if="addMelContextMode" @click="insertNewMelContext" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
 					</v-row>
 				</v-tab-item>
 			</v-tabs>
@@ -453,7 +539,7 @@
 import axios from "axios";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export default {
-	
+
 	name: "SongDetail",
 	data: () => ({
 		dataURL: "https://kodaly.hnu.edu/kodalyVue/kodalyVue.cfc?",
@@ -477,49 +563,169 @@ export default {
 		formArray:[],
 		addMelContextMode:false,
 		editMelContextMode:false,
+		addRhythymicMode:false,
+		editRhythymicMode:false,
 		songMelodicContextArray:[],
 		songMelodicContextObject:{},
+		songRhythmicElementsArray:[],
+		rhythmicContextArray:[],
+		rhythmicContextObject:{},
 		editorConfig:{
-		
+
 		},
 		editor: ClassicEditor,
 		editorData: '',
+		rhythmicContextsArray:[],
 	}),
 	methods:{
-		
-		rhythmClick(){
-		
+
+		clearRhythmContexts(){
+			this.rhythmicContextObject.REARLY =false;
+			this.rhythmicContextObject.RYTHMKEY ='';
+			this.rhythmicContextObject.RLATE=false;
+			this.rhythmicContextObject.RMIDDLE=false;
+			this.rhythmicContextObject.RPREPARATION=false;
+			this.rhythmicContextObject.RYTHNAME='';
+			
 		},
 		
+		getRhythmicContexts(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getRythmicContexts')
+					.then(function (result){
+						vm.rhythmicContextsArray=result.data.results;
+					})
+		},
+		
+		rhythmClick(){
+			let vm = this;
+			vm.addRhythymicMode = false;
+			vm.editRhythymicMode = false;
+			axios.get(vm.dataURL + 'method=getRythmicContextsForSong&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.songRhythmicElementsArray = result.data.results;
+					});
+			vm.getRhythmicContexts();
+			vm.clearRhythmContexts();
+		},
+
+
+		delMelContext(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteMelodicContext&id=' + vm.songMelodicContextObject.ID)
+					.then(function (){
+						vm.pedagogyClick();
+						vm.addMelContextMode= false;
+						vm.clearMelContextObject();
+					})
+		},
+		
+		insertNewMelContext(){
+			let vm = this;
+			vm.songMelodicContextObject.TITLE_KEY = vm.songID;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "insertMelodicContext",
+					MelodicContext: JSON.stringify(vm.songMelodicContextObject)
+				},
+				success: function () {
+					
+					vm.pedagogyClick();
+					vm.addMelContextMode= false;
+					vm.clearMelContextObject();
+					
+					
+					
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
+		},
 		
 		setMelContextAddMode(){
 			this.editMelContextMode = false;
 			this.addMelContextMode= true;
 			this.clearMelContextObject();
 		},
-		
+
 		clearMelContextObject(){
 			let vm=this;
-			
+
 			vm.songMelodicContextObject.MELODICCONTEXTKEY = 0;
 			vm.songMelodicContextObject.MELODICELEMENTKEY = 0;
 			vm.songMelodicContextObject.MPREPARATION = 0;
 			vm.songMelodicContextObject.MEARLYPRACTICE = 0
 			vm.songMelodicContextObject.MMIDDLEPRACTICE = 0
 			vm.songMelodicContextObject.MLATEPRACTICE = 0;
-			
+
 		},
-		
-		saveMelContextEdits(){
-			let vm=this;
-			vm.editMelContextMode = false;
+
+		saveRhythmicContextEdits(){
+			let vm = this;
+			vm.rhythmicContextObject.TITLEKEY = vm.songID;
+			vm.rhythmicContextObject.RHYTHMKEY = vm.rhythmicContextObject.RYTHMNAME.ID;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "updateRhythmicContext",
+					rhythmicContext: JSON.stringify(vm.rhythmicContextObject)
+				},
+				success: function () {
+					
+					vm.rhythmClick();
+					vm.editRhythymicMode= false;
+					vm.clearRhythmContexts();
+					
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
 		},
-		
+
 		selectMelodicContext(){
 			let vm=this;
 			vm.songMelodicContextObject.MELODICCONTEXTKEY = vm.songMelodicContextObject.MELODICCONTEXTKEY.DATA;
 		},
-		
+
 		getCorrectContext(){
 			let vm=this;
 			console.log(vm.songMelodicContextObject.MELODICCONTEXTKEY.DATA);
@@ -528,8 +734,8 @@ export default {
 							vm.availableMelContextsArray = result.data.results;
 						})
 		},
-		
-		
+
+
 		getCorrectContextOnLoad(){
 			let vm=this;
 			console.log(vm.songMelodicContextObject.MELODICCONTEXTKEY);
@@ -538,10 +744,10 @@ export default {
 						vm.availableMelContextsArray = result.data.results;
 					})
 		},
-		
+
 		handleMelodicClick(id){
 			let vm=this;
-			
+
 			axios.get(vm.dataURL + 'method=getMelodicContectRecord&melContextRecord=' + id)
 					.then(function (result){
 						vm.songMelodicContextArray = result.data.results;
@@ -552,6 +758,18 @@ export default {
 					})
 		},
 		
+		handleRhythmicClick(id){
+			let vm=this;
+		
+			axios.get(vm.dataURL + 'method=getRhythmicContext&id='+ id)
+					.then(function (result){
+						vm.rhythmicContextArray = result.data.results;
+						vm.rhythmicContextObject = vm.rhythmicContextArray[0];
+					})
+			vm.editRhythymicMode = true;
+			vm.addRhythymicMode  =false;
+		},
+
 		pedagogyClick(){
 			let vm=this;
 			axios.get(vm.dataURL+'method=getMelodicElements')
