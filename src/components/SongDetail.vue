@@ -439,7 +439,7 @@
 						</v-col>
 					</v-layout>
 					<v-row class="justify-center">
-						<v-btn v-if="editMelContextMode" @click="saveMelContextEdits" color="green" style="margin-bottom: 20px;">Save Mel. Context Edits</v-btn>
+						<v-btn v-if="editMelContextMode" @click="updateMelodicContext" color="green" style="margin-bottom: 20px;">Save Mel. Context Edits</v-btn>
 						<v-btn v-if="editMelContextMode" @click="delMelContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Melodic Context </v-btn>
 						<v-btn v-if="addMelContextMode" @click="insertNewMelContext" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
 					</v-row>
@@ -894,6 +894,45 @@ export default {
 						vm.editMelContextMode = true;
 						vm.addMelContextMode = false;
 					})
+		},
+		
+		updateMelodicContext(){
+			let vm=this;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "updateMelodicContext",
+					MelodicContext: JSON.stringify(vm.songMelodicContextObject)
+				},
+				success: function () {
+					
+					vm.pedagogyClick();
+					vm.editMelContextMode= false;
+					
+					
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
 		},
 		
 		handleRhythmicClick(id){

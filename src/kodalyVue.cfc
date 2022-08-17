@@ -211,31 +211,39 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
          <cfreturn objectWrapper> 
     </cffunction>
 
+    <cffunction name="updateMelodicContext" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="MelodicContext" type="any" required="yes">
+        <cfset MelodicContext = DeserializeJSON(MelodicContext)>
+        <cfset MelodicContext.MPREPARATION = checkForTrue(MelodicContext.MPREPARATION)>
+        <cfset MelodicContext.MEARLYPRACTICE = checkForTrue(MelodicContext.MEARLYPRACTICE)>
+        <cfset MelodicContext.MMIDDLEPRACTICE = checkForTrue(MelodicContext.MMIDDLEPRACTICE)>
+        <cfset MelodicContext.MLATEPRACTICE = checkForTrue(MelodicContext.MLATEPRACTICE)>
+        <cfquery name="update" datasource="kodaly_4" > 
+        update dbo.[tbl Title Melodic Element]
+        set [Melodic Element Key] = #MelodicContext.MELODICELEMENTKEY#,
+        [Melodic Element context]= '#MelodicContext.CONTEXTNAME#',
+        MPreparation =#MelodicContext.MPREPARATION#,
+        [MEarly Practice] = #MelodicContext.MPREPARATION# ,
+        [MMiddle Practice] = #MelodicContext.MMIDDLEPRACTICE# ,
+        [MLate Practice] = #MelodicContext.MLATEPRACTICE#, 
+        MelodicContextKey = #MelodicContext.MELODICCONTEXTKEY#
+        where id = #MelodicContext.ID#
+        select 1
+        </cfquery>
+     <cfset arrGirls = QueryToStruct(update)/>
+     <cfset objectWrapper = structNew()>
+     <cfset objectWrapper.results = #arrGirls#>
+     <cfreturn objectWrapper> 
+    </cffunction>   
+
 
     <cffunction name="insertMelodicContext" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="MelodicContext" type="any" required="yes">
         <cfset MelodicContext = DeserializeJSON(MelodicContext)>
-        
-        <cfif #MelodicContext.MPREPARATION# EQ true  || #MelodicContext.MPREPARATION# EQ 1  >
-        <cfset MelodicContext.MPREPARATION = 1>
-        <cfelse>
-        <cfset MelodicContext.MPREPARATION = 0>
-        </cfif>
-        <cfif #MelodicContext.MEARLYPRACTICE# EQ true || #MelodicContext.MEARLYPRACTICE# EQ 1>
-        <cfset MelodicContext.MEARLYPRACTICE = 1>
-        <cfelse>
-        <cfset MelodicContext.MEARLYPRACTICE = 0>
-        </cfif>
-        <cfif #MelodicContext.MMIDDLEPRACTICE# EQ true || #MelodicContext.MMIDDLEPRACTICE# EQ  1 >
-        <cfset MelodicContext.MMIDDLEPRACTICE = 1>
-        <cfelse>
-        <cfset MelodicContext.MMIDDLEPRACTICE = 0>
-        </cfif>
-        <cfif #MelodicContext.MLATEPRACTICE# EQ true || #MelodicContext.MLATEPRACTICE# EQ 1 >
-        <cfset MelodicContext.MLATEPRACTICE = 1>
-        <cfelse>
-        <cfset MelodicContext.MLATEPRACTICE = 0>
-        </cfif>
+        <cfset MelodicContext.MPREPARATION = checkForTrue(MelodicContext.MPREPARATION)>
+        <cfset MelodicContext.MEARLYPRACTICE = checkForTrue(MelodicContext.MEARLYPRACTICE)>
+        <cfset MelodicContext.MMIDDLEPRACTICE = checkForTrue(MelodicContext.MMIDDLEPRACTICE)>
+        <cfset MelodicContext.MLATEPRACTICE = checkForTrue(MelodicContext.MLATEPRACTICE)>
         <cfquery name="insert" datasource="kodaly_4">
         INSERT INTO dbo.[tbl Title Melodic Element]
             ( [Title Key] ,
