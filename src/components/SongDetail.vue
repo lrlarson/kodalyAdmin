@@ -75,10 +75,11 @@
 	<v-container v-if="editMode">
 		<v-card style="margin-top: 10px;">
 			<v-tabs>
-				<v-tab style="font-size: large" ripple key="1" >Musical Analysis</v-tab>
-				<v-tab style="font-size: large" ripple key="2" >Rhythms</v-tab>
-				<v-tab style="font-size: large" ripple key="3" @click="pedagogyClick" >Melodic Cont.</v-tab>
-				<v-tab style="font-size: large" ripple key="4" @click="rhythmClick" >Rhythmic Cont.</v-tab>
+				<v-tab style="font-size: small" ripple key="1" >Musical Analysis</v-tab>
+				<v-tab style="font-size: small" ripple key="2" >Rhythms</v-tab>
+				<v-tab style="font-size: small" ripple key="3" @click="pedagogyClick" >Melodic Cont.</v-tab>
+				<v-tab style="font-size: small" ripple key="4" @click="rhythmClick" >Rhythmic Cont.</v-tab>
+				<v-tab style="font-size: small" ripple key="5" @click="motiveClick" >Motives</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -448,7 +449,7 @@
 						<v-col md1 style="max-width: fit-content">
 							<!--							<v-btn color="red" style="margin: 10px;">Delete Selected</v-btn>-->
 							<!--							<br />-->
-							<v-btn color="blue" style="margin: 10px;" @click="setMelContextAddMode">Add New Rhythmic Element</v-btn>
+							<v-btn color="blue" style="margin: 10px;" @click="setRythmContextAddMode">Add New Rhythmic Element</v-btn>
 						</v-col>
 						<v-col md8>
 							<v-simple-table>
@@ -517,17 +518,48 @@
 							<v-checkbox v-model="rhythmicContextObject.REARLY" label="Practice"></v-checkbox>
 						</v-col>
 						<v-col md2>
-							<v-checkbox v-model="songMelodicContextObject.RMIDDLE" label="Tuning"></v-checkbox>
+							<v-checkbox v-model="rhythmicContextObject.RMIDDLE" label="Tuning"></v-checkbox>
 						</v-col>
 						<v-col md2>
-							<v-checkbox v-model="songMelodicContextObject.RLATE" label="Older"></v-checkbox>
+							<v-checkbox v-model="rhythmicContextObject.RLATE" label="Older"></v-checkbox>
 						</v-col>
 					</v-layout>
 					<v-row class="justify-center">
 						<v-btn v-if="editRhythymicMode" @click="saveRhythmicContextEdits" color="green" style="margin-bottom: 20px;">Save Rhythmic Context Edits</v-btn>
-						<v-btn v-if="editMelContextMode" @click="delMelContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Rhythmic Context </v-btn>
-						<v-btn v-if="addMelContextMode" @click="insertNewMelContext" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
+						<v-btn v-if="editRhythymicMode" @click="deleteRhythmicContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Rhythmic Context </v-btn>
+						<v-btn v-if="addRhythymicMode" @click="insertNewRhythmicContext" color="green" style="margin-bottom: 20px;">Save New Rhythmic Context</v-btn>
 					</v-row>
+				</v-tab-item>
+				<v-tab-item key="5" >
+					<v-layout row align-center>
+						<v-col md2>
+							<v-btn color="green" style="margin-left: 10px;" @click="addMotive=true">Add Motive</v-btn>
+						</v-col>
+						<v-col md3>
+							<v-simple-table>
+								<tbody>
+								<tr>
+									<td>Motives</td>
+								</tr>
+								<tr
+										v-for="item in motivesForSongArray"
+										:key="item.MOTIVE"
+										@click="handleMotiveClick(item.TITLE_ID,item.MOTIVE)"
+								>
+									<td>{{ item.MOTIVE }}</td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+						<v-col md6>
+							<v-text-field v-if="editMotive" v-model="motiveObject.MOTIVE"></v-text-field>
+							<v-btn v-if="editMotive" color="red" @click="deleteMotive">Delete Motive</v-btn>
+						</v-col>
+						<v-col md6>
+							<v-text-field v-if="addMotive" v-model="motiveObject.MOTIVE"></v-text-field>
+							<v-btn v-if="addMotive" color="green" @click="insertMotive">Add Motive</v-btn>
+						</v-col>
+					</v-layout>
 				</v-tab-item>
 			</v-tabs>
 		</v-card>
@@ -570,15 +602,51 @@ export default {
 		songRhythmicElementsArray:[],
 		rhythmicContextArray:[],
 		rhythmicContextObject:{},
+		motivesForSongArray:[],
 		editorConfig:{
 
 		},
 		editor: ClassicEditor,
 		editorData: '',
 		rhythmicContextsArray:[],
+		editMotive:false,
+		addMotive:false,
+		motiveArray:[],
+		motiveObject:{},
 	}),
 	methods:{
 
+		insertMotive(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=insertMotive&titleID=' + vm.songID + '&motive=' + vm.motiveObject.MOTIVE)
+					.then(function (){
+						vm.getMotivesForSong();
+						vm.addMotive = false;
+					})
+			
+		},
+		
+		deleteMotive(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteMotive&titleID=' + vm.songID + '&motive=' + vm.motiveObject.MOTIVE)
+					.then(function (){
+						vm.getMotivesForSong();
+						vm.editMotive = false;
+					})
+		},
+		
+		
+		handleMotiveClick(title,motive){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getMotive&titleID=' + title + '&motive=' + motive)
+					.then(function (result){
+						vm.motiveArray = result.data.results;
+						vm.motiveObject = vm.motiveArray[0];
+						vm.editMotive = true;
+					})
+			
+		},
+		
 		clearRhythmContexts(){
 			this.rhythmicContextObject.REARLY =false;
 			this.rhythmicContextObject.RYTHMKEY ='';
@@ -587,6 +655,22 @@ export default {
 			this.rhythmicContextObject.RPREPARATION=false;
 			this.rhythmicContextObject.RYTHNAME='';
 			
+		},
+		
+		setRythmContextAddMode(){
+			this.addRhythymicMode = true;
+			this.editRhythymicMode = false;
+			this.clearRhythmContexts();
+		},
+		
+		deleteRhythmicContext(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteRhythmicContext&id=' + vm.rhythmicContextObject.ID)
+					.then(function (){
+						vm.rhythmClick();
+						vm.editRhythymicMode = false;
+						vm.clearRhythmContexts();
+					})
 		},
 		
 		getRhythmicContexts(){
@@ -607,8 +691,20 @@ export default {
 					});
 			vm.getRhythmicContexts();
 			vm.clearRhythmContexts();
+			vm.getMotivesForSong();
+		},
+		motiveClick(){
+			let vm = this;
+			vm.getMotivesForSong();
 		},
 
+		getMotivesForSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getMotivesForSong&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.motivesForSongArray = result.data.results;
+					})
+		},
 
 		delMelContext(){
 			let vm = this;
@@ -618,6 +714,49 @@ export default {
 						vm.addMelContextMode= false;
 						vm.clearMelContextObject();
 					})
+		},
+		
+		insertNewRhythmicContext(){
+			let vm = this;
+			vm.rhythmicContextObject.TITLEKEY = vm.songID;
+			vm.rhythmicContextObject.RYTHMKEY = vm.rhythmicContextObject.RYTHMNAME.ID
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "insertNewRhythmicContext",
+					rhythmicContext: JSON.stringify(vm.rhythmicContextObject)
+				},
+				success: function () {
+					
+					vm.rhythmClick();
+					vm.addRhythymicMode = false;
+					vm.clearRhythmContexts();
+					
+					
+					
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
 		},
 		
 		insertNewMelContext(){
@@ -683,7 +822,6 @@ export default {
 		saveRhythmicContextEdits(){
 			let vm = this;
 			vm.rhythmicContextObject.TITLEKEY = vm.songID;
-			vm.rhythmicContextObject.RHYTHMKEY = vm.rhythmicContextObject.RYTHMNAME.ID;
 			window.$.ajax({
 				type: "post",
 				url: vm.dataURL,

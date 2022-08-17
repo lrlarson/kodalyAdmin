@@ -6,7 +6,78 @@
         <cfreturn this/>
     </cffunction> 
 
+
+    <cffunction name="checkForTrue" access="public" returntype="any" >
+        <cfargument name="test" type="any" >
+            <cfif test EQ true || test EQ 1>
+                <cfset test = 1>
+            <cfelse>
+                <cfset test = 0>    
+            </cfif>
+            <cfreturn test>
+    </cffunction>    
     
+    <cffunction name="insertMotive" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="titleID" type="numeric" required="true">
+        <cfargument name="motive" type="any" required="true">
+        <cfquery name="motive" datasource="kodaly_4">
+            insert into tbl_Title_Motive
+            (
+              title_ID,
+              motive  
+            )VALUES(
+                #titleID#,
+                '#motive#'
+            )
+            select 1
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(motive)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+    </cffunction>
+
+    <cffunction name="deleteMotive" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="titleID" type="numeric" required="true">
+        <cfargument name="motive" type="any" required="true">
+        <cfquery name="motive" datasource="kodaly_4">
+          delete from tbl_Title_Motive
+            WHERE     (title_ID = #titleID#)AND motive='#motive#' 
+            select 1 
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(motive)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+    </cffunction>
+
+    <cffunction name="getMotive" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="titleID" type="numeric" required="true">
+        <cfargument name="motive" type="any" required="true">
+        <cfquery name="motive" datasource="kodaly_4">
+          SELECT     title_ID, motive
+            FROM         tbl_Title_Motive
+            WHERE     (title_ID = #titleID#)AND motive='#motive#'  
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(motive)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+    </cffunction>
+
+    <cffunction name="getMotivesForSong" access="remote" returntype="Any" returnformat="JSON">
+        <cfargument name="titleKey" type="numeric" required="true">
+        <cfquery name="motivesForSong" datasource="kodaly_4">
+          SELECT     title_ID, motive
+            FROM         tbl_Title_Motive
+            WHERE     (title_ID = #titleKey#)  
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(motivesForSong)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+    </cffunction>
+
     <cffunction name="getRhythmicContext" access="remote" returntype="any" returnformat="JSON" >
           <cfargument name="id" required="true" type="numeric" >
           <cfquery name="context" datasource="kodaly_4" >
@@ -24,6 +95,18 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
            <cfreturn objectWrapper>
      </cffunction>
 
+     <cffunction name="deleteRhythmicContext" access="remote" returntype="any" returnformat="JSON" >
+           <cfargument name="id" type="numeric" required="true" >
+           <cfquery name="context" datasource="kodaly_4" >
+               delete from [tbl Title Rhythmic Element]
+               where id =#id#
+               select 1 
+           </cfquery>
+          <cfset arrGirls = QueryToStruct(context)/>
+          <cfset objectWrapper = structNew()>
+          <cfset objectWrapper.results = #arrGirls#>
+          <cfreturn objectWrapper> 
+    </cffunction>
 
 
     <cffunction name="getRythmicContextsForSong" access="remote" returntype="Any" returnformat="JSON">
@@ -72,35 +155,15 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
     <cffunction name="updateRhythmicContext" access="remote" returntype="any" returnformat="JSON" >
         <cfargument name="rhythmicContext" type="any" required="yes">
         <cfset rhythmicContext = DeserializeJSON(rhythmicContext)>
-            <cfif #rhythmicContext.REARLY# EQ true  || #rhythmicContext.REARLY# EQ 1  >
-            <cfset rhythmicContext.REARLY = 1>
-            <cfelse>
-            <cfset rhythmicContext.REARLY= 0>
-            </cfif>
-
-            <cfif #rhythmicContext.RLATE# EQ true || #rhythmicContext.RLATE# EQ 1>
-                <cfset rhythmicContext.RLATE = 1>
-                <cfelse>
-                <cfset rhythmicContext.RLATE = 0>
-            </cfif>
-
-            <cfif #rhythmicContext.RMIDDLE# EQ true || #rhythmicContext.RMIDDLE# EQ 1>
-                <cfset rhythmicContext.RMIDDLE = 1>
-                <cfelse>
-                <cfset rhythmicContext.RMIDDLE = 0>
-            </cfif>
-
-            <cfif #rhythmicContext.RPREPARATION# EQ true || #rhythmicContext.RPREPARATION# EQ 1>
-                <cfset rhythmicContext.RPREPARATION = 1>
-                <cfelse>
-                <cfset rhythmicContext.RPREPARATION = 0>
-            </cfif>
-
+        <cfset rhythmicContext.REARLY = checkForTrue(rhythmicContext.REARLY)>
+        <cfset rhythmicContext.RLATE = checkForTrue(rhythmicContext.RLATE)>
+        <cfset rhythmicContext.RMIDDLE = checkForTrue(rhythmicContext.RMIDDLE)>
+        <cfset rhythmicContext.RPREPARATION = checkForTrue(rhythmicContext.RPREPARATION)>
         
             <cfquery name="update" datasource="kodaly_4" > 
                 update [tbl Title Rhythmic Element]
             set   [REarly Practice]=#rhythmicContext.REARLY#,
-                [Rhythmic Element context]='#rhythmicContext.RYTHMNAME.LABEL#',
+                [Rhythmic Element context]='#rhythmicContext.RYTHMNAME#',
                 [Rhythmic Element Key]=#rhythmicContext.RHYTHMKEY#,
                 [RLate Practice]=#rhythmicContext.RLATE#,
                 [RMiddle Practice]=#rhythmicContext.RMIDDLE# ,
@@ -114,6 +177,40 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
         <cfset objectWrapper.results = #arrGirls#>
         <cfreturn objectWrapper> 
     </cffunction>
+
+
+    <cffunction name="insertNewRhythmicContext" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="rhythmicContext" type="any" required="yes">
+        <cfset rhythmicContext = DeserializeJSON(rhythmicContext)>
+        <cfset rhythmicContext.REARLY = checkForTrue(rhythmicContext.REARLY)>
+        <cfset rhythmicContext.RLATE = checkForTrue(rhythmicContext.RLATE)>
+        <cfset rhythmicContext.RMIDDLE = checkForTrue(rhythmicContext.RMIDDLE)>
+        <cfset rhythmicContext.RPREPARATION = checkForTrue(rhythmicContext.RPREPARATION)>
+        <cfquery name="insert" datasource="kodaly_4" > 
+            insert into [tbl Title Rhythmic Element]
+            ([Title Key],
+            [Rhythmic Element Key], 
+            RPreparation,
+            [REarly Practice],
+            [RMiddle Practice],
+            [RLate Practice]) 
+            values 
+                (
+                #rhythmicContext.TITLEKEY#,
+                #rhythmicContext.RYTHMKEY#,
+                #rhythmicContext.RPREPARATION#,
+                #rhythmicContext.REARLY#,
+                #rhythmicContext.RMIDDLE#,
+                #rhythmicContext.RLATE#
+                )
+                select @@identity
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(insert)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper> 
+    </cffunction>
+
 
     <cffunction name="insertMelodicContext" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="MelodicContext" type="any" required="yes">
@@ -520,15 +617,7 @@ order by Title
     
     
     
-     <cffunction name="getMotivesForSong" access="remote" returntype="Any">
-         <cfargument name="title_ID" type="numeric" required="true">
-         <cfquery name="motivesForSong" datasource="kodaly_4">
-           SELECT     title_ID, motive
-FROM         tbl_Title_Motive
-WHERE     (title_ID = #title_ID#)  
-         </cfquery>
-         <cfreturn motivesForSong>
-     </cffunction>
+    
      
      <cffunction name="insertMotiveToSong" access="remote" returntype="Any">
          <cfargument name="motive" type="any" required="true">
