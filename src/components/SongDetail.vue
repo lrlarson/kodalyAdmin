@@ -80,6 +80,8 @@
 				<v-tab style="font-size: small" ripple key="3" @click="pedagogyClick" >Melodic Cont.</v-tab>
 				<v-tab style="font-size: small" ripple key="4" @click="rhythmClick" >Rhythmic Cont.</v-tab>
 				<v-tab style="font-size: small" ripple key="5" @click="motiveClick" >Motives</v-tab>
+				<v-tab style="font-size: small" ripple key="6" @click="getGrades" >Grades</v-tab>
+				<v-tab style="font-size: small" ripple key="7" @click="getSongTypesForSong" >Types-Game-Part</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -561,6 +563,150 @@
 						</v-col>
 					</v-layout>
 				</v-tab-item>
+				<v-tab-item key="6">
+					<v-layout row align-center>
+						<v-col md2>
+							<v-text-field style="margin-left: 10px;" v-model="gradeObject.GRADE_STRING" label="Grade Summary" ></v-text-field>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.CH" label="pre-k">Pre-K</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.K" label="K">K</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.ONE" label="1">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.TWO" label="2">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.THREE" label="3">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.FOUR" label="4">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.FIVE" label="5">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.SIX" label="6">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.SEVEN" label="7">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.EIGHT" label="8">1</v-checkbox>
+						</v-col>
+					</v-layout>
+					<v-layout row>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.TEN" label="High School">1</v-checkbox>
+						</v-col>
+						<v-col md1>
+							<v-checkbox v-model="gradeObject.ZERO" label="Older Beginner">1</v-checkbox>
+						</v-col>
+						<v-col md3>
+							<v-btn color="green" @click="saveGrades">Save Grade Data</v-btn>
+						</v-col>
+					</v-layout>
+				</v-tab-item>
+				<v-tab-item key="7">
+					
+						<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Song Types
+						</v-card-title>
+							</v-card>
+					
+					<v-layout row align-center>
+						<v-row>
+							<v-col md2>
+								<v-btn color="blue" style="margin-left: 10px;height: 50px;" @click="addSongType">Add Song Type</v-btn>
+							</v-col>
+							<v-col md2>
+								<v-select
+										v-model="selectedSongType"
+										label="Song Type"
+										:items="songTypesArry"
+										item-text="LABEL"
+										item-value="DATA"
+										return-object
+										style="margin-left: 20px;"
+								></v-select>
+							</v-col>
+							<v-col md2 >
+								<v-btn :disabled="!songTypeSelected" color="red" style="margin-left: 10px;height: 50px;" @click="deleteSongType">Delete Song Type {{selectedSongTypeName}}</v-btn>
+							</v-col>
+							<v-col md3>
+								<v-simple-table style="margin-top: 10px;">
+									<tbody>
+									<tr>Song Types - Click to Select</tr>
+									<tr
+											v-for="item in songTypesArrayForSong"
+											:key="item.ID"
+											@click="handleSongTypeClick(item.ID, item.SONGTYPE)"
+									>
+										<td>{{ item.SONGTYPE }}</td>
+									</tr>
+									</tbody>
+								</v-simple-table>
+							</v-col>
+						</v-row>
+						<hr>
+					</v-layout>
+					<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Game Types
+						</v-card-title>
+					</v-card>
+					<v-layout row>
+						<v-col md2>
+							<v-btn color="blue">Add Game Type</v-btn>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="selectedGameType"
+									label="Game Type"
+									:items="gameTypesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+									style="margin-left: 20px;"
+									@change="getSubGameTypes()"
+							></v-select>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="selectedSubGameType"
+									label="Sub-Game Type"
+									:items="subGamesTypesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+									style="margin-left: 20px;"
+							></v-select>
+						</v-col>
+						<v-col md3>
+							<v-simple-table style="margin-top: 10px;">
+								<tbody>
+								<tr>
+									<td>Game Type</td>
+									<td>Sub-Game Type</td>
+								</tr>
+								<tr
+										v-for="item in gameTypesArrayForSong"
+										:key="item.ID"
+										@click="handleSongTypeClick(item.ID, item.SONGTYPE)"
+								>
+									<td>{{ item.GAMETYPE }}</td>
+									<td>{{ item.SUBGAMETYPE }}</td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+					</v-layout>
+				</v-tab-item>
 			</v-tabs>
 		</v-card>
 	</v-container>
@@ -613,9 +759,93 @@ export default {
 		addMotive:false,
 		motiveArray:[],
 		motiveObject:{},
+		gradesArray:[],
+		gradeObject:{},
+		songTypesArrayForSong:[],
+		songTypesArry:[],
+		selectedSongType:'',
+		songTypeSelected:false,
+		selectedSongTypeRow:'',
+		selectedSongTypeName:'',
+		gameTypesArray:[],
+		gameTypesArrayForSong:[],
+		selectedGameType:'',
+		selectedSubGameType:'',
+		subGamesTypesArray:[],
 	}),
 	methods:{
-
+		
+		getSubGameTypes(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getRelatedGameTypes&gameTypeKey=' + vm.selectedGameType.DATA)
+					.then(function (result){
+						vm.subGamesTypesArray = result.data.results;
+					})
+		},
+		
+		getGameTypesForSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getGamesForSong&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.gameTypesArrayForSong = result.data.results;
+						
+					})
+		},
+		
+		getGameTypes(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getGameTypes')
+					.then(function (result){
+						vm.gameTypesArray = result.data.results;
+					})
+		},
+		
+		deleteSongType(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteSongTypeForSong&id=' + vm.selectedSongTypeRow)
+					.then(function (){
+						vm.songTypeSelected = false;
+						vm.getSongTypesForSong();
+					})
+		},
+		
+		handleSongTypeClick(id,songType){
+			let vm = this;
+			vm.songTypeSelected = true;
+			vm.selectedSongTypeRow = id;
+			vm.selectedSongTypeName = songType;
+		},
+		
+		addSongType(){
+			let vm = this;
+			vm.songTypeSelected = false;
+			axios.get(vm.dataURL + 'method=insertSongTypeForSong&titleKey=' + vm.songID+ '&songTypeKey=' + vm.selectedSongType.DATA)
+					.then(function (){
+						vm.getSongTypesForSong();
+							}
+					)
+		},
+		
+		getSongTypes(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getSongTypes' )
+					.then(function (result){
+						vm.songTypesArry = result.data.results;
+					})
+		},
+		
+		
+		getSongTypesForSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getSongTypesForSong&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.songTypesArrayForSong = result.data.results;
+						vm.getSongTypes();
+						vm.getGameTypes();
+						vm.getGameTypesForSong();
+					})
+		},
+		
 		insertMotive(){
 			let vm = this;
 			axios.get(vm.dataURL + 'method=insertMotive&titleID=' + vm.songID + '&motive=' + vm.motiveObject.MOTIVE)
@@ -626,6 +856,49 @@ export default {
 			
 		},
 		
+		getGrades(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getGrades&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.gradesArray = result.data.results;
+						vm.gradeObject = vm.gradesArray[0];
+					})
+		},
+		
+		saveGrades(){
+			let vm = this;
+			vm.gradeObject.TITLEKEY = vm.songID;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "saveGrades",
+					gradeObject: JSON.stringify(vm.gradeObject)
+				},
+				success: function () {
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
+		},
 		deleteMotive(){
 			let vm = this;
 			axios.get(vm.dataURL + 'method=deleteMotive&titleID=' + vm.songID + '&motive=' + vm.motiveObject.MOTIVE)
