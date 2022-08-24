@@ -7,6 +7,76 @@
     </cffunction> 
 
 
+
+    <cffunction name="getFigures" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="figures" datasource="kodaly_4">
+        select Figure_ID AS data, Figure AS label
+        FROM tbl_Figures
+        ORDER BY Figure
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(figures)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+        
+        <cffunction name="getFiguresForSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="titleKey" type="numeric" required="yes">
+        <cfquery name="figuresForSong" datasource="kodaly_4">
+        SELECT     TOP (1000) Tbl_Title_Figures.Figure_Title_ID, Tbl_Figures.Figure, Tbl_Title_Figures.Title_Key
+        FROM         Tbl_Title_Figures INNER JOIN
+                              Tbl_Figures ON Tbl_Title_Figures.Figure_ID = Tbl_Figures.Figure_ID
+                              WHERE Title_Key = #titleKey#
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(figuresForSong)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+        
+        <cffunction name="getFigureObject" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="id" type="numeric" >
+        <cfquery datasource="kodaly_4" name="object">
+            select * from Tbl_Title_Figures
+            where Figure_Title_ID = #id#      
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(object)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>            
+        </cffunction>
+
+        <cffunction name="addFigureToSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="titleKey" type="any" required="yes">
+        <cfargument name="figureID" type="any" required="yes">
+        <cfquery name="addFigure" datasource="kodaly_4">
+        INSERT INTO dbo.Tbl_Title_Figures
+                ( Title_Key, Figure_ID )
+        VALUES  ( #titleKey#, 
+                  #figureID#  
+                  )
+        select @@identity          
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(addFigure)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>
+        </cffunction>
+        
+        <cffunction name="deleteFigureFromSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="Figure_Title_ID" type="numeric" required="yes">
+        <cfquery name="removeFigure" datasource="kodaly_4">
+        DELETE FROM [Tbl_Title_Figures]
+          WHERE Figure_Title_ID = #Figure_Title_ID#
+          select 1
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(removeFigure)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>
+        </cffunction>
+
+
     <cffunction name="checkForTrue" access="public" returntype="any" >
         <cfargument name="test" type="any" >
             <cfif test EQ true || test EQ 1>
@@ -35,6 +105,23 @@
         <cfreturn objectWrapper>
         </cffunction>
         
+        <cffunction name="getGameTypeObject" access="remote" returntype="any" returnformat="JSON">
+            <cfargument name="tableKey" type="numeric" required="true" >
+            <cfquery name="tableKey" datasource="kodaly_4">
+                SELECT     [tbl Title Game Type].[Title Key] AS titleKey, [tbl Title Game Type].[Game Type Key] AS gameTypeKey, 
+                              [tbl Title Game Type].Sub_Game_Type_Key AS subGameTypeKey, [tbl Title Game Type].Table_Key AS id, [tbl Game Type].[Game Type] AS gameType, 
+                              [tbl Game Type].Subgame_Flag, Table_Sub_Game_Type.Sub_Game_Type AS subGameType
+        FROM         [tbl Title Game Type] INNER JOIN
+                              [tbl Game Type] ON [tbl Title Game Type].[Game Type Key] = [tbl Game Type].[Game Type Key] INNER JOIN
+                              Table_Sub_Game_Type ON [tbl Title Game Type].Sub_Game_Type_Key = Table_Sub_Game_Type.Game_Subtype_ID
+                where Table_Key = #tableKey#
+            </cfquery>
+            <cfset arrGirls = QueryToStruct(tableKey)/>
+            <cfset objectWrapper = structNew()>
+            <cfset objectWrapper.results = #arrGirls#>
+            <cfreturn objectWrapper>
+        </cffunction>
+
         <cffunction name="getGameTypes" access="remote" returntype="any" returnformat="JSON">
         <cfquery name="gameTypes" datasource="kodaly_4">
         SELECT     [Game Type Key] AS data, [Game Type] AS label
@@ -48,7 +135,7 @@
         <cfreturn objectWrapper>
         </cffunction>
         
-        <cffunction name="getRelatedGameTypes" access="remote" returntype="any" returnformat="JSON">
+        <cffunction name="getRelatedGameTypes" access="REMOTE" returntype="any" returnformat="JSON">
         <cfargument name="gameTypeKey" type="numeric" required="yes">
         <cfquery name="relatedGames" datasource="kodaly_4">
         SELECT     Game_Subtype_ID AS data, Sub_Game_Type AS label
@@ -61,21 +148,27 @@
         <cfreturn objectWrapper>
         </cffunction>
         
-        <cffunction name="insertGameTypeForSong" access="remote" returntype="any">
-        <cfargument name="gameTypeForSong" required="yes" type="any">
+        <cffunction name="insertGameTypeForSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="TitleKey" required="yes" type="any">
+        <cfargument name="GameTypeKey" required="yes" type="any">
+        <cfargument name="SubGameTypeKey" required="yes" type="any">
+
         <cfquery name="insertGameType" datasource="kodaly_4">
         INSERT INTO dbo.[tbl Title Game Type]
                   ( [Title Key] ,
                     [Game Type Key] ,
                     Sub_Game_Type_Key
                   )
-          VALUES  ( #gameTypeForSong.titleKey#, -- Title Key - int
-                    #gameTypeForSong.gameTypeKey# , -- Game Type Key - int
-                    #gameTypeForSong.subGameTypeKey# -- Sub_Game_Type_Key - int
+          VALUES  ( #TitleKey#, 
+                    #GameTypeKey# ,
+                    #SubGameTypeKey# 
                   )
                   select @@IDENTITY
         </cfquery>
-        <cfreturn insertGameType>
+         <cfset arrGirls = QueryToStruct(insertGameType)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>
         </cffunction>
         
         <cffunction name="deleteGameTypeForSong" access="remote" returntype="any">
@@ -952,48 +1045,7 @@ VALUES  ( #rythmicContext.titleKey#, -- Title Key - int
 
 
 
-<cffunction name="getFigures" access="remote" returntype="any">
-<cfquery name="figures" datasource="kodaly_4">
-select Figure_ID AS data, Figure AS label
-FROM tbl_Figures
-ORDER BY Figure
-</cfquery>
-<cfreturn figures>
-</cffunction>
 
-<cffunction name="getFiguresForSong" access="remote" returntype="any">
-<cfargument name="id" type="numeric" required="yes">
-<cfquery name="figuresForSong" datasource="kodaly_4">
-SELECT     TOP (1000) Tbl_Title_Figures.Figure_Title_ID, Tbl_Figures.Figure, Tbl_Title_Figures.Title_Key
-FROM         Tbl_Title_Figures INNER JOIN
-                      Tbl_Figures ON Tbl_Title_Figures.Figure_ID = Tbl_Figures.Figure_ID
-                      WHERE Title_Key = #id#
-</cfquery>
-<cfreturn figuresForSong>
-</cffunction>
-
-<cffunction name="addFigureToSong" access="remote" returntype="any">
-<cfargument name="figuresForSong" type="any" required="yes">
-<cfquery name="addFigure" datasource="kodaly_4">
-INSERT INTO dbo.Tbl_Title_Figures
-        ( Title_Key, Figure_ID )
-VALUES  ( #figuresForSong.TITLE_KEY#, -- Title_Key - int
-          #figuresForSong.Figure_Title_ID#  -- Figure_ID - int
-          )
-select @@identity          
-</cfquery>
-<cfreturn addFigure>
-</cffunction>
-
-<cffunction name="deleteFigureFromSong" access="remote" returntype="any">
-<cfargument name="Figure_Title_ID" type="numeric" required="yes">
-<cfquery name="removeFigure" datasource="kodaly_4">
-DELETE FROM [Tbl_Title_Figures]
-  WHERE Figure_Title_ID = #Figure_Title_ID#
-  select 1
-</cfquery>
-<cfreturn removeFigure>
-</cffunction>
 
 
 <cffunction name="getPartWorkForSong" access="remote" returntype="any">

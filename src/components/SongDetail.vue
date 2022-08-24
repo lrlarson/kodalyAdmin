@@ -619,7 +619,7 @@
 						</v-card-title>
 							</v-card>
 					
-					<v-layout row align-center>
+					<v-layout row align-center style="margin-top: 10px;">
 						<v-row>
 							<v-col md2>
 								<v-btn color="blue" style="margin-left: 10px;height: 50px;" @click="addSongType">Add Song Type</v-btn>
@@ -635,9 +635,7 @@
 										style="margin-left: 20px;"
 								></v-select>
 							</v-col>
-							<v-col md2 >
-								<v-btn :disabled="!songTypeSelected" color="red" style="margin-left: 10px;height: 50px;" @click="deleteSongType">Delete Song Type {{selectedSongTypeName}}</v-btn>
-							</v-col>
+							
 							<v-col md3>
 								<v-simple-table style="margin-top: 10px;">
 									<tbody>
@@ -653,8 +651,16 @@
 								</v-simple-table>
 							</v-col>
 						</v-row>
-						<hr>
 					</v-layout>
+					<v-layout>
+						<v-row v-if="songTypeSelected">
+							<v-col md2 >
+								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteSongType">Delete Song Type {{selectedSongTypeName}}</v-btn>
+							</v-col>
+						</v-row>
+					</v-layout>
+					
+				
 					<v-card>
 						<v-card-title class="justify-center" style="margin-bottom: 10px;">
 							Game Types
@@ -662,7 +668,7 @@
 					</v-card>
 					<v-layout row>
 						<v-col md2>
-							<v-btn color="blue">Add Game Type</v-btn>
+							<v-btn color="blue" @click="insertNewGameType">Add Game Type</v-btn>
 						</v-col>
 						<v-col md2>
 							<v-select
@@ -697,7 +703,7 @@
 								<tr
 										v-for="item in gameTypesArrayForSong"
 										:key="item.ID"
-										@click="handleSongTypeClick(item.ID, item.SONGTYPE)"
+										@click="handleGameTypeClick(item.ID)"
 								>
 									<td>{{ item.GAMETYPE }}</td>
 									<td>{{ item.SUBGAMETYPE }}</td>
@@ -705,6 +711,58 @@
 								</tbody>
 							</v-simple-table>
 						</v-col>
+					</v-layout>
+					<v-layout>
+						<v-row v-if="gameTypeSelected">
+							<v-col md2 >
+								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteGameType">Delete Game Type {{selectedGameTypeName}} -- {{selectedSubGameTypeName}}</v-btn>
+							</v-col>
+						</v-row>
+					</v-layout>
+					<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Figures
+						</v-card-title>
+					</v-card>
+					<v-layout row>
+						<v-col md2>
+							<v-btn color="blue" @click="insertFigureToSong">Add Figure to Song</v-btn>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="selectedFigure"
+									label="Figures"
+									:items="figuresArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+									style="margin-left: 20px;"
+							></v-select>
+						</v-col>
+						<v-col md3>
+							<v-simple-table style="margin-top: 10px;">
+								<tbody>
+								<tr>
+									<td>FIGURES</td>
+									
+								</tr>
+								<tr
+										v-for="item in figuresForSongArray"
+										:key="item.FIGURE_TITLE_ID"
+										@click="handleFigureClick(item.FIGURE_TITLE_ID,item.FIGURE)"
+								>
+									<td>{{ item.FIGURE }}</td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+					</v-layout>
+					<v-layout>
+						<v-row v-if="figureSelected">
+							<v-col md2 >
+								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteFigureFromSong">Delete Figure {{selectedFigureName}} from song </v-btn>
+							</v-col>
+						</v-row>
 					</v-layout>
 				</v-tab-item>
 			</v-tabs>
@@ -772,8 +830,104 @@ export default {
 		selectedGameType:'',
 		selectedSubGameType:'',
 		subGamesTypesArray:[],
+		gameTypeArrayForSong:[],
+		gameTypeObjectForSong:{},
+		gameTypeSelected:false,
+		selectedGameTypeName:'',
+		selectedSubGameTypeName:'',
+		figuresArray:[],
+		selectedFigure:'',
+		figuresForSongArray:[],
+		figureSelected:false,
+		songFigureArray:[],
+		songFigureObject:{},
+		selectedFigureName:'',
 	}),
 	methods:{
+		
+		deleteFigureFromSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteFigureFromSong&Figure_Title_ID=' + vm.songFigureObject.FIGURE_TITLE_ID)
+					.then(function (){
+						vm.figureSelected = false;
+						vm.getFiguresForSong();
+					})
+		},
+		
+		
+		insertFigureToSong(){
+			let vm = this;
+			if (!vm.figureSelected){
+				return;
+			}
+			axios.get(vm.dataURL + 'method=addFigureToSong&titleKey=' + vm.songID + '&figureid=' + vm.selectedFigure.DATA)
+					.then(function (){
+						vm.getFiguresForSong();
+					})
+		},
+		
+		getFiguresForSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getFiguresForSong&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.figuresForSongArray = result.data.results;
+					})
+		},
+		
+		getFigures(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getFigures')
+					.then(function (result){
+						vm.figuresArray = result.data.results;
+					})
+		},
+		
+		insertNewGameType(){
+			let vm = this;
+			if (!vm.selectedGameType){
+				return;
+			}
+			axios.get(vm.dataURL + 'method=insertGameTypeForSong&TitleKey=' + vm.songID + '&GameTypeKey=' + vm.selectedGameType.DATA + '&SubGameTypeKey=' + vm.selectedSubGameType.DATA)
+					.then(function (){
+						vm.getGameTypesForSong();
+						vm.gameTypeSelected = false;
+						vm.selectedGameType = '';
+						vm.selectedSubGameType = '';
+					})
+		},
+		
+		deleteGameType(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteGameTypeForSong&id=' + vm.gameTypeObjectForSong.ID)
+					.then(function (){
+						vm.gameTypeSelected = false;
+						vm.getGameTypesForSong();
+					})
+			
+		},
+		
+		handleFigureClick(id,label){
+			let vm = this;axios.get(vm.dataURL + 'method=getFigureObject&id=' + id)
+					.then(function (result){
+						vm.songFigureArray = result.data.results;
+						vm.songFigureObject = vm.songFigureArray[0];
+						vm.figureSelected = true;
+						vm.selectedFigureName = label ;
+						
+					})
+		},
+		
+		handleGameTypeClick(tableKey){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getGameTypeObject&tableKey=' + tableKey )
+					.then(function (result){
+						vm.gameTypeArrayForSong = result.data.results;
+						vm.gameTypeObjectForSong = vm.gameTypeArrayForSong[0];
+						vm.selectedGameTypeName = vm.gameTypeObjectForSong.GAMETYPE
+						vm.selectedSubGameTypeName = vm.gameTypeObjectForSong.SUBGAMETYPE
+						vm.gameTypeSelected = true;
+					})
+		},
 		
 		getSubGameTypes(){
 			let vm = this;
@@ -843,6 +997,8 @@ export default {
 						vm.getSongTypes();
 						vm.getGameTypes();
 						vm.getGameTypesForSong();
+						vm.getFigures();
+						vm.getFiguresForSong();
 					})
 		},
 		
