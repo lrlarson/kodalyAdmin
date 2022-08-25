@@ -8,6 +8,105 @@
 
 
 
+    <cffunction name="getSubjectObject" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="id" type="numeric" required="yes">
+        <cfquery name="subjects" datasource="kodaly_4">
+        SELECT    [tbl Title Subject Headings].ID_Title_Subject, [tbl Title Subject Headings].[Title Key] AS titleKey, 
+                              [tbl Title Subject Headings].[Subject Heading Key] AS subjectKey, [tbl Title Subject Headings].Sub_Subject_Key AS subSubjectKey, 
+                              [tbl Subject Headings].[Subject Heading] AS subjectHeading, Tbl_Sub_Subjects.Sub_Subject AS subSubjectHeading
+        FROM         [tbl Title Subject Headings] INNER JOIN
+                              [tbl Subject Headings] ON [tbl Title Subject Headings].[Subject Heading Key] = [tbl Subject Headings].[Subject Heading Key] INNER JOIN
+                              Tbl_Sub_Subjects ON [tbl Title Subject Headings].Sub_Subject_Key = Tbl_Sub_Subjects.Sub_Subject_Key
+        WHERE     ([tbl Title Subject Headings].[ID_Title_Subject] = #id#)
+        </cfquery>
+        
+        <cfset arrGirls = QueryToStruct(subjects)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+
+    <cffunction name="getSubjectsForSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="titleKey" type="numeric" required="yes" default="455">
+        <cfquery name="subjects" datasource="kodaly_4">
+        SELECT    [tbl Title Subject Headings].ID_Title_Subject, [tbl Title Subject Headings].[Title Key] AS titleKey, 
+                              [tbl Title Subject Headings].[Subject Heading Key] AS subjectKey, [tbl Title Subject Headings].Sub_Subject_Key AS subSubjectKey, 
+                              [tbl Subject Headings].[Subject Heading] AS subjectHeading, Tbl_Sub_Subjects.Sub_Subject AS subSubjectHeading
+        FROM         [tbl Title Subject Headings] INNER JOIN
+                              [tbl Subject Headings] ON [tbl Title Subject Headings].[Subject Heading Key] = [tbl Subject Headings].[Subject Heading Key] INNER JOIN
+                              Tbl_Sub_Subjects ON [tbl Title Subject Headings].Sub_Subject_Key = Tbl_Sub_Subjects.Sub_Subject_Key
+        WHERE     ([tbl Title Subject Headings].[Title Key] = #titleKey#)
+        </cfquery>
+        
+        <cfset arrGirls = QueryToStruct(subjects)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+        
+
+        <cffunction name="getSubjects" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="subjectHeading" datasource="kodaly_4">
+        SELECT     [Subject Heading Key] AS data, [Subject Heading] AS label
+        FROM         [tbl Subject Headings]
+        ORDER BY label
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(subjectHeading)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>
+        </cffunction>
+        
+        <cffunction name="getSubSubjects" access="remote" returntype="any"returnformat="JSON">
+        <cfargument name="mainSubject" required="yes" type="numeric">
+        <cfquery name="getRelatedTypes" datasource="kodaly_4">
+        SELECT [id]
+              ,[Sub_Subject_Key] as data
+              ,[Sub_Subject] AS label
+              ,[Subject Heading Key] AS subjectHeadingKey
+          FROM [Tbl_Sub_Subjects]
+          WHERE [Subject Heading Key] = #mainSubject# OR [Sub_Subject_Key] = 29
+          order by [Sub_Subject]
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(getRelatedTypes)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+        
+        <cffunction name="insertNewSubject" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="titleKey" type="any" required="yes">
+        <cfargument name="subjectKey" type="any" required="yes">
+        <cfargument name="subsubjectKey" type="any" required="yes">
+        <cfquery name="insertSubject" datasource="kodaly_4">
+        INSERT INTO dbo.[tbl Title Subject Headings]
+                ( [Title Key] ,
+                  [Subject Heading Key] ,
+                  Sub_Subject_Key
+                )
+        VALUES  ( #titleKey# , -- Title Key - int
+                  #subjectKey# , -- Subject Heading Key - int
+                  #subSubjectKey#  -- Sub_Subject_Key - int
+                )
+                select @@identity
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(insertSubject)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+        </cffunction>
+        
+        
+        <cffunction name="deleteSubjectFromSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument  name="ID_Title_Subject" required="yes" type="numeric">
+        <cfquery name="deleteSubject" datasource="kodaly_4">
+        DELETE FROM dbo.[tbl Title Subject Headings] 
+        WHERE ID_Title_Subject = #ID_Title_Subject#
+        Select 1
+        </cfquery>
+        <cfreturn deleteSubject>
+        </cffunction>
+
     <cffunction name="getFigures" access="remote" returntype="any" returnformat="JSON">
         <cfquery name="figures" datasource="kodaly_4">
         select Figure_ID AS data, Figure AS label
@@ -1103,71 +1202,7 @@ select 1
 
 
 
-<cffunction name="getSubjectsForSong" access="remote" returntype="any">
-<cfargument name="titleKey" type="numeric" required="yes" default="455">
-<cfquery name="subjects" datasource="kodaly_4">
-SELECT    [tbl Title Subject Headings].ID_Title_Subject, [tbl Title Subject Headings].[Title Key] AS titleKey, 
-                      [tbl Title Subject Headings].[Subject Heading Key] AS subjectKey, [tbl Title Subject Headings].Sub_Subject_Key AS subSubjectKey, 
-                      [tbl Subject Headings].[Subject Heading] AS subjectHeading, Tbl_Sub_Subjects.Sub_Subject AS subSubjectHeading
-FROM         [tbl Title Subject Headings] INNER JOIN
-                      [tbl Subject Headings] ON [tbl Title Subject Headings].[Subject Heading Key] = [tbl Subject Headings].[Subject Heading Key] INNER JOIN
-                      Tbl_Sub_Subjects ON [tbl Title Subject Headings].Sub_Subject_Key = Tbl_Sub_Subjects.Sub_Subject_Key
-WHERE     ([tbl Title Subject Headings].[Title Key] = #titleKey#)
-</cfquery>
 
-<cfreturn subjects>
-</cffunction>
-
-<cffunction name="getSubjectHeading" access="remote" returntype="any">
-<cfquery name="subjectHeading" datasource="kodaly_4">
-SELECT     [Subject Heading Key] AS data, [Subject Heading] AS label
-FROM         [tbl Subject Headings]
-ORDER BY label
-</cfquery>
-<cfreturn subjectHeading>
-</cffunction>
-
-<cffunction name="getRelatedSubjects" access="remote" returntype="any">
-<cfargument name="mainSubject" required="yes" type="numeric">
-<cfquery name="getRelatedTypes" datasource="kodaly_4">
-SELECT [id]
-      ,[Sub_Subject_Key] as data
-      ,[Sub_Subject] AS label
-      ,[Subject Heading Key] AS subjectHeadingKey
-  FROM [Tbl_Sub_Subjects]
-  WHERE [Subject Heading Key] = #mainSubject# OR [Sub_Subject_Key] = 29
-  order by [Sub_Subject]
-</cfquery>
-<cfreturn getRelatedTypes>
-</cffunction>
-
-<cffunction name="insertNewSubject" access="remote" returntype="any">
-<cfargument name="subjectForSong" type="any" required="yes">
-<cfquery name="insertSubject" datasource="kodaly_4">
-INSERT INTO dbo.[tbl Title Subject Headings]
-        ( [Title Key] ,
-          [Subject Heading Key] ,
-          Sub_Subject_Key
-        )
-VALUES  ( #subjectForSong.titleKey# , -- Title Key - int
-          #subjectForSong.subjectKey# , -- Subject Heading Key - int
-          #subjectForSong.subSubjectKey#  -- Sub_Subject_Key - int
-        )
-        select @@identity
-</cfquery>
-<cfreturn insertSubject>
-</cffunction>
-
-
-<cffunction name="deleteSubjectFromSong" access="remote" returntype="any">
-<cfargument  name="ID_Title_Subject" required="yes" type="numeric">
-<cfquery name="deleteSubject" datasource="kodaly_4">
-DELETE FROM dbo.[tbl Title Subject Headings] 
-WHERE ID_Title_Subject = #ID_Title_Subject#
-Select 1
-</cfquery>
-<cfreturn deleteSubject>
-</cffunction>
 
 <cffunction name="insertNewSong" access="remote" returntype="any">
 <cfargument name="SongDetails" type="any" required="yes">

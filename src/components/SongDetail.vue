@@ -764,9 +764,68 @@
 							</v-col>
 						</v-row>
 					</v-layout>
+					<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Subjects
+						</v-card-title>
+					</v-card>
+					<v-layout row>
+						<v-col md2>
+							<v-btn color="blue" @click="insertNewSubject">Add Subject to Song</v-btn>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="selectedSubject"
+									label="Subjects"
+									:items="subjectsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+									style="margin-left: 20px;"
+									@change="getSubSubjects()"
+							></v-select>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="selectedSubSubject"
+									label="Sub-Subjects"
+									:items="subSubjectsArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+									style="margin-left: 20px;"
+							></v-select>
+						</v-col>
+						<v-col md3>
+							<v-simple-table style="margin-top: 10px;">
+								<tbody>
+								<tr>
+									<td>SUBJECT</td>
+									<td>SUB-SUBJECT</td>
+								</tr>
+								<tr
+										v-for="item in subjectsForSongArray"
+										:key="item.ID_TITLE_SUBJECT"
+										@click="handleSubjectClick(item.ID_TITLE_SUBJECT)"
+								>
+									<td>{{ item.SUBJECTHEADING }}</td>
+									<td>{{ item.SUBSUBJECTHEADING }}</td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+					</v-layout>
+					<v-layout>
+						<v-row v-if="subjectSelected">
+							<v-col md2 >
+								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteSubjectFromSong"> Delete Subject -- {{subjectObject.SUBJECTHEADING}} -- {{subjectObject.SUBSUBJECTHEADING}}</v-btn>
+							</v-col>
+						</v-row>
+					</v-layout>
 				</v-tab-item>
 			</v-tabs>
 		</v-card>
+
 	</v-container>
 </v-container>
 </template>
@@ -842,8 +901,78 @@ export default {
 		songFigureArray:[],
 		songFigureObject:{},
 		selectedFigureName:'',
+		subjectsArray:[],
+		subSubjectsArray:[],
+		subjectsForSongArray:[],
+		selectedSubject:'',
+		selectedSubSubject:'',
+		subjectSelected:false,
+		subjectObjectArray:[],
+		subjectObject:{},
+		selectedSubjectString:'',
+		selectedSubSubjectString:'',
+		
+		
+		
 	}),
 	methods:{
+		
+		deleteSubjectFromSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteSubjectFromSong&ID_TITLE_SUBJECT=' + vm.subjectObject.ID_TITLE_SUBJECT)
+					.then(function (){
+						vm.getSubjectsForSong();
+						vm.subjectSelected = false;
+					})
+			
+			
+		},
+		
+		handleSubjectClick(id){
+			let vm = this;
+			vm.subjectSelected = true;
+			console.log(id);
+			axios.get(vm.dataURL + 'method=getSubjectObject&id=' + id)
+					.then(function (result){
+						vm.subjectObjectArray = result.data.results;
+						vm.subjectObject=vm.subjectObjectArray[0];
+						
+						
+					} )
+			
+		},
+		
+		insertNewSubject(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=insertNewSubject&titleKey=' + vm.songID +'&subjectKey=' + vm.selectedSubject.DATA + '&subSubjectKey=' + vm.selectedSubSubject.DATA)
+					.then(function (){
+						vm.getSubjectsForSong();
+					})
+		},
+		
+		getSubSubjects(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getSubSubjects&mainSubject=' + vm.selectedSubject.DATA)
+						.then(function (result){
+							vm.subSubjectsArray = result.data.results;
+						})
+		},
+		
+		getSubjectsForSong(){
+			let vm = this;
+			axios.get(vm.dataURL+'method=getSubjectsForSong&titleKey=' + vm.songID )
+					.then(function (result){
+						vm.subjectsForSongArray = result.data.results;
+					})
+		},
+		
+		getSubjects(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getSubjects')
+					.then(function (result){
+						vm.subjectsArray = result.data.results;
+					})
+		},
 		
 		deleteFigureFromSong(){
 			let vm = this;
@@ -999,6 +1128,8 @@ export default {
 						vm.getGameTypesForSong();
 						vm.getFigures();
 						vm.getFiguresForSong();
+						vm.getSubjects();
+						vm.getSubjectsForSong();
 					})
 		},
 		
