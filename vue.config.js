@@ -2,7 +2,7 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ] ,
-  publicPath:'/kodaly_admin',
+  publicPath:'/kodalyAdmin',
   css:{
     sourceMap:true
   }

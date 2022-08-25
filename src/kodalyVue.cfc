@@ -8,6 +8,75 @@
 
 
 
+    <cffunction name="getPartWorkForSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="titleKey" type="numeric" required="yes">
+        <cfquery name="partWork" datasource="kodaly_4">
+        SELECT     [tbl Title Part Work].[Title Part Work Key] AS titlePartKey, [tbl Title Part Work].[Title Key] AS titleKey, [tbl Title Part Work].[Part Work Key] AS partWorkKey, 
+                              [tbl Title Part Work].Part_Work_Context_String, [tbl Part Work].[Part Work Description] AS partWorkName
+        FROM         [tbl Title Part Work] INNER JOIN
+                              [tbl Part Work] ON [tbl Title Part Work].[Part Work Key] = [tbl Part Work].[Part Work Key]
+                              WHERE [Title Key] = #titleKey#
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(partWork)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+        </cffunction>
+        
+        <cffunction name="getPartWorkNames" access="remote" returntype="any" returnformat="JSON">
+        <cfquery name="partWorkNames" datasource="kodaly_4">
+        SELECT [Part Work Key] AS data
+              ,[Part Work Sequence Number] as sequence
+              ,[Part Work Description] AS label
+          FROM [tbl Part Work]
+          ORDER BY [Part Work Description]
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(partWorkNames)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>    
+        </cffunction>
+        
+        <cffunction name="insertPartWorkForSong" access="remote" returntype="any"  returnformat="JSON">
+        <cfargument name="titleKey" type="any">
+        <cfargument name="partWorkKey" type="any">
+        <cfargument name="partWorkContextString" type="any">
+        <cfquery name="insertPartWork" datasource="kodaly_4">
+        
+        
+        INSERT INTO dbo.[tbl Title Part Work]
+                ( [Title Key] ,
+                  [Part Work Key] ,
+                  Part_Work_Context_String
+                )
+        VALUES  ( #titleKey# , -- Title Key - int
+                  #partWorkKey# , -- Part Work Key - int
+                  '#partWorkContextString#' -- Part_Work_Context_String - nvarchar(50)
+                )
+           select @@identity
+         </cfquery>
+          <cfset arrGirls = QueryToStruct(insertPartWork)/>
+          <cfset objectWrapper = structNew()>
+          <cfset objectWrapper.results = #arrGirls#>
+          <cfreturn objectWrapper>    
+        </cffunction>
+        
+
+        <cffunction name="deletePartWorkForSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="tableID" type="numeric" required="yes">
+        <cfquery name="deletePart" datasource="kodaly_4">
+        DELETE FROM dbo.[tbl Title Part Work]
+        WHERE [Title Part Work Key] = #tableID#
+        select 1
+        </cfquery>
+         <cfset arrGirls = QueryToStruct(deletePart)/>
+         <cfset objectWrapper = structNew()>
+         <cfset objectWrapper.results = #arrGirls#>
+         <cfreturn objectWrapper>
+        </cffunction>
+        
+
+
     <cffunction name="getSubjectObject" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="id" type="numeric" required="yes">
         <cfquery name="subjects" datasource="kodaly_4">
@@ -1147,57 +1216,6 @@ VALUES  ( #rythmicContext.titleKey#, -- Title Key - int
 
 
 
-<cffunction name="getPartWorkForSong" access="remote" returntype="any">
-<cfargument name="titleKey" type="numeric" required="yes">
-<cfquery name="partWork" datasource="kodaly_4">
-SELECT     [tbl Title Part Work].[Title Part Work Key] AS titlePartKey, [tbl Title Part Work].[Title Key] AS titleKey, [tbl Title Part Work].[Part Work Key] AS partWorkKey, 
-                      [tbl Title Part Work].Part_Work_Context_String, [tbl Part Work].[Part Work Description] AS partWorkName
-FROM         [tbl Title Part Work] INNER JOIN
-                      [tbl Part Work] ON [tbl Title Part Work].[Part Work Key] = [tbl Part Work].[Part Work Key]
-                      WHERE [Title Key] = #titleKey#
-</cfquery>
-<cfreturn partWork>
-</cffunction>
-
-<cffunction name="getPartWorkNames" access="remote" returntype="any">
-<cfquery name="partWorkNames" datasource="kodaly_4">
-SELECT [Part Work Key] AS data
-      ,[Part Work Sequence Number] as sequence
-      ,[Part Work Description] AS label
-  FROM [tbl Part Work]
-  ORDER BY [Part Work Description]
-</cfquery>
-<cfreturn partWorkNames>
-</cffunction>
-
-<cffunction name="insertPartWorkForSong" access="remote" returntype="any">
-<cfargument name="partWorkForSong" type="any">
-<cfquery name="insertPartWork" datasource="kodaly_4">
-
-
-INSERT INTO dbo.[tbl Title Part Work]
-        ( [Title Key] ,
-          [Part Work Key] ,
-          Part_Work_Context_String
-        )
-VALUES  ( #partWorkForSong.titleKey# , -- Title Key - int
-          #partWorkForSong.partWorkKey# , -- Part Work Key - int
-          '#partWorkForSong.partWorkName#' -- Part_Work_Context_String - nvarchar(50)
-        )
-   select @@identity
- </cfquery>
- <cfreturn  insertPartWork>     
-</cffunction>
-
-<cffunction name="deletePartWorkForSong" access="remote" returntype="any">
-<cfargument name="tableID" type="numeric" required="yes">
-<cfquery name="deletePart" datasource="kodaly_4">
-DELETE FROM dbo.[tbl Title Part Work]
-WHERE [Title Part Work Key] = #tableID#
-select 1
-</cfquery>
-<cfreturn deletePart>
-</cffunction>
 
 
 

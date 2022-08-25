@@ -69,7 +69,28 @@
 			<ckeditor :editor="editor" v-model="songObject.SONG_BACKGROUND" :config="editorConfig"></ckeditor>
 		</v-col>
 	</v-row>
-	<v-row class="justify-center">
+	
+	
+		<v-layout>
+			<v-row>
+				<v-col md3>
+					<v-text-field disabled label="Upload Score File -- see in Supporting Files"></v-text-field>
+					<div id="uppy"></div>
+				</v-col>
+				<v-col md3>
+					<v-text-field disabled label="Upload Audio File"></v-text-field>
+					<div id="uppy2"></div>
+				</v-col>
+				<v-col md3>
+					<v-text-field label="Basic File Name USE THIS NAME IN FILES" v-model="songObject.NOTATION_FILE_NAME"></v-text-field>
+				</v-col>
+				<v-col md3>
+					<v-checkbox v-model="songObject.RECORDING_FLAG" label="Has Recording"></v-checkbox>
+				</v-col>
+			</v-row>
+		</v-layout>
+	
+	<v-row class="justify-center" style="margin-top: 30px;">
 		<v-btn v-if="editMode" color="green">Save Basic Song Edits</v-btn>
 	</v-row>
 	<v-container v-if="editMode">
@@ -82,6 +103,7 @@
 				<v-tab style="font-size: small" ripple key="5" @click="motiveClick" >Motives</v-tab>
 				<v-tab style="font-size: small" ripple key="6" @click="getGrades" >Grades</v-tab>
 				<v-tab style="font-size: small" ripple key="7" @click="getSongTypesForSong" >Types-Game-Part</v-tab>
+				<v-tab style="font-size: small" ripple key="8" @click="prepareFiles" >Supporting Files</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -657,6 +679,9 @@
 							<v-col md2 >
 								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteSongType">Delete Song Type {{selectedSongTypeName}}</v-btn>
 							</v-col>
+							<v-col md2 >
+								<v-btn   style="margin-left: 10px;height: 50px;" @click="clearClicks"> Clear</v-btn>
+							</v-col>
 						</v-row>
 					</v-layout>
 					
@@ -717,6 +742,9 @@
 							<v-col md2 >
 								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteGameType">Delete Game Type {{selectedGameTypeName}} -- {{selectedSubGameTypeName}}</v-btn>
 							</v-col>
+							<v-col md2 >
+								<v-btn   style="margin-left: 10px;height: 50px;" @click="clearClicks"> Clear</v-btn>
+							</v-col>
 						</v-row>
 					</v-layout>
 					<v-card>
@@ -761,6 +789,9 @@
 						<v-row v-if="figureSelected">
 							<v-col md2 >
 								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteFigureFromSong">Delete Figure {{selectedFigureName}} from song </v-btn>
+							</v-col>
+							<v-col md2 >
+								<v-btn   style="margin-left: 10px;height: 50px;" @click="clearClicks"> Clear</v-btn>
 							</v-col>
 						</v-row>
 					</v-layout>
@@ -820,9 +851,83 @@
 							<v-col md2 >
 								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deleteSubjectFromSong"> Delete Subject -- {{subjectObject.SUBJECTHEADING}} -- {{subjectObject.SUBSUBJECTHEADING}}</v-btn>
 							</v-col>
+							<v-col md2 >
+								<v-btn   style="margin-left: 10px;height: 50px;" @click="clearClicks"> Clear</v-btn>
+							</v-col>
+						</v-row>
+					</v-layout>
+					<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Part-Work
+						</v-card-title>
+					</v-card>
+					<v-layout row>
+						<v-col md2>
+							<v-btn color="blue" @click="insertPartWorkForSong">Add Part-Work to Song</v-btn>
+						</v-col>
+						<v-col md2>
+							<v-select
+									v-model="selectedPartWork"
+									label="Part-Work"
+									:items="partWorkNamesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									return-object
+									style="margin-left: 20px;"
+							></v-select>
+						</v-col>
+						<v-col md3>
+							<v-text-field label="Part Context" v-model="selectedPartContext"></v-text-field>
+						</v-col>
+						<v-col md3>
+							<v-simple-table style="margin-top: 10px;">
+								<tbody>
+								<tr>
+									<td>Part-Work</td>
+									<td>Part-Work Context</td>
+								
+								</tr>
+								<tr
+										v-for="item in partWorkNamesArrayForSong"
+										:key="item.TITLEPARTKEY"
+										@click="handlePartClick(item.TITLEPARTKEY,item.PARTWORKNAME)"
+								>
+									<td>{{ item.PARTWORKNAME }}</td>
+									<td>{{ item.PART_WORK_CONTEXT_STRING }}</td>
+								</tr>
+								</tbody>
+							</v-simple-table>
+						</v-col>
+					</v-layout>
+					<v-layout>
+						<v-row v-if="partWorkSelected">
+							<v-col md2 >
+								<v-btn  color="red" style="margin-left: 10px;height: 50px;" @click="deletePartWorkFromSong"> Delete Part-Work-- {{clickedPartName}}</v-btn>
+							</v-col>
+							<v-col md2 >
+								<v-btn   style="margin-left: 10px;height: 50px;" @click="clearClicks"> Clear</v-btn>
+							</v-col>
 						</v-row>
 					</v-layout>
 				</v-tab-item>
+				<v-tab-item key="8">
+					<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Supporting Files -- Score and Audio
+						</v-card-title>
+					</v-card>
+					<v-layout row>
+						<v-col md6>
+							<v-row>
+								<vue-pdf-embed :source="songPDFLocation" />
+							</v-row>
+						</v-col>
+<!--						<v-col md-2>-->
+<!--							<div id="uppy"></div>-->
+<!--						</v-col>-->
+					</v-layout>
+				</v-tab-item>
+				
 			</v-tabs>
 		</v-card>
 
@@ -832,9 +937,19 @@
 
 <script>
 import axios from "axios";
+import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Uppy from '@uppy/core'
+import XHRUpload from '@uppy/xhr-upload'
+import Dashboard from '@uppy/dashboard'
+require('@uppy/core/dist/style.css')
+require('@uppy/dashboard/dist/style.css')
 export default {
+	components:{
+		VuePdfEmbed,
 
+	},
+	
 	name: "SongDetail",
 	data: () => ({
 		dataURL: "https://kodaly.hnu.edu/kodalyVue/kodalyVue.cfc?",
@@ -911,11 +1026,84 @@ export default {
 		subjectObject:{},
 		selectedSubjectString:'',
 		selectedSubSubjectString:'',
+		partWorkNamesArray:[],
+		partWorkNamesArrayForSong:[],
+		partWorkSelected:false,
+		selectedPartWork:'',
+		selectedPartContext:'',
+		clickedPartName:'',
+		clickedPartID:'',
+		songPDFLocation:'',
 		
 		
 		
 	}),
 	methods:{
+		
+		clearClicks(){
+			this.partWorkSelected=false;
+			this.subjectSelected=false;
+			this.figureSelected = false;
+			this.gameTypeSelected=false;
+			this.songTypeSelected=false;
+			
+		},
+		
+		prepareFiles(){
+			let vm = this;
+			vm.songPDFLocation = 'https://kodaly.hnu.edu/Scores/'+ vm.songObject.NOTATION_FILE_NAME + '.pdf';
+
+			
+		},
+		
+		prepareUppy() {
+		
+		
+		
+		},
+		
+		deletePartWorkFromSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deletePartWorkForSong&tableID=' + vm.clickedPartID)
+					.then(function (){
+						vm.getPartWorkForSong();
+						vm.partWorkSelected = false;
+						vm.clickedPartID = '';
+						vm.clickedPartName = '';
+					})
+		},
+		
+		handlePartClick(id,partName){
+			let vm = this;
+			vm.partWorkSelected = true;
+			vm.clickedPartID = id;
+			vm.clickedPartName = partName;
+		},
+		
+		insertPartWorkForSong(){
+			let vm = this;
+			axios.get(vm.dataURL+ 'method=insertPartWorkForSong&titleKey=' + vm.songID + '&partWorkKey='+ vm.selectedPartWork.DATA + '&partWorkContextString=' + vm.selectedPartContext)
+					.then(function (){
+						vm.getPartWorkForSong();
+					})
+		},
+		
+		getPartWorkForSong(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getPartWorkForSong&titleKey=' + vm.songID)
+					.then(function (result){
+						vm.partWorkNamesArrayForSong = result.data.results;
+					})
+		},
+		
+		
+		getPartWorkArray(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getPartWorkNames')
+					.then(function (result){
+						vm.partWorkNamesArray = result.data.results;
+					})
+		},
 		
 		deleteSubjectFromSong(){
 			let vm = this;
@@ -1130,6 +1318,8 @@ export default {
 						vm.getFiguresForSong();
 						vm.getSubjects();
 						vm.getSubjectsForSong();
+						vm.getPartWorkArray();
+						vm.getPartWorkForSong();
 					})
 		},
 		
@@ -1525,6 +1715,8 @@ export default {
 					.then(function (result){
 						vm.songArray = result.data.results;
 						vm.songObject = vm.songArray[0];
+						vm.songPDFLocation = 'https://kodaly.hnu.edu/scores/' + vm.songObject.NOTATION_FILE_NAME + '.pdf';
+						
 					})
 			},
 		getStates(){
@@ -1600,6 +1792,7 @@ export default {
 	},
 	created() {
 		this.songID =  this.$route.params.id;
+		
 		this.getStates();
 		this.getRegions();
 		this.getEthnicities();
@@ -1610,11 +1803,55 @@ export default {
 		this.getFormTypes();
 		this.getMeters();
 		this.getForms();
+		this.prepareUppy();
 		if (this.songID > 0){
 			this.getSongDetails(this.songID);
 			this.editMode=true;
 			this.addMode=false;
 		}
+	
+	
+	},
+	mounted() {
+		const uppy = new Uppy({
+			id:'uppy'
+		})
+				
+				
+				.use(Dashboard, {
+					inline: true,
+					trigger: '.UppyModalOpenerBtn',
+					target:'#uppy',
+					height: 150,
+					width:200,
+					showProgressDetails: true,
+				})
+				.use(XHRUpload, { endpoint: 'https://api2.transloadit.com' })
+		
+		uppy.on('complete', (result) => {
+			console.log('Upload complete! We’ve uploaded these files:', result.successful)
+		})
+		console.log(uppy);
+		
+		const uppy2 = new Uppy({
+			id:'uppy2'
+		})
+				
+				
+				.use(Dashboard, {
+					inline: true,
+					trigger: '.UppyModalOpenerBtn',
+					target:'#uppy2',
+					height: 150,
+					width:200,
+					showProgressDetails: true,
+				})
+				.use(XHRUpload, { endpoint: 'https://api2.transloadit.com' })
+		
+		uppy.on('complete', (result) => {
+			console.log('Upload complete! We’ve uploaded these files:', result.successful)
+		})
+		console.log(uppy2);
 	}
 }
 </script>
@@ -1622,5 +1859,8 @@ export default {
 <style scoped>
 hr {
 	transform: rotate(90deg);
+}
+.vue-pdf-embed{
+	margin-top: 20px;
 }
 </style>
