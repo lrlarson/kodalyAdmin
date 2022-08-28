@@ -6,7 +6,527 @@
         <cfreturn this/>
     </cffunction> 
 
+    <cffunction name="checkForTrue" access="public" returntype="any" >
+        <cfargument name="test" type="any" >
+            <cfif test EQ true || test EQ 1>
+                <cfset test = 1>
+            <cfelse>
+                <cfset test = 0>    
+            </cfif>
+            <cfreturn test>
+    </cffunction>       
 
+    <cffunction name="updateSongBasic" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="SongDetails" type="any">
+        <cfset SongDetails = DeserializeJSON(SongDetails)>
+        <cfif #SongDetails.ANALYZED# eq "true" || #SongDetails.ANALYZED# eq 1>
+            <cfset SongDetails.ANALYZED = 1>
+            <cfelse>
+            <cfset #SongDetails.ANALYZED#= 0>
+            </cfif>
+            <cfif #SongDetails.INFINALE# eq "true" || #SongDetails.INFINALE# eq 1>
+            <cfset #SongDetails.INFINALE# = 1>
+            <cfelse>
+            <cfset #SongDetails.INFINALE#  = 0>
+            </cfif>
+            <cfif #SongDetails.PROOFED_FLAG# eq "true" || SongDetails.PROOFED_FLAG eq 1>
+            <cfset SongDetails.PROOFED_FLAG = 1>
+            <cfelse>
+            <cfset SongDetails.PROOFED_FLAG = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS# eq 1>
+            <cfset SongDetails.IP_STATUS = 1>
+            <cfelse>
+            <cfset SongDetails.IP_STATUS = 0>
+            </cfif>
+            <cfif #SongDetails.LOC# eq "true" || #SongDetails.LOC#  eq 1>
+            <cfset SongDetails.LOC = 1>
+            <cfelse>
+            <cfset SongDetails.LOC = 0>
+            </cfif>
+            <cfif #SongDetails.CHILD# eq "true" || #SongDetails.CHILD# eq 1>
+            <cfset SongDetails.CHILD = 1>
+            <cfelse>
+            <cfset SongDetails.CHILD = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS#  eq 1>
+                <cfset SongDetails.IP_STATUS= 1>
+                <cfelse>
+                <cfset SongDetails.IP_STATUS = 0>
+                </cfif>
+                    
+                <cfif #SongDetails.RECORDING_FLAG# eq 'true' || #SongDetails.RECORDING_FLAG#  eq 1>
+                <cfset SongDetails.RECORDING_FLAG = 1>    
+                <cfelse>  
+                 <cfset SongDetails.RECORDING_FLAG = 0>    
+                </cfif> 
+                
+                <cfif #SongDetails.GAME# eq 'true' || #SongDetails.GAME#  eq 1>
+                <cfset SongDetails.GAME = 1>    
+                <cfelse>  
+                 <cfset SongDetails.GAME = 0>    
+                </cfif> 
+        <cfquery name="edit" datasource="kodaly_4" >
+              update tbl_Titles
+              set Title = '#SongDetails.TITLE#' ,
+                  Alt_Title_1 = '#SongDetails.ALT_TITLE_1#' ,
+                  Alt_Title_2 =  '#SongDetails.ALT_TITLE_2#'  ,
+                  First_Line_Text = '#SongDetails.FIRST_LINE_TEXT#' ,
+                  Informant = '#SongDetails.INFORMANT#',
+                  Song_Background = '#SongDetails.SONG_BACKGROUND#',
+                    Recording_Flag = #SongDetails.RECORDING_FLAG#,
+                    Game = #SongDetails.GAME#,
+                    stateID = #SongDetails.STATEID# ,
+                  regionID = #SongDetails.REGIONID# ,
+                  ethnicityID =  #SongDetails.ETHNICITYID# ,
+                  Publication = '#SongDetails.PUBLICATION#',
+                  Comments = '#SongDetails.COMMENTS#'
+                  where  ID = #SongDetails.ID#   
+                  select 1 
+
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(edit)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+     </cffunction>   
+
+
+    <cffunction name="updateSongComplete" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="SongDetails" type="any">
+        <cfset SongDetails = DeserializeJSON(SongDetails)>
+                <!--- boolean sections --->
+                <cfif #SongDetails.Analyzed# eq "true" || #SongDetails.Analyzed# eq 1>
+                    <cfset SongDetails.Analyzed = 1>
+                    <cfelse>
+                    <cfset #SongDetails.Analyzed#= 0>
+                    </cfif>
+                    <cfif #SongDetails.inFinale# eq "true" || #SongDetails.inFinale# eq 1>
+                    <cfset #SongDetails.inFinale# = 1>
+                    <cfelse>
+                    <cfset #SongDetails.inFinale#  = 0>
+                    </cfif>
+                    <cfif #SongDetails.Proofed_Flag# eq "true" || SongDetails.Proofed_Flag eq 1>
+                    <cfset SongDetails.Proofed_Flag = 1>
+                    <cfelse>
+                    <cfset SongDetails.Proofed_Flag = 0>
+                    </cfif>
+                    <cfif #SongDetails.IP_Status# eq "true" || #SongDetails.IP_Status# eq 1>
+                    <cfset SongDetails.IP_Status = 1>
+                    <cfelse>
+                    <cfset SongDetails.IP_Status = 0>
+                    </cfif>
+                    <cfif #SongDetails.LoC# eq "true" || #SongDetails.LoC#  eq 1>
+                    <cfset SongDetails.LoC = 1>
+                    <cfelse>
+                    <cfset SongDetails.LoC = 0>
+                    </cfif>
+                    <cfif #SongDetails.Child# eq "true" || #SongDetails.Child# eq 1>
+                    <cfset SongDetails.Child = 1>
+                    <cfelse>
+                    <cfset SongDetails.Child = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.one# eq "true" || #SongDetails.one#  eq 1>
+                    <cfset SongDetails.one = 1>
+                    <cfelse>
+                    <cfset SongDetails.one = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.two# eq "true" || #SongDetails.two# eq 1>
+                    <cfset SongDetails.two = 1>
+                    <cfelse>
+                    <cfset SongDetails.two = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.three# eq "true" || #SongDetails.three# eq 1>
+                    <cfset SongDetails.three = 1>
+                    <cfelse>
+                    <cfset SongDetails.three = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.four# eq "true" || #SongDetails.four#  eq 1>
+                    <cfset SongDetails.four = 1>
+                    <cfelse>
+                    <cfset SongDetails.four = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.five# eq "true" || #SongDetails.five#  eq 1>
+                    <cfset SongDetails.five = 1>
+                    <cfelse>
+                    <cfset SongDetails.five = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.six# eq "true" || #SongDetails.six#  eq 1>
+                    <cfset SongDetails.six = 1>
+                    <cfelse>
+                    <cfset SongDetails.six = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.seven# eq "true" || #SongDetails.seven#  eq 1>
+                    <cfset SongDetails.seven = 1>
+                    <cfelse>
+                    <cfset SongDetails.seven = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.eight# eq "true" || #SongDetails.eight#  eq 1>
+                    <cfset SongDetails.eight = 1>
+                    <cfelse>
+                    <cfset SongDetails.eight = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.nine# eq "true" || #SongDetails.nine#  eq 1>
+                    <cfset SongDetails.nine = 1>
+                    <cfelse>
+                    <cfset SongDetails.nine = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ten# eq "true" || #SongDetails.ten# eq 1>
+                    <cfset SongDetails.ten = 1>
+                    <cfelse>
+                    <cfset SongDetails.ten = 0>
+                    </cfif>
+                    
+                    
+                    <cfif #SongDetails.k# eq "true" || #SongDetails.k# eq 1>
+                    <cfset SongDetails.k = 1>
+                    <cfelse>
+                    <cfset SongDetails.k = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.zero# eq "true" || #SongDetails.zero# eq 1>
+                    <cfset SongDetails.zero= 1>
+                    <cfelse>
+                    <cfset SongDetails.zero = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ch# eq "true" || #SongDetails.ch#  eq 1>
+                    <cfset SongDetails.ch= 1>
+                    <cfelse>
+                    <cfset SongDetails.ch = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ta# eq "true" || #SongDetails.ta# eq 1>
+                    <cfset SongDetails.ta= 1>
+                    <cfelse>
+                    <cfset SongDetails.ta = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_ti# eq "true" || #SongDetails.ti_ti#  eq 1>
+                    <cfset SongDetails.ti_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.rest# eq "true" || #SongDetails.rest#  eq 1>
+                    <cfset SongDetails.rest= 1>
+                    <cfelse>
+                    <cfset SongDetails.rest = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ta_a# eq "true" || #SongDetails.ta_a# eq 1>
+                    <cfset SongDetails.ta_a= 1>
+                    <cfelse>
+                    <cfset SongDetails.ta_a = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.half_rest# eq "true" || #SongDetails.half_rest# eq 1>
+                    <cfset SongDetails.half_rest= 1>
+                    <cfelse>
+                    <cfset SongDetails.half_rest = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ta_a_a# eq "true" || #SongDetails.half_rest#  eq 1>
+                    <cfset SongDetails.ta_a_a= 1>
+                    <cfelse>
+                    <cfset SongDetails.ta_a_a = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ta_a_a_a# eq "true" || #SongDetails.ta_a_a_a#  eq 1>
+                    <cfset SongDetails.ta_a_a_a= 1>
+                    <cfelse>
+                    <cfset SongDetails.ta_a_a_a = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.whole_rest# eq "true" || #SongDetails.whole_rest# eq 1>
+                    <cfset SongDetails.whole_rest= 1>
+                    <cfelse>
+                    <cfset SongDetails.whole_rest = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tiri_tiri# eq "true" || #SongDetails.tiri_tiri# eq 1>
+                    <cfset SongDetails.tiri_tiri= 1>
+                    <cfelse>
+                    <cfset SongDetails.tiri_tiri = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_tiri# eq "true" || #SongDetails.ti_tiri#  eq 1>
+                    <cfset SongDetails.ti_tiri= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_tiri = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tiri_ti# eq "true" || #SongDetails.tiri_ti#  eq 1>
+                    <cfset SongDetails.tiri_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.tiri_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_ta_ti# eq "true" || #SongDetails.ti_ta_ti#  eq 1>
+                    <cfset SongDetails.ti_ta_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_ta_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tai_ti# eq "true" || #SongDetails.tai_ti#  eq 1>
+                    <cfset SongDetails.tai_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.tai_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_tai# eq "true" || #SongDetails.ti_tai# eq 1>
+                    <cfset SongDetails.ti_tai= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_tai = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.eighth_rest# eq "true" || #SongDetails.eighth_rest# eq 1>
+                    <cfset SongDetails.eighth_rest= 1>
+                    <cfelse>
+                    <cfset SongDetails.eighth_rest = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti# eq "true" || #SongDetails.ti#  eq 1>
+                    <cfset SongDetails.ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tiri# eq "true" || #SongDetails.tiri# eq 1>
+                    <cfset SongDetails.tiri= 1>
+                    <cfelse>
+                    <cfset SongDetails.tiri = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tim_ri# eq "true" || #SongDetails.tim_ri# eq 1>
+                    <cfset SongDetails.tim_ri= 1>
+                    <cfelse>
+                    <cfset SongDetails.tim_ri = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ri_tim# eq "true" || #SongDetails.ri_tim# eq 1>
+                    <cfset SongDetails.ri_tim= 1>
+                    <cfelse>
+                    <cfset SongDetails.ri_tim = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tri_o_la# eq "true" || #SongDetails.tri_o_la# eq 1>
+                    <cfset SongDetails.tri_o_la= 1>
+                    <cfelse>
+                    <cfset SongDetails.tri_o_la = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_ti_ti# eq "true" || #SongDetails.ti_ti_ti#  eq 1>
+                    <cfset SongDetails.ti_ti_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_ti_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ta_ti# eq "true" || #SongDetails.ta_ti#  eq 1>
+                    <cfset SongDetails.ta_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.ta_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_ta# eq "true" || #SongDetails.ti_ta# eq 1>
+                    <cfset SongDetails.ti_ta= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_ta = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tai# eq "true" || #SongDetails.tai#  eq 1>
+                    <cfset SongDetails.tai= 1>
+                    <cfelse>
+                    <cfset SongDetails.tai = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tim_ri_ti# eq "true" || #SongDetails.tim_ri_ti# eq 1>
+                    <cfset SongDetails.tim_ri_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.tim_ri_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ri_tim_ti# eq "true" || #SongDetails.ri_tim_ti#  eq 1>
+                    <cfset SongDetails.ri_tim_ti= 1>
+                    <cfelse>
+                    <cfset SongDetails.ri_tim_ti = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.ti_tim_ri# eq "true" || #SongDetails.ti_tim_ri# eq 1>
+                    <cfset SongDetails.ti_tim_ri= 1>
+                    <cfelse>
+                    <cfset SongDetails.ti_tim_ri = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tika_tika_tika# eq "true" || #SongDetails.tika_tika_tika# eq 1>
+                    <cfset SongDetails.tika_tika_tika= 1>
+                    <cfelse>
+                    <cfset SongDetails.tika_tika_tika = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.tie# eq "true" || #SongDetails.tie#  eq 1>
+                    <cfset SongDetails.tie= 1>
+                    <cfelse>
+                    <cfset SongDetails.tie = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.other_other# eq "true" || #SongDetails.other_other# eq 1>
+                    <cfset SongDetails.other_other= 1>
+                    <cfelse>
+                    <cfset SongDetails.other_other = 0>
+                    </cfif>
+                    
+                    
+                    
+                    <cfif #SongDetails.Anac# eq "true" || #SongDetails.Anac#  eq 1>
+                    <cfset SongDetails.Anac= 1>
+                    <cfelse>
+                    <cfset SongDetails.Anac = 0>
+                    </cfif>
+                    
+                    <cfif #SongDetails.Ri# eq "true" || #SongDetails.Ri# eq 1>
+                        <cfset SongDetails.Ri= 1>
+                        <cfelse>
+                        <cfset SongDetails.Ri = 0>
+                        </cfif>
+                        
+                        <cfif #SongDetails.Tim# eq "true" || #SongDetails.Tim# eq 1>
+                        <cfset SongDetails.Tim= 1>
+                        <cfelse>
+                        <cfset SongDetails.Tim = 0>
+                        </cfif>
+                        
+                        <cfif #SongDetails.ri_tim_ri# eq "true" || #SongDetails.ri_tim_ri# eq 1>
+                        <cfset SongDetails.ri_tim_ri= 1>
+                        <cfelse>
+                        <cfset SongDetails.ri_tim_ri = 0>
+                        </cfif>
+                        
+                        <cfif #SongDetails.IP_Status# eq "true" || #SongDetails.IP_Status#  eq 1>
+                        <cfset SongDetails.IP_Status= 1>
+                        <cfelse>
+                        <cfset SongDetails.IP_Status = 0>
+                        </cfif>
+                            
+                        <cfif #SongDetails.Recording_Flag# eq 'true' || #SongDetails.Recording_Flag#  eq 1>
+                        <cfset SongDetails.Recording_Flag = 1>    
+                        <cfelse>  
+                         <cfset SongDetails.Recording_Flag = 0>    
+                        </cfif> 
+                        
+                        <cfif #SongDetails.Game# eq 'true' || #SongDetails.Game#  eq 1>
+                        <cfset SongDetails.Game = 1>    
+                        <cfelse>  
+                         <cfset SongDetails.Game = 0>    
+                        </cfif> 
+           
+        
+        <cfquery name="editSong" datasource="kodaly_4">
+                     update tbl_Titles
+                    set
+                    Title = '#SongDetails.Title#' ,
+                  Alt_Title_1 = '#SongDetails.Alt_Title_1#' ,
+                  Alt_Title_2 =  '#SongDetails.Alt_Title_2#'  ,
+                  First_Line_Text = '#SongDetails.First_Line_Text#' ,
+                  Informant = '#SongDetails.Informant#',
+                  scaleID =  #SongDetails.scaleID# ,
+                  NOTE = #SongDetails.NOTE# ,
+                  tonalCenterID = #SongDetails.tonalCenterID#  ,
+                  meterID = #SongDetails.meterID# ,
+                  formID = #SongDetails.formID#  ,
+        
+        
+                  stateID = #SongDetails.stateID# ,
+                  regionID = #SongDetails.regionID# ,
+        
+                  rangeID = #SongDetails.rangeID# ,
+                  toneSetID = '#SongDetails.toneSetID#' ,
+        
+                  formAnalysisStr = '#SongDetails.formAnalysisStr#' ,
+                  Analyzed =  #SongDetails.Analyzed# ,
+        
+                  inFinale = #SongDetails.inFinale#  ,
+                  Starting_PitchID = #SongDetails.Starting_PitchID# ,
+                  ethnicityID =  #SongDetails.ethnicityID# ,
+                  Publication = '#SongDetails.Publication#' ,
+                  Comments = '#SongDetails.Comments#' ,
+                  formTypeID = #SongDetails.formTypeID# ,
+        
+                  Notation_File_Name = '#SongDetails.Notation_File_Name#' ,
+        
+                  one = #SongDetails.one# ,
+                  two = #SongDetails.two# ,
+                  three = #SongDetails.three# ,
+                  four =  #SongDetails.four# ,
+                  five =  #SongDetails.five# ,
+                  six =  #SongDetails.six#,
+                  seven =   #SongDetails.seven# ,
+                  eight =   #SongDetails.eight# ,
+                  nine =  #SongDetails.nine#,
+                  ten = #SongDetails.ten# ,
+                
+                  k =  #SongDetails.k# ,
+                  zero =  #SongDetails.zero#,
+                  ch =  #SongDetails.ch# ,
+                  ta = #SongDetails.ta# ,
+                  ti_ti =   #SongDetails.ti_ti#,
+                  rest =  #SongDetails.rest# ,
+                  ta_a = #SongDetails.ta_a#  ,
+                  half_rest = #SongDetails.half_rest#   ,
+                  ta_a_a = #SongDetails.ta_a_a#,
+                  ta_a_a_a = #SongDetails.ta_a_a_a# ,
+                  whole_rest = #SongDetails.whole_rest# ,
+                  tiri_tiri = #SongDetails.tiri_tiri#  ,
+                  ti_tiri = #SongDetails.ti_tiri# ,
+                  tiri_ti = #SongDetails.tiri_ti#,
+                  ti_ta_ti = #SongDetails.ti_ta_ti# ,
+                  tai_ti = #SongDetails.tai_ti#,
+                  ti_tai = #SongDetails.ti_tai# ,
+                  eighth_rest = #SongDetails.eighth_rest#  ,
+                  ti = #SongDetails.ti#  ,
+                  tiri = #SongDetails.tiri#  ,
+                  tim_ri = #SongDetails.tim_ri# ,
+                  ri_tim = #SongDetails.ri_tim# ,
+                  tri_o_la = #SongDetails.tri_o_la#  ,
+                  ti_ti_ti = #SongDetails.ti_ti_ti# ,
+                  ta_ti = #SongDetails.ta_ti#  ,
+                  ti_ta = #SongDetails.ti_ta# ,
+                  tai = #SongDetails.tai#,
+                  tim_ri_ti = #SongDetails.tim_ri_ti# ,
+                  ri_tim_ti = #SongDetails.ri_tim_ti#  ,
+                  ti_tim_ri = #SongDetails.ti_tim_ri# ,
+                  tie = #SongDetails.tie# ,
+                  other_other = #SongDetails.other_other#  ,
+                  Anac = #SongDetails.Anac#  ,
+                  Ri = #SongDetails.Ri# ,
+                  Tim = #SongDetails.Tim#  ,
+                  ri_tim_ri = #SongDetails.ri_tim_ri# ,
+                  IP_Status = #SongDetails.IP_Status#  ,
+                  Proofed_Flag = #SongDetails.Proofed_Flag# ,
+                  LoC = #SongDetails.LoC# ,
+                  Child = #SongDetails.Child#,
+                  Grade_String =  '#SongDetails.Grade_String#',
+                  Song_Background = '#SongDetails.Song_Background#',
+                    Recording_Flag = #SongDetails.Recording_Flag#,
+                    Game = #SongDetails.Game#
+                  where ID = #SongDetails.ID#
+                  select 1
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(editSong)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+        </cffunction>
 
     <cffunction name="getPartWorkForSong" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="titleKey" type="numeric" required="yes">
@@ -245,15 +765,7 @@
         </cffunction>
 
 
-    <cffunction name="checkForTrue" access="public" returntype="any" >
-        <cfargument name="test" type="any" >
-            <cfif test EQ true || test EQ 1>
-                <cfset test = 1>
-            <cfelse>
-                <cfset test = 0>    
-            </cfif>
-            <cfreturn test>
-    </cffunction>    
+     
     
 
     <cffunction name="getGamesForSong" access="remote" returntype="any" returnformat="JSON">

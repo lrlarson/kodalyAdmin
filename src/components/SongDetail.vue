@@ -4,6 +4,7 @@
 		<v-card-title class="justify-center">
 			{{ songObject.TITLE}}
 		</v-card-title>
+	
 	</v-card>
 	<v-row style="margin-top: 20px;">
 		<v-col md8 sm12>
@@ -30,7 +31,7 @@
 		<v-col md6 sm12>
 			<v-text-field label="Informant" v-model="songObject.INFORMANT" ></v-text-field>
 			<v-text-field label="First Line" v-model="songObject.FIRST_LINE_TEXT" ></v-text-field>
-			<v-text-field label="Associated File Name. (Can be any length -- used for score and sound file names.)" v-model="songObject.NOTATION_FILE_NAME" ></v-text-field>
+			<v-text-field label="Associated File Name. (Can be any length -- used for score and sound file names.)" disabled v-model="songObject.NOTATION_FILE_NAME" ></v-text-field>
 		</v-col>
 		<v-col md6 sm12>
 			<v-select
@@ -82,7 +83,7 @@
 					<div id="uppy2"></div>
 				</v-col>
 				<v-col md3>
-					<v-text-field label="Basic File Name USE THIS NAME IN FILES" v-model="songObject.NOTATION_FILE_NAME"></v-text-field>
+					<v-text-field label="Basic File Name USE THIS NAME IN FILES"  v-model="songObject.NOTATION_FILE_NAME"></v-text-field>
 				</v-col>
 				<v-col md3>
 					<v-checkbox v-model="songObject.RECORDING_FLAG" label="Has Recording"></v-checkbox>
@@ -91,7 +92,7 @@
 		</v-layout>
 	
 	<v-row class="justify-center" style="margin-top: 30px;">
-		<v-btn v-if="editMode" color="green">Save Basic Song Edits</v-btn>
+		<v-btn v-if="editMode" color="green" @click="updateSongBasics">Save Basic Song Edits</v-btn>
 	</v-row>
 	<v-container v-if="editMode">
 		<v-card style="margin-top: 10px;">
@@ -918,13 +919,16 @@
 					</v-card>
 					<v-layout row>
 						<v-col md6>
-							<v-row>
+							<v-text-field disabled label="Score File" style="margin-top: 10px;margin-left: 10px;"></v-text-field>
 								<vue-pdf-embed :source="songPDFLocation" />
-							</v-row>
+						
 						</v-col>
-<!--						<v-col md-2>-->
-<!--							<div id="uppy"></div>-->
-<!--						</v-col>-->
+						<v-col md6>
+							
+								<v-text-field disabled label="Audio File" style="margin-top: 10px;"></v-text-field>
+								<vuetify-audio :file=soundFile></vuetify-audio>
+							
+						</v-col>
 					</v-layout>
 				</v-tab-item>
 				
@@ -947,7 +951,7 @@ require('@uppy/dashboard/dist/style.css')
 export default {
 	components:{
 		VuePdfEmbed,
-
+		VuetifyAudio: () => import('vuetify-audio'),
 	},
 	
 	name: "SongDetail",
@@ -1034,11 +1038,47 @@ export default {
 		clickedPartName:'',
 		clickedPartID:'',
 		songPDFLocation:'',
+		soundFile:'',
 		
 		
 		
 	}),
 	methods:{
+		
+		updateSongBasics(){
+			let vm = this;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "updateSongBasic",
+					SongDetails: JSON.stringify(vm.songObject)
+				},
+				success: function () {
+					vm.getSongDetails(vm.songID);
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
+		},
 		
 		clearClicks(){
 			this.partWorkSelected=false;
@@ -1716,6 +1756,7 @@ export default {
 						vm.songArray = result.data.results;
 						vm.songObject = vm.songArray[0];
 						vm.songPDFLocation = 'https://kodaly.hnu.edu/scores/' + vm.songObject.NOTATION_FILE_NAME + '.pdf';
+						vm.soundFile  = 'https://kodaly.hnu.edu/audio/' +  vm.songObject.NOTATION_FILE_NAME + '.mp3';
 						
 					})
 			},
@@ -1826,7 +1867,7 @@ export default {
 					width:200,
 					showProgressDetails: true,
 				})
-				.use(XHRUpload, { endpoint: 'https://api2.transloadit.com' })
+				.use(XHRUpload, { endpoint: 'https://kodaly.hnu.edu/uploadPDF.cfm' })
 		
 		uppy.on('complete', (result) => {
 			console.log('Upload complete! We’ve uploaded these files:', result.successful)
@@ -1846,7 +1887,7 @@ export default {
 					width:200,
 					showProgressDetails: true,
 				})
-				.use(XHRUpload, { endpoint: 'https://api2.transloadit.com' })
+				.use(XHRUpload, { endpoint: 'https://kodaly.hnu.edu/uploadAudio.cfm'})
 		
 		uppy.on('complete', (result) => {
 			console.log('Upload complete! We’ve uploaded these files:', result.successful)
