@@ -66,6 +66,12 @@
                 <cfelse>  
                  <cfset SongDetails.GAME = 0>    
                 </cfif> 
+
+                <cfif #SongDetails.PUBLISH# eq 'true' || #SongDetails.PUBLISH#  eq 1>
+                    <cfset SongDetails.PUBLISH = 1>    
+                    <cfelse>  
+                     <cfset SongDetails.PUBLISH = 0>    
+                    </cfif> 
         <cfquery name="edit" datasource="kodaly_4" >
               update tbl_Titles
               set Title = '#SongDetails.TITLE#' ,
@@ -80,7 +86,8 @@
                   regionID = #SongDetails.REGIONID# ,
                   ethnicityID =  #SongDetails.ETHNICITYID# ,
                   Publication = '#SongDetails.PUBLICATION#',
-                  Comments = '#SongDetails.COMMENTS#'
+                  Comments = '#SongDetails.COMMENTS#',
+                  Publish = #SongDetails.PUBLISH#
                   where  ID = #SongDetails.ID#   
                   select 1 
 
@@ -1435,7 +1442,7 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
 
     <cffunction name="getSongs" access="remote" returntype="any" returnformat="JSON">
         <cfquery name="queryName" datasource="kodaly_4">
-select ID, Title, Alt_Title_1, First_Line_Text,Notation_File_Name from tbl_Titles
+select ID, Title, Alt_Title_1, First_Line_Text,Notation_File_Name, Recording_Flag from tbl_Titles
 order by Title
         </cfquery>
         <cfset arrGirls = QueryToStruct(queryName)/>
