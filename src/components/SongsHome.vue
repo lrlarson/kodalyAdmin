@@ -23,6 +23,12 @@
 							class="mx-4"
 					></v-text-field>
 				</template>
+				<template v-slot:item.RECORDING_FLAG="{ item }">
+					<v-simple-checkbox
+							v-model="item.RECORDING_FLAG"
+							disabled
+					></v-simple-checkbox>
+				</template>
 			</v-data-table>
 		</v-container>
 	</v-row>
@@ -49,6 +55,7 @@ export default {
 				{text: "Alt. Title", value: "ALT_TITLE_1", sortable:true},
 				{text: "First Line", value: "FIRST_LINE_TEXT", sortable:true},
 				{text: "File Name", value: "NOTATION_FILE_NAME", sortable:true},
+				{text: "Recording", value: "RECORDING_FLAG", sortable:true},
 			],
 		}
 	},

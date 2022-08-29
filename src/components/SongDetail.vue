@@ -31,7 +31,7 @@
 		<v-col md6 sm12>
 			<v-text-field label="Informant" v-model="songObject.INFORMANT" ></v-text-field>
 			<v-text-field label="First Line" v-model="songObject.FIRST_LINE_TEXT" ></v-text-field>
-			<v-text-field label="Associated File Name. (Can be any length -- used for score and sound file names.)" disabled v-model="songObject.NOTATION_FILE_NAME" ></v-text-field>
+			<v-text-field label="Associated File Name. Set below near uploads." disabled v-model="songObject.NOTATION_FILE_NAME" ></v-text-field>
 		</v-col>
 		<v-col md6 sm12>
 			<v-select
@@ -936,6 +936,20 @@
 		</v-card>
 
 	</v-container>
+	<v-snackbar v-model="snackbar">
+		{{ text }}
+		<template v-slot:action="{ attrs }">
+			<v-btn
+					color="pink"
+					text
+					v-bind="attrs"
+					@click="snackbar = false"
+					:timeout="timeout"
+			>
+				Close
+			</v-btn>
+		</template>
+	</v-snackbar>
 </v-container>
 </template>
 
@@ -1039,6 +1053,9 @@ export default {
 		clickedPartID:'',
 		songPDFLocation:'',
 		soundFile:'',
+		snackbar: false,
+		text:'',
+		timeout: 1000,
 		
 		
 		
@@ -1057,6 +1074,8 @@ export default {
 				},
 				success: function () {
 					vm.getSongDetails(vm.songID);
+					vm.text = 'Basic Song Info. Saved';
+					vm.snackbar = true;
 				},
 				error: function (jqXHR, exception) {
 					var msg = "";

@@ -32,7 +32,7 @@
       dark
     >
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Kodaly Song Database - Kodaly Center, HNU -- App Version 1 beta</v-toolbar-title>
+			<v-toolbar-title>Kodaly Song Database - Kodaly Center, HNU -- App Version 1.2 beta</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
