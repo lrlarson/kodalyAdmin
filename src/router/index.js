@@ -5,6 +5,7 @@ import SignIn from "@/components/SignIn";
 import SongsHome from "@/components/SongsHome";
 import Menu from "@/components/Menu";
 import songDetail from "@/components/SongDetail";
+import News from "@/components/News";
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/songDetail/:id',
     name:'SongDetail',
     component: songDetail
+  },
+  {
+    path:'/news',
+    name: 'news',
+    component: News
   }
 ]
 

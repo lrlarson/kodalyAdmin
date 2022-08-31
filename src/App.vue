@@ -24,6 +24,15 @@
 						<v-list-item-title>Song List</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
+				
+				<v-list-item link>
+					<v-list-item-action>
+						<router-link to="/News">News</router-link>
+					</v-list-item-action>
+					<v-list-item-content>
+						<v-list-item-title>News</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
 			</v-list>
 		</v-navigation-drawer>
     <v-app-bar
@@ -32,7 +41,7 @@
       dark
     >
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Kodaly Song Database - Kodaly Center, HNU -- App Version 1.2 beta</v-toolbar-title>
+			<v-toolbar-title>Kodaly Song Database - Kodaly Center, HNU -- App Version 1.3 beta</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
