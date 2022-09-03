@@ -16,6 +16,118 @@
             <cfreturn test>
     </cffunction>       
 
+    <cffunction name="deleteNewsItem" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="id" required="true" type="numeric"> 
+        <cfquery name="delete" datasource="kodaly_4">
+           delete from dbo.tbl_News
+           where id = #id#
+           select 1        
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(delete)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>    
+    </cffunction>
+
+    <cffunction name="createNewsItem" access="remote" returntype="Any" returnformat="JSON" >
+		<cfargument name="newsItem" required="true" >
+        <cfset newsItem = DeserializeJSON(newsItem)>
+		<cfif newsItem.newsItemPostSwitch EQ 'true'>
+			<cfset newsItem.newsItemPostSwitch = 1>
+			<cfelse>
+			<cfset newsItem.newsItemPostSwitch = 0>
+		</cfif>
+			<cfquery name="insertItem" datasource="kodaly_4">
+							INSERT INTO dbo.tbl_News
+			        ( newsItemHeadline ,
+			          newsItemCopy ,
+			          newsItemPostSwitch ,
+			          postDate ,
+			          dateString ,
+			          newsTeaser
+			        )
+			VALUES  ( '#newsItem.newsItemHeadline#' , -- newsItemHeadline - nvarchar(1000)
+			          '#newsItem.newsItemCopy#'  , -- newsItemCopy - ntext
+			          #newsItem.newsItemPostSwitch# , -- newsItemPostSwitch - bit
+			         
+			         '#newsItem.postDate#'  , -- postDate - date
+			         '#newsItem.dateString#'  , -- dateString - nvarchar(50)
+			         '#newsItem.newsTeaser#'  -- newsTeaser - nvarchar(100)
+			        )
+			  select @@IDENTITY      
+			</cfquery>
+		<cfset arrGirls = QueryToStruct(insertItem)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+	</cffunction>
+	
+
+	
+	<cffunction name="updateNewsItem" access="remote" returntype="Any" returnformat="JSON" >
+		<cfargument name="newsItem" required="true" type="any" >
+        <cfset newsItem = DeserializeJSON(newsItem)>
+		<cfif newsItem.NEWSITEMPOSTSWITCH EQ 'true' || newsItem.NEWSITEMPOSTSWITCH EQ 1>
+			<cfset newsItem.NEWSITEMPOSTSWITCH = 1>
+			<cfelse>
+			<cfset newsItem.NEWSITEMPOSTSWITCH = 0>
+		</cfif>
+			
+			<cfquery datasource="kodaly_4" name="newsItem" > 
+				update tbl_News
+				set
+				newsItemHeadline = '#newsItem.NEWSITEMHEADLINE#' ,
+		          newsItemCopy = '#newsItem.NEWSITEMCOPY#',
+		          newsItemPostSwitch = #newsItem.NEWSITEMPOSTSWITCH#,
+		          postDate = '#newsItem.POSTDATE#',
+		          dateString = '#newsItem.DATESTRING#',
+		          newsTeaser  = '#newsItem.NEWSTEASER#'
+		          where id = #newsItem.ID#
+                  select 1
+			</cfquery>
+			<cfset arrGirls = QueryToStruct(newsItem)/>
+            <cfset objectWrapper = structNew()>
+            <cfset objectWrapper.results = #arrGirls#>
+            <cfreturn objectWrapper> 
+	</cffunction>
+
+
+    <cffunction name="getNewsItem" access="remote" returntype="Any" returnformat="JSON" >
+		<cfargument name="ID" type="numeric" required="true" >
+        <cfquery name="newsItem" datasource="kodaly_4" >
+	        select id, newsItemHeadline,
+              newsItemCopy,
+              newsItemPostSwitch,
+              convert(varchar(16), postDate, 23) as postDate,
+            dateString,
+            newsTeaser
+            FROM         tbl_News
+				where id = #ID#
+		</cfquery>		
+		<cfset arrGirls = QueryToStruct(newsItem)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper> 
+	</cffunction>
+
+
+    <cffunction name="getNewsArray" access="remote" returntype="Any" returnformat="JSON" >
+		<cfquery datasource="kodaly_4" name="news">
+SELECT top 10 id, newsItemHeadline,
+              newsItemCopy,
+              newsItemPostSwitch,
+              convert(varchar(16), postDate, 23) as postDate,
+            dateString,
+            newsTeaser
+FROM         tbl_News
+ORDER BY postDate DESC
+		</cfquery>		
+		<cfset arrGirls = QueryToStruct(news)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+	</cffunction>
+
     <cffunction name="updateSongBasic" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="SongDetails" type="any">
         <cfset SongDetails = DeserializeJSON(SongDetails)>
@@ -1478,77 +1590,12 @@ order by Title
         <cfreturn 1>
     </cffunction>
     
-    <cffunction name="getNews" access="remote" returntype="Any" >
-		<cfquery datasource="kodaly_4" name="news">
-				SELECT    tbl_News.*
-				FROM         tbl_News
-				ORDER BY postDate DESC
-		</cfquery>		
-		<cfreturn news>
-	</cffunction>
-	
-	<cffunction name="getNewsItem" access="remote" returntype="Any" >
-		<cfargument name="ID" type="numeric" required="true" >
-		<cfquery datasource="kodaly_4" name="news">
-				SELECT    tbl_News.*
-				FROM         tbl_News
-				where ID = #ID#
-		</cfquery>		
-		<cfreturn news>
-	</cffunction>
+    
 	
 	
-	<cffunction name="createNewsItem" access="remote" returntype="Any" >
-		<cfargument name="newsItem" required="true" >
-		<cfif newsItem.newsItemPostSwitch EQ 'true'>
-			<cfset newsItem.newsItemPostSwitch = 1>
-			<cfelse>
-			<cfset newsItem.newsItemPostSwitch = 0>
-		</cfif>
-			<cfquery name="insertItem" datasource="kodaly_4">
-							INSERT INTO dbo.tbl_News
-			        ( newsItemHeadline ,
-			          newsItemCopy ,
-			          newsItemPostSwitch ,
-			          postDate ,
-			          dateString ,
-			          newsTeaser
-			        )
-			VALUES  ( '#newsItem.newsItemHeadline#' , -- newsItemHeadline - nvarchar(1000)
-			          '#newsItem.newsItemCopy#'  , -- newsItemCopy - ntext
-			          #newsItem.newsItemPostSwitch# , -- newsItemPostSwitch - bit
-			         
-			         #newsItem.postDate#  , -- postDate - date
-			         '#newsItem.dateString#'  , -- dateString - nvarchar(50)
-			         '#newsItem.newsTeaser#'  -- newsTeaser - nvarchar(100)
-			        )
-			  select @@IDENTITY      
-			</cfquery>
-		<cfreturn insertItem>
-	</cffunction>
 	
 	
-	<cffunction name="updateNewsItem" access="remote" returntype="Any" >
-		<cfargument name="newsItem" required="true" >
-		<cfif newsItem.newsItemPostSwitch EQ 'true'>
-			<cfset newsItem.newsItemPostSwitch = 1>
-			<cfelse>
-			<cfset newsItem.newsItemPostSwitch = 0>
-		</cfif>
-			
-			<cfquery datasource="kodaly_4" name="newItem" > 
-				update tbl_News
-				set
-				newsItemHeadline = '#newsItem.newsItemHeadline#' ,
-		          newsItemCopy = '#newsItem.newsItemCopy#',
-		          newsItemPostSwitch = #newsItem.newsItemPostSwitch#,
-		          postDate = #newsItem.postDate#,
-		          dateString = '#newsItem.dateString#',
-		          newsTeaser  = '#newsItem.newsTeaser#'
-		          where id = #newsItem.id#
-			</cfquery>
-			<cfreturn 1>
-	</cffunction>
+
     
     
     <cffunction name="getTitles" access="remote" returntype="any">
