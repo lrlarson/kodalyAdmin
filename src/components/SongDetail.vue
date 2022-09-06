@@ -4,7 +4,6 @@
 		<v-card-title class="justify-center">
 			{{ songObject.TITLE}}
 		</v-card-title>
-	
 	</v-card>
 	<v-row style="margin-top: 20px;">
 		<v-col md8 sm12>
@@ -93,6 +92,7 @@
 	
 	<v-row class="justify-center" style="margin-top: 30px;">
 		<v-btn v-if="editMode" color="green" @click="updateSongBasics">Save Basic Song Edits</v-btn>
+		<v-btn v-if="addMode" color="green" @click="saveNewSong">Save New Song</v-btn>
 	</v-row>
 	<v-container v-if="editMode">
 		<v-card style="margin-top: 10px;">
@@ -190,7 +190,7 @@
 				</v-layout>
 				<v-layout>
 					<v-row class="justify-center" >
-						<v-btn class="justify-center" style="margin-bottom: 30px;" v-if="editMode" color="blue">Save Musical Analysis Edits</v-btn>
+						<v-btn class="justify-center" style="margin-bottom: 30px;" v-if="editMode" color="blue" @click="saveMusicalAnalysis">Save Musical Analysis Edits</v-btn>
 					</v-row>
 				</v-layout>
 			</v-tab-item>
@@ -353,7 +353,7 @@
 					</v-layout>
 					<v-layout>
 						<v-row class="justify-center" >
-							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="green">Save Rhythmic Edits</v-btn>
+							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="green" @click="saveRythmicEdits">Save Rhythmic Edits</v-btn>
 						</v-row>
 					</v-layout>
 				</v-tab-item>
@@ -1062,6 +1062,178 @@ export default {
 	}),
 	methods:{
 		
+		saveNewSong(){
+			let vm = this;
+			if (!vm.songObject.STATEID ){
+				vm.songObject.STATEID = 0;
+			}
+			else{
+				vm.songObject.STATEID = vm.songObject.STATEID.DATA;
+			}
+			if (!vm.songObject.REGIONID ){
+				vm.songObject.REGIONID = 0;
+			}
+			else{
+				vm.songObject.REGIONID = vm.songObject.REGIONID.DATA;
+			}
+			if (!vm.songObject.ETHNICITYID ){
+				vm.songObject.ETHNICITYID = 0;
+			}
+			else{
+				vm.songObject.ETHNICITYID = vm.songObject.ETHNICITYID.DATA;
+			}
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "insertSong",
+					songDetails: JSON.stringify(vm.songObject)
+				},
+				success: function (result) {
+					vm.songID =  result.results[0].COMPUTED_COLUMN_1;
+					console.log(result.results[0].COMPUTED_COLUMN_1);
+					console.log('song ID' + vm.songID);
+					vm.text = 'New Song Saved'
+					vm.snackbar = true;
+					vm.addMode=false;
+					vm.editMode=true;
+					vm.getSongDetails(vm.songID);
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
+		},
+		
+		
+		saveRythmicEdits(){
+			let vm = this;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "saveRythmicEdits",
+					songDetails: JSON.stringify(vm.songObject)
+				},
+				success: function () {
+					vm.getSongDetails(vm.songID);
+					vm.text = 'Rhythmic Edits Saved';
+					vm.snackbar = true;
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
+		},
+		
+		saveMusicalAnalysis(){
+			let vm = this;
+			if (!vm.songObject.FORMID ){
+				vm.songObject.FORMID = 0;
+			}
+			else{
+				vm.songObject.FORMID = vm.songObject.FORMID.DATA;
+			}
+			if (!vm.songObject.METERID ){
+				vm.songObject.METERID = 0;
+			}
+			else{
+				vm.songObject.METERID = vm.songObject.METERID.DATA;
+			}
+			if (!vm.songObject.RANGEID ){
+				vm.songObject.RANGEID = 0;
+			}
+			else{
+				vm.songObject.RANGEID = vm.songObject.RANGEID.DATA;
+			}
+			if (!vm.songObject.SCALEID ){
+				vm.songObject.SCALEID = 0;
+			}
+			else{
+				vm.songObject.SCALEID = vm.songObject.SCALEID.DATA;
+			}
+			// if (!vm.songObject.STARTING_PITCHID ){
+			// 	vm.songObject.STARTING_PITCHID = 0;
+			// }
+			// else{
+			// 	vm.songObject.STARTING_PITCHID = vm.songObject.STARTING_PITCHID.DATA;
+			// }
+			if (!vm.songObject.TONALCENTERID ){
+				vm.songObject.TONALCENTERID = 0;
+			}
+			else{
+				vm.songObject.TONALCENTERID = vm.songObject.TONALCENTERID.DATA;
+			}
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "saveMusicAnalysis",
+					songDetails: JSON.stringify(vm.songObject)
+				},
+				success: function () {
+					vm.getSongDetails(vm.songID);
+					vm.text = 'Musical Analysis  Saved';
+					vm.snackbar = true;
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
+			
+		},
+		
 		updateSongBasics(){
 			let vm = this;
 			window.$.ajax({
@@ -1413,6 +1585,8 @@ export default {
 					gradeObject: JSON.stringify(vm.gradeObject)
 				},
 				success: function () {
+					vm.text = 'Grade Info. Saved';
+					vm.snackbar = true;
 				},
 				error: function (jqXHR, exception) {
 					var msg = "";
@@ -1769,6 +1943,7 @@ export default {
 			// vm.getCorrectContextOnLoad();
 		},
 		getSongDetails(id){
+			alert('in song details');
 			let vm=this;
 			axios.get(vm.dataURL+'method=getSongDetails&songID=' + id)
 					.then(function (result){
@@ -1848,7 +2023,31 @@ export default {
 					.then(function (results){
 						vm.metersArray = results.data.results;
 					})
-		}
+		},
+		clearSongObject(){
+			let vm=this;
+			vm.songObject.PUBLICATION='';
+			vm.songObject.COMMENTS='';
+			vm.songObject.SONG_BACKGROOUND='';
+			vm.songObject.FIRST_LINE_TEXT='';
+			vm.songObject.TITLE = '';
+			vm.songObject.ALT_TITLE_1 = '';
+			vm.songObject.ALT_TITLE_2 = '';
+			vm.songObject.INFORMANT=''
+			vm.songObject.STATEID = 0;
+			vm.songObject.REGIONID = 0;
+			vm.songObject.ETHNICITYID = 0;
+			vm.songObject.ANALYZED = 0;
+			vm.songObject.INFINALE = 0;
+			vm.songObject.PROOFED_FLAG = 0;
+			vm.songObject.IP_STATUS = 0;
+			vm.songObject.LOC = false;
+			vm.songObject.CHILD = 0;
+			vm.songObject.RECORDING_FLAG = 0;
+			vm.songObject.GAME = 0;
+			vm.songObject.PUBLISH = 0;
+			
+		},
 	},
 	created() {
 		this.songID =  this.$route.params.id;
@@ -1868,6 +2067,10 @@ export default {
 			this.getSongDetails(this.songID);
 			this.editMode=true;
 			this.addMode=false;
+		} else{
+			this.clearSongObject();
+			this.editMode=false;
+			this.addMode=true;
 		}
 	
 	

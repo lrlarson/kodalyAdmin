@@ -4,6 +4,11 @@
 		<v-card-title class="justify-center">
 			All Songs
 		</v-card-title>
+		<v-card-text class="justify-center" >
+			<v-btn @click="addNewSong(0)">
+				Add New Song
+			</v-btn>
+		</v-card-text>
 	</v-card>
 	<v-row>
 		<v-container grid-list-md >
@@ -60,11 +65,21 @@ export default {
 		}
 	},
 	methods:{
+		addNewSong(id){
+			router.push({ name: "SongDetail", params: { id: id } });
+		},
 		getSongs(){
 			let vm=this;
 			vm.axios.get(vm.dataURL + 'method=getSongs')
 					.then(function (result){
 						vm.songsArray = result.data.results;
+						for(let i = 0; i < vm.songsArray.length; i++){
+							if (vm.songsArray[i].RECORDING_FLAG == 1){
+								vm.songsArray[i].RECORDING_FLAG = true;
+							} else{
+								vm.songsArray[i].RECORDING_FLAG = false;
+							}
+						}
 					})
 			},
 		handleClick : function(value){

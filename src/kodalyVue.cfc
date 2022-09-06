@@ -16,6 +16,379 @@
             <cfreturn test>
     </cffunction>       
 
+    <cffunction name="insertSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="SongDetails" type="any">
+        <cfset SongDetails = DeserializeJSON(SongDetails)>
+        <cfif #SongDetails.ANALYZED# eq "true" || #SongDetails.ANALYZED# eq 1>
+            <cfset SongDetails.ANALYZED = 1>
+            <cfelse>
+            <cfset #SongDetails.ANALYZED#= 0>
+            </cfif>
+            <cfif #SongDetails.INFINALE# eq "true" || #SongDetails.INFINALE# eq 1>
+            <cfset #SongDetails.INFINALE# = 1>
+            <cfelse>
+            <cfset #SongDetails.INFINALE#  = 0>
+            </cfif>
+            <cfif #SongDetails.PROOFED_FLAG# eq "true" || SongDetails.PROOFED_FLAG eq 1>
+            <cfset SongDetails.PROOFED_FLAG = 1>
+            <cfelse>
+            <cfset SongDetails.PROOFED_FLAG = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS# eq 1>
+            <cfset SongDetails.IP_STATUS = 1>
+            <cfelse>
+            <cfset SongDetails.IP_STATUS = 0>
+            </cfif>
+            <cfif #SongDetails.LOC# eq "true" || #SongDetails.LOC#  eq 1>
+            <cfset SongDetails.LOC = 1>
+            <cfelse>
+            <cfset SongDetails.LOC = 0>
+            </cfif>
+            <cfif #SongDetails.CHILD# eq "true" || #SongDetails.CHILD# eq 1>
+            <cfset SongDetails.CHILD = 1>
+            <cfelse>
+            <cfset SongDetails.CHILD = 0>
+            </cfif>
+    
+                    
+                <cfif #SongDetails.RECORDING_FLAG# eq 'true' || #SongDetails.RECORDING_FLAG#  eq 1>
+                <cfset SongDetails.RECORDING_FLAG = 1>    
+                <cfelse>  
+                 <cfset SongDetails.RECORDING_FLAG = 0>    
+                </cfif> 
+                
+                <cfif #SongDetails.GAME# eq 'true' || #SongDetails.GAME#  eq 1>
+                <cfset SongDetails.GAME = 1>    
+                <cfelse>  
+                 <cfset SongDetails.GAME = 0>    
+                </cfif> 
+
+                <cfif #SongDetails.PUBLISH# eq 'true' || #SongDetails.PUBLISH#  eq 1>
+                    <cfset SongDetails.PUBLISH = 1>    
+                    <cfelse>  
+                     <cfset SongDetails.PUBLISH = 0>    
+                    </cfif> 
+        <cfquery name="edit" datasource="kodaly_4" >
+                insert into tbl_Titles
+                (
+                    Title,
+                    Alt_Title_1,
+                    Alt_Title_2,
+                    First_Line_Text,
+                    Informant,
+                    Song_Background,
+                    Recording_Flag,
+                    Game,
+                    stateID,
+                    regionID,
+                    ethnicityID,
+                    Publication,
+                    Comments,
+                    Publish
+                )values(
+                    '#SongDetails.TITLE#',
+                    '#SongDetails.ALT_TITLE_1#',
+                    '#SongDetails.ALT_TITLE_2#'  ,
+                    '#SongDetails.FIRST_LINE_TEXT#' ,
+                    '#SongDetails.INFORMANT#',
+                    '#SongDetails.SONG_BACKGROUND#',
+                    #SongDetails.RECORDING_FLAG#,
+                    #SongDetails.GAME#,
+                    #SongDetails.STATEID# ,
+                    #SongDetails.REGIONID# ,
+                    #SongDetails.ETHNICITYID# ,
+                    '#SongDetails.PUBLICATION#',
+                    '#SongDetails.COMMENTS#',
+                    #SongDetails.PUBLISH#
+                )
+                select @@IDENTITY
+             
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(edit)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+     </cffunction>   
+
+
+    <cffunction name="saveRythmicEdits" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="songDetails" required="true" type="ANY" > 
+        <cfset songDetails = DeserializeJSON(songDetails)> 
+        <cfif #SongDetails.TA# eq "true" || #SongDetails.TA# eq 1>
+            <cfset SongDetails.TA= 1>
+            <cfelse>
+            <cfset SongDetails.TA = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TI# eq "true" || #SongDetails.TI_TI#  eq 1>
+            <cfset SongDetails.TI_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.REST# eq "true" || #SongDetails.REST#  eq 1>
+            <cfset SongDetails.REST= 1>
+            <cfelse>
+            <cfset SongDetails.REST = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TA_A# eq "true" || #SongDetails.TA_A# eq 1>
+            <cfset SongDetails.TA_A= 1>
+            <cfelse>
+            <cfset SongDetails.TA_A = 0>
+            </cfif>
+            
+            <cfif #SongDetails.HALF_REST# eq "true" || #SongDetails.HALF_REST# eq 1>
+            <cfset SongDetails.HALF_REST= 1>
+            <cfelse>
+            <cfset SongDetails.HALF_REST = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TA_A_A# eq "true" || #SongDetails.TA_A_A#  eq 1>
+            <cfset SongDetails.TA_A_A= 1>
+            <cfelse>
+            <cfset SongDetails.TA_A_A = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TA_A_A_A# eq "true" || #SongDetails.TA_A_A_A#  eq 1>
+            <cfset SongDetails.TA_A_A_A= 1>
+            <cfelse>
+            <cfset SongDetails.TA_A_A_A = 0>
+            </cfif>
+            
+            <cfif #SongDetails.WHOLE_REST# eq "true" || #SongDetails.WHOLE_REST# eq 1>
+            <cfset SongDetails.WHOLE_REST= 1>
+            <cfelse>
+            <cfset SongDetails.WHOLE_REST = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIRI_TIRI# eq "true" || #SongDetails.TIRI_TIRI# eq 1>
+            <cfset SongDetails.TIRI_TIRI= 1>
+            <cfelse>
+            <cfset SongDetails.TIRI_TIRI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TIRI# eq "true" || #SongDetails.TI_TIRI#  eq 1>
+            <cfset SongDetails.TI_TIRI= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TIRI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIRI_TI# eq "true" || #SongDetails.TIRI_TI#  eq 1>
+            <cfset SongDetails.TIRI_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TIRI_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TA_TI# eq "true" || #SongDetails.TI_TA_TI#  eq 1>
+            <cfset SongDetails.TI_TA_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TA_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TAI_TI# eq "true" || #SongDetails.TAI_TI#  eq 1>
+            <cfset SongDetails.TAI_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TAI_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TAI# eq "true" || #SongDetails.TI_TAI# eq 1>
+            <cfset SongDetails.TI_TAI= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TAI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.EIGHTH_REST# eq "true" || #SongDetails.EIGHTH_REST# eq 1>
+            <cfset SongDetails.EIGHTH_REST= 1>
+            <cfelse>
+            <cfset SongDetails.EIGHTH_REST = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI# eq "true" || #SongDetails.TI#  eq 1>
+            <cfset SongDetails.TI= 1>
+            <cfelse>
+            <cfset SongDetails.TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIRI# eq "true" || #SongDetails.TIRI# eq 1>
+            <cfset SongDetails.TIRI= 1>
+            <cfelse>
+            <cfset SongDetails.tiri = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIM_RI# eq "true" || #SongDetails.TIM_RI# eq 1>
+            <cfset SongDetails.TIM_RI= 1>
+            <cfelse>
+            <cfset SongDetails.TIM_RI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.RI_TIM# eq "true" || #SongDetails.RI_TIM# eq 1>
+            <cfset SongDetails.RI_TIM= 1>
+            <cfelse>
+            <cfset SongDetails.RI_TIM = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TRI_O_LA# eq "true" || #SongDetails.TRI_O_LA# eq 1>
+            <cfset SongDetails.TRI_O_LA= 1>
+            <cfelse>
+            <cfset SongDetails.TRI_O_LA = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TI_TI# eq "true" || #SongDetails.TI_TI_TI#  eq 1>
+            <cfset SongDetails.TI_TI_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TI_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TA_TI# eq "true" || #SongDetails.TA_TI#  eq 1>
+            <cfset SongDetails.TA_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TA_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TA# eq "true" || #SongDetails.TI_TA# eq 1>
+            <cfset SongDetails.TI_TA= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TA = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TAI# eq "true" || #SongDetails.TAI#  eq 1>
+            <cfset SongDetails.TAI= 1>
+            <cfelse>
+            <cfset SongDetails.TAI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIM_RI_TI# eq "true" || #SongDetails.TIM_RI_TI# eq 1>
+            <cfset SongDetails.TIM_RI_TI= 1>
+            <cfelse>
+            <cfset SongDetails.TIM_RI_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.RI_TIM_TI# eq "true" || #SongDetails.RI_TIM_TI#  eq 1>
+            <cfset SongDetails.RI_TIM_TI= 1>
+            <cfelse>
+            <cfset SongDetails.RI_TIM_TI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TI_TIM_RI# eq "true" || #SongDetails.TI_TIM_RI# eq 1>
+            <cfset SongDetails.TI_TIM_RI= 1>
+            <cfelse>
+            <cfset SongDetails.TI_TIM_RI = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIKA_TIKA_TIKA# eq "true" || #SongDetails.TIKA_TIKA_TIKA# eq 1>
+            <cfset SongDetails.TIKA_TIKA_TIKA= 1>
+            <cfelse>
+            <cfset SongDetails.TIKA_TIKA_TIKA = 0>
+            </cfif>
+            
+            <cfif #SongDetails.TIE# eq "true" || #SongDetails.TIE#  eq 1>
+            <cfset SongDetails.TIE= 1>
+            <cfelse>
+            <cfset SongDetails.TIE = 0>
+            </cfif>
+            
+            <cfif #SongDetails.OTHER_OTHER# eq "true" || #SongDetails.OTHER_OTHER# eq 1>
+            <cfset SongDetails.OTHER_OTHER= 1>
+            <cfelse>
+            <cfset SongDetails.OTHER_OTHER = 0>
+            </cfif>
+            
+            
+            
+            <cfif #SongDetails.ANAC# eq "true" || #SongDetails.ANAC#  eq 1>
+            <cfset SongDetails.ANAC= 1>
+            <cfelse>
+            <cfset SongDetails.ANAC = 0>
+            </cfif>
+            
+            <cfif #SongDetails.RI# eq "true" || #SongDetails.RI# eq 1>
+                <cfset SongDetails.RI= 1>
+                <cfelse>
+                <cfset SongDetails.RI = 0>
+                </cfif>
+                
+                <cfif #SongDetails.TIM# eq "true" || #SongDetails.Tim# eq 1>
+                <cfset SongDetails.TIM= 1>
+                <cfelse>
+                <cfset SongDetails.TIM = 0>
+                </cfif>
+                
+                <cfif #SongDetails.RI_TIM_RI# eq "true" || #SongDetails.RI_TIM_RI# eq 1>
+                <cfset SongDetails.RI_TIM_RI= 1>
+                <cfelse>
+                <cfset SongDetails.RI_TIM_RI = 0>
+                </cfif>
+        <cfquery name="rhythms" datasource="kodaly_4">
+            update tbl_Titles
+            set   
+                  
+                  ta = #SongDetails.TA# ,
+                  ti_ti =   #SongDetails.TI_TI#,
+                  rest =  #SongDetails.REST# ,
+                  ta_a = #SongDetails.TA_A#  ,
+                  half_rest = #SongDetails.HALF_REST#   ,
+                  ta_a_a = #SongDetails.TA_A_A#,
+                  ta_a_a_a = #SongDetails.TA_A_A_A# ,
+                  whole_rest = #SongDetails.WHOLE_REST# ,
+                  tiri_tiri = #SongDetails.TIRI_TIRI#  ,
+                  ti_tiri = #SongDetails.TI_TIRI# ,
+                  tiri_ti = #SongDetails.TIRI_TI#,
+                  ti_ta_ti = #SongDetails.TI_TA_TI# ,
+                  tai_ti = #SongDetails.TAI_TI#,
+                  ti_tai = #SongDetails.TI_TAI# ,
+                  eighth_rest = #SongDetails.EIGHTH_REST#  ,
+                  ti = #SongDetails.TI#  ,
+                  tiri = #SongDetails.TIRI#  ,
+                  tim_ri = #SongDetails.TIM_RI# ,
+                  ri_tim = #SongDetails.RI_TIM# ,
+                  tri_o_la = #SongDetails.TRI_O_LA#  ,
+                  ti_ti_ti = #SongDetails.TI_TI_TI# ,
+                  ta_ti = #SongDetails.TA_TI#  ,
+                  ti_ta = #SongDetails.TI_TA# ,
+                  tai = #SongDetails.TAI#,
+                  tim_ri_ti = #SongDetails.TIM_RI_TI# ,
+                  ri_tim_ti = #SongDetails.RI_TIM_TI#  ,
+                  ti_tim_ri = #SongDetails.TI_TIM_RI# ,
+                  tie = #SongDetails.TIE# ,
+                  other_other = #SongDetails.OTHER_OTHER#  ,
+                  Anac = #SongDetails.ANAC#  ,
+                  Ri = #SongDetails.RI# ,
+                  Tim = #SongDetails.TIM#  ,
+                  ri_tim_ri = #SongDetails.RI_TIM_RI#
+           where ID =  #songDetails.ID# 
+           select 1    
+       </cfquery>
+               <cfset arrGirls = QueryToStruct(rhythms)/>
+               <cfset objectWrapper = structNew()>
+               <cfset objectWrapper.results = #arrGirls#>
+               <cfreturn objectWrapper> 
+
+    </cffunction>
+
+    <cffunction name="saveMusicAnalysis" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="songDetails" required="true" type="ANY" > 
+        <cfset songDetails = DeserializeJSON(songDetails)> 
+        <cfquery name="music" datasource="kodaly_4">
+             update tbl_Titles
+             set  tonalCenterID = #SongDetails.TONALCENTERID# ,
+            rangeID = #SongDetails.RANGEID# ,
+            scaleID =  #SongDetails.SCALEID# ,
+            toneSetID = '#SongDetails.TONESETID#' ,
+            Starting_PitchID = #SongDetails.STARTING_PITCHID# ,
+            formTypeID = #SongDetails.FORMTYPEID# ,
+            meterID = #SongDetails.METERID# ,
+            formID = #SongDetails.FORMID#  ,
+            formAnalysisStr = '#SongDetails.FORMANALYSISSTR#' 
+            where ID =  #songDetails.ID# 
+            select 1    
+        </cfquery>
+                <cfset arrGirls = QueryToStruct(music)/>
+                <cfset objectWrapper = structNew()>
+                <cfset objectWrapper.results = #arrGirls#>
+                <cfreturn objectWrapper> 
+    </cffunction>
+
     <cffunction name="deleteNewsItem" access="remote" returntype="any" returnformat="JSON" >
         <cfargument name="id" required="true" type="numeric"> 
         <cfquery name="delete" datasource="kodaly_4">
@@ -128,88 +501,7 @@ ORDER BY postDate DESC
         <cfreturn objectWrapper>  
 	</cffunction>
 
-    <cffunction name="updateSongBasic" access="remote" returntype="any" returnformat="JSON">
-        <cfargument name="SongDetails" type="any">
-        <cfset SongDetails = DeserializeJSON(SongDetails)>
-        <cfif #SongDetails.ANALYZED# eq "true" || #SongDetails.ANALYZED# eq 1>
-            <cfset SongDetails.ANALYZED = 1>
-            <cfelse>
-            <cfset #SongDetails.ANALYZED#= 0>
-            </cfif>
-            <cfif #SongDetails.INFINALE# eq "true" || #SongDetails.INFINALE# eq 1>
-            <cfset #SongDetails.INFINALE# = 1>
-            <cfelse>
-            <cfset #SongDetails.INFINALE#  = 0>
-            </cfif>
-            <cfif #SongDetails.PROOFED_FLAG# eq "true" || SongDetails.PROOFED_FLAG eq 1>
-            <cfset SongDetails.PROOFED_FLAG = 1>
-            <cfelse>
-            <cfset SongDetails.PROOFED_FLAG = 0>
-            </cfif>
-            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS# eq 1>
-            <cfset SongDetails.IP_STATUS = 1>
-            <cfelse>
-            <cfset SongDetails.IP_STATUS = 0>
-            </cfif>
-            <cfif #SongDetails.LOC# eq "true" || #SongDetails.LOC#  eq 1>
-            <cfset SongDetails.LOC = 1>
-            <cfelse>
-            <cfset SongDetails.LOC = 0>
-            </cfif>
-            <cfif #SongDetails.CHILD# eq "true" || #SongDetails.CHILD# eq 1>
-            <cfset SongDetails.CHILD = 1>
-            <cfelse>
-            <cfset SongDetails.CHILD = 0>
-            </cfif>
-            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS#  eq 1>
-                <cfset SongDetails.IP_STATUS= 1>
-                <cfelse>
-                <cfset SongDetails.IP_STATUS = 0>
-                </cfif>
-                    
-                <cfif #SongDetails.RECORDING_FLAG# eq 'true' || #SongDetails.RECORDING_FLAG#  eq 1>
-                <cfset SongDetails.RECORDING_FLAG = 1>    
-                <cfelse>  
-                 <cfset SongDetails.RECORDING_FLAG = 0>    
-                </cfif> 
-                
-                <cfif #SongDetails.GAME# eq 'true' || #SongDetails.GAME#  eq 1>
-                <cfset SongDetails.GAME = 1>    
-                <cfelse>  
-                 <cfset SongDetails.GAME = 0>    
-                </cfif> 
-
-                <cfif #SongDetails.PUBLISH# eq 'true' || #SongDetails.PUBLISH#  eq 1>
-                    <cfset SongDetails.PUBLISH = 1>    
-                    <cfelse>  
-                     <cfset SongDetails.PUBLISH = 0>    
-                    </cfif> 
-        <cfquery name="edit" datasource="kodaly_4" >
-              update tbl_Titles
-              set Title = '#SongDetails.TITLE#' ,
-                  Alt_Title_1 = '#SongDetails.ALT_TITLE_1#' ,
-                  Alt_Title_2 =  '#SongDetails.ALT_TITLE_2#'  ,
-                  First_Line_Text = '#SongDetails.FIRST_LINE_TEXT#' ,
-                  Informant = '#SongDetails.INFORMANT#',
-                  Song_Background = '#SongDetails.SONG_BACKGROUND#',
-                    Recording_Flag = #SongDetails.RECORDING_FLAG#,
-                    Game = #SongDetails.GAME#,
-                    stateID = #SongDetails.STATEID# ,
-                  regionID = #SongDetails.REGIONID# ,
-                  ethnicityID =  #SongDetails.ETHNICITYID# ,
-                  Publication = '#SongDetails.PUBLICATION#',
-                  Comments = '#SongDetails.COMMENTS#',
-                  Publish = #SongDetails.PUBLISH#
-                  where  ID = #SongDetails.ID#   
-                  select 1 
-
-        </cfquery>
-        <cfset arrGirls = QueryToStruct(edit)/>
-        <cfset objectWrapper = structNew()>
-        <cfset objectWrapper.results = #arrGirls#>
-        <cfreturn objectWrapper>  
-     </cffunction>   
-
+    
 
     <cffunction name="updateSongComplete" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="SongDetails" type="any">
@@ -2240,7 +2532,7 @@ VALUES  ( '#SongDetails.Title#' , -- Title - nvarchar(255)
 
 
           stateID = #SongDetails.stateID# ,
-          regionID = #SongDetails.regionID# ,
+           
 
           rangeID = #SongDetails.rangeID# ,
           toneSetID = '#SongDetails.toneSetID#' ,

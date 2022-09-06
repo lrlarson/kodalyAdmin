@@ -175,6 +175,7 @@ export default {
 		},
 		updateNewItem() {
 			let vm=this;
+			vm.newsObject.POSTDATE = vm.picker;
 			window.$.ajax({
 				type: "post",
 				url: vm.dataURL,
@@ -217,6 +218,13 @@ export default {
 			axios.get(vm.dataURL + 'method=getNewsArray')
 					.then(function (result) {
 						vm.newsArray = result.data.results;
+						for(let i = 0; i < vm.newsArray.length; i++){
+							if (vm.newsArray[i].NEWSITEMPOSTSWITCH == 1){
+								vm.newsArray[i].NEWSITEMPOSTSWITCH = true;
+							} else{
+								vm.newsArray[i].NEWSITEMPOSTSWITCH = false;
+							}
+						}
 					})
 		},
 		handleClick: function (value) {
