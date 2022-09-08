@@ -1943,7 +1943,6 @@ export default {
 			// vm.getCorrectContextOnLoad();
 		},
 		getSongDetails(id){
-			alert('in song details');
 			let vm=this;
 			axios.get(vm.dataURL+'method=getSongDetails&songID=' + id)
 					.then(function (result){

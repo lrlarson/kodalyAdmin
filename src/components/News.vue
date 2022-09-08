@@ -43,16 +43,19 @@
 			</v-col>
 		</v-row>
 			<v-row>
-				<v-col md3>
+				<v-col md1>
+					<v-text-field v-model="newsObject.DATESTRING" label="Date String"></v-text-field>
+				</v-col>
+			</v-row>
+			<v-row>
+				<v-col md2>
 					<v-text-field disabled label="Teaser"></v-text-field>
 					<ckeditor :editor="editor" v-model="newsObject.NEWSTEASER" :config="editorConfig"></ckeditor>
 				</v-col>
 				<v-col md1>
 					<v-checkbox v-model="newsObject.NEWSITEMPOSTSWITCH" label="Post"></v-checkbox>
 				</v-col>
-				<v-col md1>
-					<v-text-field v-model="newsObject.DATESTRING" label="Date String"></v-text-field>
-				</v-col>
+				
 				<v-col md5>
 					<v-date-picker v-model="picker" label="Publish Date"></v-date-picker>
 				</v-col>

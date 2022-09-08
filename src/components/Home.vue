@@ -9,6 +9,9 @@
 		<v-col md4>
 			<v-btn @click="gotSoSongs">All Songs</v-btn>
 		</v-col>
+		<v-col md4>
+			<v-btn @click="gotToNews">News</v-btn>
+		</v-col>
 	</v-row>
 </v-container>
 </template>
@@ -20,7 +23,10 @@ export default {
 	methods:{
 		gotSoSongs(){
 			router.push({name:"SongsHome"});
-		}
+		},
+		gotToNews(){
+			router.push({name:'news'});
+		},
 	}
 }
 </script>
