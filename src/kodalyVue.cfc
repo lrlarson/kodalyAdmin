@@ -501,7 +501,88 @@ ORDER BY postDate DESC
         <cfreturn objectWrapper>  
 	</cffunction>
 
-    
+    <cffunction name="updateSongBasic" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="SongDetails" type="any">
+        <cfset SongDetails = DeserializeJSON(SongDetails)>
+        <cfif #SongDetails.ANALYZED# eq "true" || #SongDetails.ANALYZED# eq 1>
+            <cfset SongDetails.ANALYZED = 1>
+            <cfelse>
+            <cfset #SongDetails.ANALYZED#= 0>
+            </cfif>
+            <cfif #SongDetails.INFINALE# eq "true" || #SongDetails.INFINALE# eq 1>
+            <cfset #SongDetails.INFINALE# = 1>
+            <cfelse>
+            <cfset #SongDetails.INFINALE#  = 0>
+            </cfif>
+            <cfif #SongDetails.PROOFED_FLAG# eq "true" || SongDetails.PROOFED_FLAG eq 1>
+            <cfset SongDetails.PROOFED_FLAG = 1>
+            <cfelse>
+            <cfset SongDetails.PROOFED_FLAG = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS# eq 1>
+            <cfset SongDetails.IP_STATUS = 1>
+            <cfelse>
+            <cfset SongDetails.IP_STATUS = 0>
+            </cfif>
+            <cfif #SongDetails.LOC# eq "true" || #SongDetails.LOC#  eq 1>
+            <cfset SongDetails.LOC = 1>
+            <cfelse>
+            <cfset SongDetails.LOC = 0>
+            </cfif>
+            <cfif #SongDetails.CHILD# eq "true" || #SongDetails.CHILD# eq 1>
+            <cfset SongDetails.CHILD = 1>
+            <cfelse>
+            <cfset SongDetails.CHILD = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS#  eq 1>
+                <cfset SongDetails.IP_STATUS= 1>
+                <cfelse>
+                <cfset SongDetails.IP_STATUS = 0>
+                </cfif>
+                    
+                <cfif #SongDetails.RECORDING_FLAG# eq 'true' || #SongDetails.RECORDING_FLAG#  eq 1>
+                <cfset SongDetails.RECORDING_FLAG = 1>    
+                <cfelse>  
+                 <cfset SongDetails.RECORDING_FLAG = 0>    
+                </cfif> 
+                
+                <cfif #SongDetails.GAME# eq 'true' || #SongDetails.GAME#  eq 1>
+                <cfset SongDetails.GAME = 1>    
+                <cfelse>  
+                 <cfset SongDetails.GAME = 0>    
+                </cfif> 
+
+                <cfif #SongDetails.PUBLISH# eq 'true' || #SongDetails.PUBLISH#  eq 1>
+                    <cfset SongDetails.PUBLISH = 1>    
+                    <cfelse>  
+                     <cfset SongDetails.PUBLISH = 0>    
+                    </cfif> 
+        <cfquery name="edit" datasource="kodaly_4" >
+              update tbl_Titles
+              set Title = '#SongDetails.TITLE#' ,
+                  Alt_Title_1 = '#SongDetails.ALT_TITLE_1#' ,
+                  Alt_Title_2 =  '#SongDetails.ALT_TITLE_2#'  ,
+                  First_Line_Text = '#SongDetails.FIRST_LINE_TEXT#' ,
+                  Informant = '#SongDetails.INFORMANT#',
+                  Song_Background = '#SongDetails.SONG_BACKGROUND#',
+                    Recording_Flag = #SongDetails.RECORDING_FLAG#,
+                    Game = #SongDetails.GAME#,
+                    stateID = #SongDetails.STATEID# ,
+                  regionID = #SongDetails.REGIONID# ,
+                  ethnicityID =  #SongDetails.ETHNICITYID# ,
+                  Publication = '#SongDetails.PUBLICATION#',
+                  Comments = '#SongDetails.COMMENTS#',
+                  Publish = #SongDetails.PUBLISH#
+                  where  ID = #SongDetails.ID#   
+                  select 1 
+
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(edit)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+     </cffunction>   
+
 
     <cffunction name="updateSongComplete" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="SongDetails" type="any">
@@ -1875,8 +1956,10 @@ order by Title
         <cfquery name="queryName" datasource="kodaly_4">
             insert into tbl_UserLogs
             (userEmail)
+ 
             values(
             '#user#'
+ 
         )
         </cfquery>
         <cfreturn 1>

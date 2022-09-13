@@ -99,8 +99,8 @@
 			<v-tabs>
 				<v-tab style="font-size: small" ripple key="1" >Musical Analysis</v-tab>
 				<v-tab style="font-size: small" ripple key="2" >Rhythms</v-tab>
-				<v-tab style="font-size: small" ripple key="3" @click="pedagogyClick" >Melodic Cont.</v-tab>
-				<v-tab style="font-size: small" ripple key="4" @click="rhythmClick" >Rhythmic Cont.</v-tab>
+				<v-tab style="font-size: small" ripple key="3" @click="pedagogyClick" >Mel. Element</v-tab>
+				<v-tab style="font-size: small" ripple key="4" @click="rhythmClick" >Rhythm. Element</v-tab>
 				<v-tab style="font-size: small" ripple key="5" @click="motiveClick" >Motives</v-tab>
 				<v-tab style="font-size: small" ripple key="6" @click="getGrades" >Grades</v-tab>
 				<v-tab style="font-size: small" ripple key="7" @click="getSongTypesForSong" >Types-Game-Part</v-tab>
