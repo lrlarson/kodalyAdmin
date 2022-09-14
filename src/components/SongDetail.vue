@@ -39,7 +39,7 @@
 					:items="statesArray"
 					item-text="LABEL"
 					item-value="DATA"
-					return-object
+					
 			></v-select>
 			<v-select
 					v-model="songObject.REGIONID"
@@ -47,7 +47,7 @@
 					:items="regionsArray"
 					item-text="LABEL"
 					item-value="DATA"
-					return-object
+				
 			></v-select>
 			<v-select
 					v-model="songObject.ETHNICITYID"
@@ -55,7 +55,7 @@
 					:items="ethnicityArray"
 					item-text="LABEL"
 					item-value="DATA"
-					return-object
+				
 			></v-select>
 		</v-col>
 	</v-row>
@@ -114,7 +114,7 @@
 							:items="notesArray"
 							item-text="LABEL"
 							item-value="DATA"
-							return-object
+
 					></v-select>
 				</v-col>
 				<v-col md3 style="margin-left: 10px;">
@@ -124,7 +124,7 @@
 							:items="rangeArray"
 							item-text="LABEL"
 							item-value="DATA"
-							return-object
+					
 					></v-select>
 				</v-col>
 					<v-col md3 style="margin-left: 10px;">
@@ -134,7 +134,7 @@
 								:items="scaleArray"
 								item-text="LABEL"
 								item-value="DATA"
-								return-object
+				
 						></v-select>
 					</v-col>
 				</v-layout>
@@ -149,7 +149,7 @@
 								:items="startingPitchArray"
 								item-text="LABEL"
 								item-value="DATA"
-								return-object
+								
 						></v-select>
 					</v-col>
 					<v-col md3 style="margin-left: 10px;">
@@ -159,7 +159,7 @@
 								:items="formTypesArray"
 								item-text="LABEL"
 								item-value="DATA"
-								return-object
+				
 						></v-select>
 					</v-col>
 				</v-layout>
@@ -171,7 +171,7 @@
 								:items="metersArray"
 								item-text="LABEL"
 								item-value="DATA"
-								return-object
+					
 						></v-select>
 					</v-col>
 					<v-col md3 style="margin-left: 10px;">
@@ -181,7 +181,7 @@
 								:items="formArray"
 								item-text="LABEL"
 								item-value="DATA"
-								return-object
+		
 						></v-select>
 					</v-col>
 					<v-col md3 style="margin-left: 10px;">
@@ -1165,39 +1165,39 @@ export default {
 			if (!vm.songObject.FORMID ){
 				vm.songObject.FORMID = 0;
 			}
-			else{
-				vm.songObject.FORMID = vm.songObject.FORMID.DATA;
-			}
+			// else{
+			// 	vm.songObject.FORMID = vm.songObject.FORMID.DATA;
+			// }
 			if (!vm.songObject.METERID ){
 				vm.songObject.METERID = 0;
 			}
-			else{
-				vm.songObject.METERID = vm.songObject.METERID.DATA;
-			}
+			// else{
+			// 	vm.songObject.METERID = vm.songObject.METERID.DATA;
+			// }
 			if (!vm.songObject.RANGEID ){
 				vm.songObject.RANGEID = 0;
 			}
-			else{
-				vm.songObject.RANGEID = vm.songObject.RANGEID.DATA;
-			}
+			// else{
+			// 	vm.songObject.RANGEID = vm.songObject.RANGEID.DATA;
+			// }
 			if (!vm.songObject.SCALEID ){
 				vm.songObject.SCALEID = 0;
 			}
-			else{
-				vm.songObject.SCALEID = vm.songObject.SCALEID.DATA;
-			}
-			// if (!vm.songObject.STARTING_PITCHID ){
-			// 	vm.songObject.STARTING_PITCHID = 0;
-			// }
 			// else{
-			// 	vm.songObject.STARTING_PITCHID = vm.songObject.STARTING_PITCHID.DATA;
+			// 	vm.songObject.SCALEID = vm.songObject.SCALEID.DATA;
 			// }
+			if (!vm.songObject.STARTING_PITCHID ){
+				vm.songObject.STARTING_PITCHID = 0;
+			}
+			else{
+				// vm.songObject.STARTING_PITCHID = vm.songObject.STARTING_PITCHID;
+			}
 			if (!vm.songObject.TONALCENTERID ){
 				vm.songObject.TONALCENTERID = 0;
 			}
-			else{
-				vm.songObject.TONALCENTERID = vm.songObject.TONALCENTERID.DATA;
-			}
+			// else{
+			// 	vm.songObject.TONALCENTERID = vm.songObject.TONALCENTERID.DATA;
+			// }
 			window.$.ajax({
 				type: "post",
 				url: vm.dataURL,

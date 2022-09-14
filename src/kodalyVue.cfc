@@ -84,7 +84,12 @@
                     ethnicityID,
                     Publication,
                     Comments,
-                    Publish
+                    Publish,
+                    IP_Status,
+                    Child,
+                    LOC,
+                    Notation_File_Name,
+                    inFinale
                 )values(
                     '#SongDetails.TITLE#',
                     '#SongDetails.ALT_TITLE_1#',
@@ -99,7 +104,12 @@
                     #SongDetails.ETHNICITYID# ,
                     '#SongDetails.PUBLICATION#',
                     '#SongDetails.COMMENTS#',
-                    #SongDetails.PUBLISH#
+                    #SongDetails.PUBLISH#,
+                    #SongDetails.IP_STATUS#,
+                    #SongDetails.CHILD#,
+                    #SongDetails.LOC#,
+                    '#SongDetails.NOTATION_FILE_NAME#', 
+                    #SongDetails.INFINALE#
                 )
                 select @@IDENTITY
              
@@ -572,7 +582,12 @@ ORDER BY postDate DESC
                   ethnicityID =  #SongDetails.ETHNICITYID# ,
                   Publication = '#SongDetails.PUBLICATION#',
                   Comments = '#SongDetails.COMMENTS#',
-                  Publish = #SongDetails.PUBLISH#
+                  Publish = #SongDetails.PUBLISH#,
+                  IP_Status = #SongDetails.IP_STATUS#,
+                  Child= #SongDetails.CHILD# ,
+                  LOC = #SongDetails.LOC#,
+                  Notation_File_Name = '#SongDetails.NOTATION_FILE_NAME#',
+                   inFinale=#SongDetails.INFINALE# 
                   where  ID = #SongDetails.ID#   
                   select 1 
 
