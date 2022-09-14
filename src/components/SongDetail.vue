@@ -464,8 +464,8 @@
 						</v-col>
 					</v-layout>
 					<v-row class="justify-center">
-						<v-btn v-if="editMelContextMode" @click="updateMelodicContext" color="green" style="margin-bottom: 20px;">Save Mel. Context Edits</v-btn>
-						<v-btn v-if="editMelContextMode" @click="delMelContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Melodic Context </v-btn>
+						<v-btn v-if="editMelContextMode" @click="updateMelodicContext" color="green" style="margin-bottom: 20px;">Save Mel. Element Edits</v-btn>
+						<v-btn v-if="editMelContextMode" @click="delMelContext" color="red" style="margin-bottom: 20px; margin-left: 10px;">Delete This Melodic Element </v-btn>
 						<v-btn v-if="addMelContextMode" @click="insertNewMelContext" color="green" style="margin-bottom: 20px;">Save New Melodic Context</v-btn>
 					</v-row>
 				</v-tab-item>
