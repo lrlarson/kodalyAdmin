@@ -1064,24 +1064,27 @@ export default {
 		
 		saveNewSong(){
 			let vm = this;
-			if (!vm.songObject.STATEID ){
+			// alert(vm.songObject.STATEID )
+			if (!vm.songObject.STATEID){
 				vm.songObject.STATEID = 0;
 			}
 			else{
-				vm.songObject.STATEID = vm.songObject.STATEID.DATA;
+				// vm.songObject.STATEID = vm.songOb;
 			}
+			// alert(vm.songObject.REGIONID )
 			if (!vm.songObject.REGIONID ){
 				vm.songObject.REGIONID = 0;
 			}
 			else{
-				vm.songObject.REGIONID = vm.songObject.REGIONID.DATA;
+				// vm.songObject.REGIONID = vm.songObject.REGIONID;
 			}
 			if (!vm.songObject.ETHNICITYID ){
 				vm.songObject.ETHNICITYID = 0;
 			}
 			else{
-				vm.songObject.ETHNICITYID = vm.songObject.ETHNICITYID.DATA;
+				// vm.songObject.ETHNICITYID = vm.songObject.ETHNICITYID;
 			}
+			
 			window.$.ajax({
 				type: "post",
 				url: vm.dataURL,
@@ -1092,8 +1095,8 @@ export default {
 				},
 				success: function (result) {
 					vm.songID =  result.results[0].COMPUTED_COLUMN_1;
-					console.log(result.results[0].COMPUTED_COLUMN_1);
-					console.log('song ID' + vm.songID);
+					// console.log(result.results[0].COMPUTED_COLUMN_1);
+					// console.log('song ID' + vm.songID);
 					vm.text = 'New Song Saved'
 					vm.snackbar = true;
 					vm.addMode=false;
@@ -1405,7 +1408,7 @@ export default {
 		
 		insertFigureToSong(){
 			let vm = this;
-			if (!vm.figureSelected){
+			if (!vm.selectedFigure.DATA){
 				return;
 			}
 			axios.get(vm.dataURL + 'method=addFigureToSong&titleKey=' + vm.songID + '&figureid=' + vm.selectedFigure.DATA)
@@ -2045,6 +2048,7 @@ export default {
 			vm.songObject.RECORDING_FLAG = 0;
 			vm.songObject.GAME = 0;
 			vm.songObject.PUBLISH = 0;
+			vm.songObject.NOTATION_FILE_NAME = '';
 			
 		},
 	},
