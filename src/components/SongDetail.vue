@@ -970,7 +970,7 @@ export default {
 	
 	name: "SongDetail",
 	data: () => ({
-		dataURL: "https://kodaly.hnu.edu/kodalyVue/kodalyVue.cfc?",
+		dataURL: "https://kodalycollection.org/kodalyVue/kodalyVue.cfc?",
 		songArray:[],
 		songObject:{},
 		melodicElementsArray:[],
@@ -1285,7 +1285,7 @@ export default {
 		
 		prepareFiles(){
 			let vm = this;
-			vm.songPDFLocation = 'https://kodaly.hnu.edu/Scores/'+ vm.songObject.NOTATION_FILE_NAME + '.pdf';
+			vm.songPDFLocation = 'https://kodalycollection.org/Scores/'+ vm.songObject.NOTATION_FILE_NAME + '.pdf';
 
 			
 		},
@@ -1563,6 +1563,7 @@ export default {
 					.then(function (){
 						vm.getMotivesForSong();
 						vm.addMotive = false;
+						vm.motiveObject.MOTIVE ='';
 					})
 			
 		},
@@ -1951,8 +1952,8 @@ export default {
 					.then(function (result){
 						vm.songArray = result.data.results;
 						vm.songObject = vm.songArray[0];
-						vm.songPDFLocation = 'https://kodaly.hnu.edu/scores/' + vm.songObject.NOTATION_FILE_NAME + '.pdf';
-						vm.soundFile  = 'https://kodaly.hnu.edu/audio/' +  vm.songObject.NOTATION_FILE_NAME + '.mp3';
+						vm.songPDFLocation = 'https://kodalycollection.org/scores/' + vm.songObject.NOTATION_FILE_NAME + '.pdf';
+						vm.soundFile  = 'https://kodalycollection.org/audio/' +  vm.songObject.NOTATION_FILE_NAME + '.mp3';
 						
 					})
 			},
@@ -2092,7 +2093,7 @@ export default {
 					width:200,
 					showProgressDetails: true,
 				})
-				.use(XHRUpload, { endpoint: 'https://kodaly.hnu.edu/uploadPDF.cfm' })
+				.use(XHRUpload, { endpoint: 'https://kodalycollection.org/uploadPDF.cfm' })
 		
 		uppy.on('complete', (result) => {
 			console.log('Upload complete! We’ve uploaded these files:', result.successful)
@@ -2112,7 +2113,7 @@ export default {
 					width:200,
 					showProgressDetails: true,
 				})
-				.use(XHRUpload, { endpoint: 'https://kodaly.hnu.edu/uploadAudio.cfm'})
+				.use(XHRUpload, { endpoint: 'https://kodalycollection.org/uploadAudio.cfm'})
 		
 		uppy.on('complete', (result) => {
 			console.log('Upload complete! We’ve uploaded these files:', result.successful)

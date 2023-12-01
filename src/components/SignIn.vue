@@ -24,7 +24,7 @@ import router from "@/router";
 
 export default {
 	data: () => ({
-		dataURL: "https://kodaly.hnu.edu/kodalyVue/kodalyVue.cfc?",
+		dataURL: "https://kodalycollection.org/kodalyVue/kodalyVue.cfc?",
 		email: "",
 		pword: "",
 		secureMessage: ""

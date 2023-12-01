@@ -90,7 +90,7 @@ export default {
 			newsItemArray:[],
 			picker: new Date().toISOString().substring(0,10),
 			rowsPerPageItems: [50, 200],
-			dataURL: "https://kodaly.hnu.edu/kodalyVue/kodalyVue.cfc?",
+			dataURL: "https://kodalycollection.org/kodalyVue/kodalyVue.cfc?",
 			search:'',
 			pagination: {
 				rowsPerPage: 100,
