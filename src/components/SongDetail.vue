@@ -244,7 +244,7 @@
 
 								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ri-ti-ri</td>
-								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
+								<td><v-checkbox v-model="songObject.RI_TI_RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
 								<td style="font-size: 20px">ti-ta</td>
@@ -284,7 +284,7 @@
 
 								<td><v-img src="../assets/ri_tim_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ri-tim-ri</td>
-								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
+								<td><v-checkbox v-model="songObject.RI_TIM_TI"></v-checkbox></td>
 
 							</tr>
 
