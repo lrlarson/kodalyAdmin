@@ -283,7 +283,7 @@
 								<td><v-checkbox v-model="songObject.TIM"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_tim_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ri-tim-ri</td>
+								<td style="font-size: 20px">ri-tim-ti</td>
 								<td><v-checkbox v-model="songObject.RI_TIM_TI"></v-checkbox></td>
 
 							</tr>

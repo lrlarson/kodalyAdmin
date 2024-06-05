@@ -249,6 +249,8 @@
             <cfelse>
             <cfset SongDetails.TI_TI_TI = 0>
             </cfif>
+
+   
             
             <cfif #SongDetails.TA_TI# eq "true" || #SongDetails.TA_TI#  eq 1>
             <cfset SongDetails.TA_TI= 1>
@@ -329,6 +331,11 @@
                 <cfelse>
                 <cfset SongDetails.RI_TIM_RI = 0>
                 </cfif>
+                 <cfif #SongDetails.RI_TI_RI# eq "true" || #SongDetails.RI_TI_RI# eq 1>
+                <cfset SongDetails.RI_TI_RI= 1>
+                <cfelse>
+                <cfset SongDetails.RI_TI_RI = 0>
+                </cfif>
         <cfquery name="rhythms" datasource="kodaly_4">
             update tbl_Titles
             set   
@@ -365,7 +372,10 @@
                   Anac = #SongDetails.ANAC#  ,
                   Ri = #SongDetails.RI# ,
                   Tim = #SongDetails.TIM#  ,
-                  ri_tim_ri = #SongDetails.RI_TIM_RI#
+                  ri_tim_ri = #SongDetails.RI_TIM_RI#,
+                    ri_ti_ri = #SongDetails.RI_TI_RI#
+                 
+                  
            where ID =  #songDetails.ID# 
            select 1    
        </cfquery>
@@ -1807,9 +1817,9 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
 
     <cffunction name="getMeters" access="remote" returntype="any" returnformat="JSON">
         <cfquery name="meters" datasource="kodaly_4">
-    SELECT      [tbl Meters].[Meter Key] AS data, [tbl Meters].Meter AS label
+  SELECT      [tbl Meters].[Meter Key] AS data, [tbl Meters].Meter AS label
     FROM          [tbl Meters]
-    order by [Meter Sequence Number]
+    order by [tbl Meters].new_sequence
         </cfquery>
        <cfset arrGirls = QueryToStruct(meters)/>
        <cfset objectWrapper = structNew()>
@@ -1952,20 +1962,9 @@ order by Title
     </cffunction>
 
 
-    <cffunction name="checkSecure" access="remote" returntype="Any" returnformat="JSON">
-        <cfargument name="email" type="any">
-        <cfargument name="pword" type="any">
-        <cfquery name="queryName" datasource="kodaly_4">
-            select email
-            from tbl_secure
-            where pword = '#pword#' and email = '#email#'
-        </cfquery>
-       <cfset arrGirls = QueryToStruct(queryName)/>
-       <cfset objectWrapper = structNew()>
-       <cfset objectWrapper.results = #arrGirls#>
-       <cfreturn objectWrapper>
-    </cffunction>
 
+ 
+    
     <cffunction name="logInUser" access="remote" returntype="Any" returnformat="JSON">
         <cfargument name="user" type="any">
         <cfquery name="queryName" datasource="kodaly_4">
@@ -1981,7 +1980,17 @@ order by Title
     </cffunction>
     
     
-	
+<cffunction name="checkSecure" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="email" type="any">
+        <cfargument name="pword" type="any">
+        <cfquery name="queryName" datasource="kodaly_4">
+            select email from tbl_secure where pword ='#pword#' and email='#email#'
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(queryName)/>
+       <cfset objectWrapper = structNew()>
+       <cfset objectWrapper.results = #arrGirls#>
+       <cfreturn objectWrapper>
+    </cffunction>
 	
 	
 	
