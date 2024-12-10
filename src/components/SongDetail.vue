@@ -100,14 +100,15 @@
 	<v-container v-if="editMode">
 		<v-card style="margin-top: 10px;">
 			<v-tabs>
-				<v-tab style="font-size: small" ripple key="1" >Musical Analysis</v-tab>
-				<v-tab style="font-size: small" ripple key="2" >Rhythms</v-tab>
-				<v-tab style="font-size: small" ripple key="3" @click="pedagogyClick" >Mel. Element</v-tab>
-				<v-tab style="font-size: small" ripple key="4" @click="rhythmClick" >Rhythm. Element</v-tab>
-				<v-tab style="font-size: small" ripple key="5" @click="motiveClick" >Motives</v-tab>
-				<v-tab style="font-size: small" ripple key="6" @click="getGrades" >Grades</v-tab>
-				<v-tab style="font-size: small" ripple key="7" @click="getSongTypesForSong" >Types-Game-Part</v-tab>
-				<v-tab style="font-size: small" ripple key="8" @click="prepareFiles" >Supporting Files</v-tab>
+				<v-tab style="font-size: x-small" ripple key="1" >Musical Analysis</v-tab>
+				<v-tab style="font-size: x-small" ripple key="2" >Rhythms</v-tab>
+				<v-tab style="font-size: x-small" ripple key="3" @click="pedagogyClick" >Mel. Element</v-tab>
+				<v-tab style="font-size: x-small" ripple key="4" @click="rhythmClick" >Rhythm. Element</v-tab>
+				<v-tab style="font-size: x-small" ripple key="5" @click="motiveClick" >Motives</v-tab>
+				<v-tab style="font-size: x-small" ripple key="6" @click="getGrades" >Grades</v-tab>
+				<v-tab style="font-size: x-small" ripple key="7" @click="getSongTypesForSong" >Types-Game-Part</v-tab>
+				<v-tab style="font-size: x-small" ripple key="8" @click="prepareFiles" >Supporting Files</v-tab>
+				<v-tab style="font-size: x-small" ripple key="9"  >Lesson</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -933,6 +934,13 @@
 							
 						</v-col>
 					</v-layout>
+				</v-tab-item>
+				<v-tab-item key="9">
+					<v-card>
+						<v-card-title class="justify-center" style="margin-bottom: 10px;">
+							Lesson Plan
+						</v-card-title>
+					</v-card>
 				</v-tab-item>
 				
 			</v-tabs>
