@@ -34,6 +34,12 @@
 							disabled
 					></v-simple-checkbox>
 				</template>
+				<template v-slot:item.LESSONPLAN="{ item }">
+					<v-simple-checkbox
+							v-model="item.LESSONPLAN"
+							disabled
+					></v-simple-checkbox>
+				</template>
 			</v-data-table>
 		</v-container>
 	</v-row>
@@ -61,6 +67,7 @@ export default {
 				{text: "First Line", value: "FIRST_LINE_TEXT", sortable:true},
 				{text: "File Name", value: "NOTATION_FILE_NAME", sortable:true},
 				{text: "Recording", value: "RECORDING_FLAG", sortable:true},
+				{text: "Lesson Plan", value: "LESSONPLAN", sortable:true},
 			],
 		}
 	},
@@ -78,6 +85,11 @@ export default {
 								vm.songsArray[i].RECORDING_FLAG = true;
 							} else{
 								vm.songsArray[i].RECORDING_FLAG = false;
+							}
+							if (vm.songsArray[i].LESSONPLAN == 1){
+								vm.songsArray[i].LESSONPLAN = true;
+							} else{
+								vm.songsArray[i].LESSONPLAN = false;
 							}
 						}
 					})
