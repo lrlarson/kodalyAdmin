@@ -23,6 +23,9 @@
 					<v-checkbox label="LOC" v-model="songObject.LOC"></v-checkbox>
 					<v-checkbox label="Child" v-model="songObject.CHILD"></v-checkbox>
 				</v-col>
+				<v-col md2>
+					<v-checkbox label="Lesson Plan" v-model="songObject.LESSONPLAN"></v-checkbox>
+				</v-col>
 			</v-row>
 		</v-col>
 	</v-row>
