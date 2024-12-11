@@ -108,7 +108,7 @@
 				<v-tab style="font-size: x-small" ripple key="6" @click="getGrades" >Grades</v-tab>
 				<v-tab style="font-size: x-small" ripple key="7" @click="getSongTypesForSong" >Types-Game-Part</v-tab>
 				<v-tab style="font-size: x-small" ripple key="8" @click="prepareFiles" >Supporting Files</v-tab>
-				<v-tab style="font-size: x-small" ripple key="9"  >Lesson</v-tab>
+				<v-tab style="font-size: x-small" ripple key="9" @click="getLessonPlanHTML"  >Lesson</v-tab>
 			<v-tab-item key="1">
 				<v-layout row>
 				<v-col md3 style="margin-left: 10px;">
@@ -938,8 +938,10 @@
 				<v-tab-item key="9">
 					<v-card>
 						<v-card-title class="justify-center" style="margin-bottom: 10px;">
-							Lesson Plan
+							Lesson Plan HTML
 						</v-card-title>
+						<v-textarea v-model="lessonPlanObject.LESSONPLANHTML" style="padding: 30px;"></v-textarea>
+						<v-btn color="blue" style="margin-left: 30px;margin-bottom: 30px;" @click="getLessonPlanHTML">Save HTML Lesson Plan</v-btn>
 					</v-card>
 				</v-tab-item>
 				
@@ -971,9 +973,15 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Uppy from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
 import Dashboard from '@uppy/dashboard'
+import * as vm from "vm";
 require('@uppy/core/dist/style.css')
 require('@uppy/dashboard/dist/style.css')
 export default {
+	computed: {
+		vm() {
+			return vm
+		}
+	},
 	components:{
 		VuePdfEmbed,
 		VuetifyAudio: () => import('vuetify-audio'),
@@ -1067,11 +1075,24 @@ export default {
 		snackbar: false,
 		text:'',
 		timeout: 1000,
+		lessonPlanObject:{},
+		lessonPlanArray:[],
 		
 		
 		
 	}),
 	methods:{
+		getLessonPlanHTML(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getLessonPlanHTML&ID=' + vm.songID)
+				.then(response => {
+					vm.lessonPlanArray = response.data.results;
+					vm.lessonPlanObject = vm.lessonPlanArray[0];
+				})
+				.catch(error => {
+					console.log(error);
+				})
+		},
 		
 		saveNewSong(){
 			let vm = this;

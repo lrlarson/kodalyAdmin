@@ -16,6 +16,18 @@
             <cfreturn test>
     </cffunction>       
 
+    <cffunction name="getLessonPlanHTML" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="ID" type="numeric" required="true" >
+        <cfquery name="lesson" datasource="kodaly_4">
+            select lessonPlanHTML from tbl_Titles
+            where ID =  #ID#
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(lesson)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+    </cffunction>
+
     <cffunction name="insertSong" access="remote" returntype="any" returnformat="JSON">
         <cfargument name="SongDetails" type="any">
         <cfset SongDetails = DeserializeJSON(SongDetails)>
@@ -577,6 +589,11 @@ ORDER BY postDate DESC
                     <cfelse>  
                      <cfset SongDetails.PUBLISH = 0>    
                     </cfif> 
+                 <cfif #SongDetails.LESSONPLAN# eq 'true' || #SongDetails.LESSONPLAN#  eq 1>
+                <cfset SongDetails.LESSONPLAN = 1>    
+                <cfelse>  
+                 <cfset SongDetails.LESSONPLAN = 0>    
+                </cfif>    
         <cfquery name="edit" datasource="kodaly_4" >
               update tbl_Titles
               set Title = '#SongDetails.TITLE#' ,
@@ -597,7 +614,8 @@ ORDER BY postDate DESC
                   Child= #SongDetails.CHILD# ,
                   LOC = #SongDetails.LOC#,
                   Notation_File_Name = '#SongDetails.NOTATION_FILE_NAME#',
-                   inFinale=#SongDetails.INFINALE# 
+                   inFinale=#SongDetails.INFINALE#,
+                   lessonPlan = #SongDetails.LESSONPLAN# 
                   where  ID = #SongDetails.ID#   
                   select 1 
 
@@ -1952,7 +1970,7 @@ WHERE     ([tbl Title Rhythmic Element].id= #id#)
 
     <cffunction name="getSongs" access="remote" returntype="any" returnformat="JSON">
         <cfquery name="queryName" datasource="kodaly_4">
-select ID, Title, Alt_Title_1, First_Line_Text,Notation_File_Name, Recording_Flag from tbl_Titles
+select ID, Title, Alt_Title_1, First_Line_Text,Notation_File_Name, Recording_Flag,lessonPlan from tbl_Titles
 order by Title
         </cfquery>
         <cfset arrGirls = QueryToStruct(queryName)/>
