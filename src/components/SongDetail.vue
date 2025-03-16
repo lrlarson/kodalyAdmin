@@ -940,8 +940,27 @@
 						<v-card-title class="justify-center" style="margin-bottom: 10px;">
 							Lesson Plan HTML
 						</v-card-title>
-						<v-textarea v-model="lessonPlanObject.LESSONPLANHTML" style="padding: 30px;"></v-textarea>
-						<v-btn color="blue" style="margin-left: 30px;margin-bottom: 30px;" @click="getLessonPlanHTML">Save HTML Lesson Plan</v-btn>
+						<v-layout row>
+							<v-col md4>
+								<v-text-field
+								v-model="lessonPlanObject.LESSONPDF"
+								label="Lesson Plan PDF"
+								style="margin-left: 10px;" ></v-text-field>
+							</v-col>
+							<v-col md4>
+								<v-text-field
+										v-model="lessonPlanObject.LESSONSCOREPDF"
+										label="Lesson Score PDF"
+										style="margin-left: 10px;" ></v-text-field>
+							</v-col>
+							<v-col md4>
+								<v-btn color="green" @click="saveLessonPlanObject">Save Lesson Plan Data</v-btn>
+							</v-col>
+						</v-layout>
+						<v-layout row>
+							
+							<v-textarea :style="{ height: textareaHeight + 'px' }" v-model="lessonPlanObject.LESSONPLANHTML" style="padding: 30px;"></v-textarea>
+						</v-layout>
 					</v-card>
 				</v-tab-item>
 				
@@ -1077,6 +1096,7 @@ export default {
 		timeout: 1000,
 		lessonPlanObject:{},
 		lessonPlanArray:[],
+		textareaHeight: 700,
 		
 		
 		
@@ -1092,6 +1112,43 @@ export default {
 				.catch(error => {
 					console.log(error);
 				})
+		},
+		saveLessonPlanObject(){
+			let vm = this;
+			vm.lessonPlanObject.ID = vm.songID;
+			window.$.ajax({
+				type: "post",
+				url: vm.dataURL,
+				dataType: "json",
+				data: {
+					method: "saveLessonPlan",
+					lessonPlanObject: JSON.stringify(vm.lessonPlanObject)
+				},
+				success: function (result) {
+					console.log(result);
+					vm.text = 'Lesson Plan Saved'
+					vm.snackbar = true;
+				},
+				error: function (jqXHR, exception) {
+					var msg = "";
+					if (jqXHR.status === 0) {
+						msg = "Not connect.\n Verify Network.";
+					} else if (jqXHR.status == 404) {
+						msg = "Requested page not found. [404]";
+					} else if (jqXHR.status == 500) {
+						msg = "Internal Server Error [500].";
+					} else if (exception === "parsererror") {
+						msg = "Requested JSON parse failed.";
+					} else if (exception === "timeout") {
+						msg = "Time out error.";
+					} else if (exception === "abort") {
+						msg = "Ajax request aborted.";
+					} else {
+						msg = "Uncaught Error.\n" + jqXHR.responseText;
+					}
+					alert(msg);
+				}
+			});
 		},
 		
 		saveNewSong(){
