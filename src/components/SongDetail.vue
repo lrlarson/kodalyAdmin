@@ -924,8 +924,7 @@
 					<v-layout row>
 						<v-col md6>
 							<v-text-field disabled label="Score File" style="margin-top: 10px;margin-left: 10px;"></v-text-field>
-								<vue-pdf-embed :source="songPDFLocation" />
-						
+							<vue-pdf-embed v-if="songPDFLocation" :source="songPDFLocation" />
 						</v-col>
 						<v-col md6>
 							
@@ -1375,7 +1374,6 @@ export default {
 		prepareFiles(){
 			let vm = this;
 			vm.songPDFLocation = 'https://kodalycollection.org/Scores/'+ vm.songObject.NOTATION_FILE_NAME + '.pdf';
-
 			
 		},
 		
@@ -2039,7 +2037,7 @@ export default {
 			let vm=this;
 			axios.get(vm.dataURL+'method=getSongDetails&songID=' + id)
 					.then(function (result){
-						vm.songArray = result.data.results;
+						vm.songArray = result.data.RESULTS;
 						vm.songObject = vm.songArray[0];
 						vm.songPDFLocation = 'https://kodalycollection.org/scores/' + vm.songObject.NOTATION_FILE_NAME + '.pdf';
 						vm.soundFile  = 'https://kodalycollection.org/audio/' +  vm.songObject.NOTATION_FILE_NAME + '.mp3';
