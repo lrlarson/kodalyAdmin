@@ -44,7 +44,8 @@ export default {
 					pword: vm.pword
 				},
 				success: function(d){
-					if (d.results.length > 0) {
+					console.log(d) ;
+					if (d.RESULTS.length > 0) {
 						eventBus.$emit("signedIn");
 						vm.mutateAuthentication();
 						vm.secureMessage = "logged in";

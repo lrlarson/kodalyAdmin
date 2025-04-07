@@ -41,7 +41,7 @@
       dark
     >
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Kodaly Song Database - Kodaly Center-- App Version 2.1 Production 3/15/25 </v-toolbar-title>
+			<v-toolbar-title>Kodaly Song Database - Kodaly Center-- App Version 2.2 Production 4/7/25 </v-toolbar-title>
     </v-app-bar>
 
     <v-main>
