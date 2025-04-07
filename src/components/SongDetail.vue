@@ -1413,7 +1413,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getPartWorkForSong&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.partWorkNamesArrayForSong = result.data.results;
+						vm.partWorkNamesArrayForSong = result.data.RESULTS;
 					})
 		},
 		
@@ -1422,7 +1422,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getPartWorkNames')
 					.then(function (result){
-						vm.partWorkNamesArray = result.data.results;
+						vm.partWorkNamesArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1443,7 +1443,7 @@ export default {
 			console.log(id);
 			axios.get(vm.dataURL + 'method=getSubjectObject&id=' + id)
 					.then(function (result){
-						vm.subjectObjectArray = result.data.results;
+						vm.subjectObjectArray = result.data.RESULTS;
 						vm.subjectObject=vm.subjectObjectArray[0];
 						
 						
@@ -1463,7 +1463,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getSubSubjects&mainSubject=' + vm.selectedSubject.DATA)
 						.then(function (result){
-							vm.subSubjectsArray = result.data.results;
+							vm.subSubjectsArray = result.data.RESULTS;
 						})
 		},
 		
@@ -1471,7 +1471,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL+'method=getSubjectsForSong&titleKey=' + vm.songID )
 					.then(function (result){
-						vm.subjectsForSongArray = result.data.results;
+						vm.subjectsForSongArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1479,7 +1479,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getSubjects')
 					.then(function (result){
-						vm.subjectsArray = result.data.results;
+						vm.subjectsArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1508,7 +1508,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getFiguresForSong&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.figuresForSongArray = result.data.results;
+						vm.figuresForSongArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1516,7 +1516,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getFigures')
 					.then(function (result){
-						vm.figuresArray = result.data.results;
+						vm.figuresArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1547,7 +1547,7 @@ export default {
 		handleFigureClick(id,label){
 			let vm = this;axios.get(vm.dataURL + 'method=getFigureObject&id=' + id)
 					.then(function (result){
-						vm.songFigureArray = result.data.results;
+						vm.songFigureArray = result.data.RESULTS;
 						vm.songFigureObject = vm.songFigureArray[0];
 						vm.figureSelected = true;
 						vm.selectedFigureName = label ;
@@ -1559,7 +1559,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getGameTypeObject&tableKey=' + tableKey )
 					.then(function (result){
-						vm.gameTypeArrayForSong = result.data.results;
+						vm.gameTypeArrayForSong = result.data.RESULTS;
 						vm.gameTypeObjectForSong = vm.gameTypeArrayForSong[0];
 						vm.selectedGameTypeName = vm.gameTypeObjectForSong.GAMETYPE
 						vm.selectedSubGameTypeName = vm.gameTypeObjectForSong.SUBGAMETYPE
@@ -1571,7 +1571,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getRelatedGameTypes&gameTypeKey=' + vm.selectedGameType.DATA)
 					.then(function (result){
-						vm.subGamesTypesArray = result.data.results;
+						vm.subGamesTypesArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1579,7 +1579,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getGamesForSong&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.gameTypesArrayForSong = result.data.results;
+						vm.gameTypesArrayForSong = result.data.RESULTS;
 						
 					})
 		},
@@ -1588,7 +1588,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getGameTypes')
 					.then(function (result){
-						vm.gameTypesArray = result.data.results;
+						vm.gameTypesArray = result.data.RESULTS;
 					})
 		},
 		
@@ -1622,7 +1622,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getSongTypes' )
 					.then(function (result){
-						vm.songTypesArry = result.data.results;
+						vm.songTypesArry = result.data.RESULTS;
 					})
 		},
 		
@@ -1631,7 +1631,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getSongTypesForSong&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.songTypesArrayForSong = result.data.results;
+						vm.songTypesArrayForSong = result.data.RESULTS;
 						vm.getSongTypes();
 						vm.getGameTypes();
 						vm.getGameTypesForSong();
@@ -1659,7 +1659,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getGrades&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.gradesArray = result.data.results;
+						vm.gradesArray = result.data.RESULTS;
 						vm.gradeObject = vm.gradesArray[0];
 					})
 		},
@@ -1714,7 +1714,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getMotive&titleID=' + title + '&motive=' + motive)
 					.then(function (result){
-						vm.motiveArray = result.data.results;
+						vm.motiveArray = result.data.RESULTS;
 						vm.motiveObject = vm.motiveArray[0];
 						vm.editMotive = true;
 					})
@@ -1751,7 +1751,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getRythmicContexts')
 					.then(function (result){
-						vm.rhythmicContextsArray=result.data.results;
+						vm.rhythmicContextsArray=result.data.RESULTS;
 					})
 		},
 		
@@ -1761,7 +1761,7 @@ export default {
 			vm.editRhythymicMode = false;
 			axios.get(vm.dataURL + 'method=getRythmicContextsForSong&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.songRhythmicElementsArray = result.data.results;
+						vm.songRhythmicElementsArray = result.data.RESULTS;
 					});
 			vm.getRhythmicContexts();
 			vm.clearRhythmContexts();
@@ -1776,7 +1776,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getMotivesForSong&titleKey=' + vm.songID)
 					.then(function (result){
-						vm.motivesForSongArray = result.data.results;
+						vm.motivesForSongArray = result.data.RESULTS;
 					})
 		},
 
@@ -1943,7 +1943,7 @@ export default {
 			console.log(vm.songMelodicContextObject.MELODICCONTEXTKEY.DATA);
 			axios.get(vm.dataURL+ 'method=getMelContextsForElement&element=' + vm.songMelodicContextObject.MELODICELEMENTKEY.DATA)
 						.then(function (result){
-							vm.availableMelContextsArray = result.data.results;
+							vm.availableMelContextsArray = result.data.RESULTS;
 						})
 		},
 
@@ -1953,7 +1953,7 @@ export default {
 			console.log(vm.songMelodicContextObject.MELODICCONTEXTKEY);
 			axios.get(vm.dataURL+ 'method=getMelContextsForElement&element=' + vm.songMelodicContextObject.MELODICELEMENTKEY)
 					.then(function (result){
-						vm.availableMelContextsArray = result.data.results;
+						vm.availableMelContextsArray = result.data.RESULTS;
 					})
 		},
 
@@ -1962,7 +1962,7 @@ export default {
 
 			axios.get(vm.dataURL + 'method=getMelodicContectRecord&melContextRecord=' + id)
 					.then(function (result){
-						vm.songMelodicContextArray = result.data.results;
+						vm.songMelodicContextArray = result.data.RESULTS;
 						vm.songMelodicContextObject = vm.songMelodicContextArray[0];
 						vm.getCorrectContextOnLoad();
 						vm.editMelContextMode = true;
@@ -2014,7 +2014,7 @@ export default {
 		
 			axios.get(vm.dataURL + 'method=getRhythmicContext&id='+ id)
 					.then(function (result){
-						vm.rhythmicContextArray = result.data.results;
+						vm.rhythmicContextArray = result.data.RESULTS;
 						vm.rhythmicContextObject = vm.rhythmicContextArray[0];
 					})
 			vm.editRhythymicMode = true;
@@ -2025,11 +2025,11 @@ export default {
 			let vm=this;
 			axios.get(vm.dataURL+'method=getMelodicElements')
 					.then(function (result){
-						vm.melodicElementsArray = result.data.results;
+						vm.melodicElementsArray = result.data.RESULTS;
 					})
 			axios.get(vm.dataURL + 'method=getMelodicContextsForSong&titleKey=' + vm.songID )
 					.then(function (result){
-						vm.songMelodicElementsArrays = result.data.results;
+						vm.songMelodicElementsArrays = result.data.RESULTS;
 					})
 			// vm.getCorrectContextOnLoad();
 		},
@@ -2048,70 +2048,71 @@ export default {
 			let vm=this;
 			axios.get(vm.dataURL+'method=getStates')
 					.then(function (result){
-						vm.statesArray = result.data.results;
+						console.log(result);
+						vm.statesArray = result.data.RESULTS;
 					})
 		},
 		getRegions(){
 			let vm=this;
 			axios.get(vm.dataURL+'method=getRegions')
 					.then(function (result){
-						vm.regionsArray = result.data.results;
+						vm.regionsArray = result.data.RESULTS;
 					})
 		},
 		getEthnicities(){
 			let vm=this;
 			axios.get(vm.dataURL+'method=getEthnicities')
 					.then(function (result){
-						vm.ethnicityArray = result.data.results;
+						vm.ethnicityArray = result.data.RESULTS;
 					})
 		},
 		getTonalCenters(){
 			let vm=this;
 			axios.get(vm.dataURL+'method=getNotes')
 					.then(function (result){
-						vm.notesArray = result.data.results;
+						vm.notesArray = result.data.RESULTS;
 					})
 		},
 		getRanges(){
 			let vm=this;
 			axios.get(vm.dataURL + 'method=getRange')
 					.then(function (result){
-						vm.rangeArray = result.data.results;
+						vm.rangeArray = result.data.RESULTS;
 					})
 		} ,
 		getScales(){
 			let vm=this;
 			axios.get(vm.dataURL + 'method=getScales')
 					.then(function (result){
-						vm.scaleArray = result.data.results;
+						vm.scaleArray = result.data.RESULTS;
 					})
 		},
 		getStartingPitches(){
 			let vm=this;
 			axios.get(vm.dataURL + 'method=getStartingPitch')
 					.then(function (result){
-						vm.startingPitchArray = result.data.results;
+						vm.startingPitchArray = result.data.RESULTS;
 					})
 		},
 		getFormTypes(){
 			let vm=this;
 			axios.get(vm.dataURL + 'method=getFormTypes')
 					.then(function (results){
-						vm.formTypesArray = results.data.results;
+						vm.formTypesArray = results.data.RESULTS;
 					})
 		},
 		getForms(){
 			let vm=this;
 			axios.get(vm.dataURL + 'method=getForms')
 					.then(function (result){
-						vm.formArray = result.data.results;
+						vm.formArray = result.data.RESULTS;
 					})
 		},
 		getMeters(){
 			let vm=this;
 			axios.get(vm.dataURL + 'method=getMeters')
 					.then(function (results){
-						vm.metersArray = results.data.results;
+						vm.metersArray = results.data.RESULTS;
 					})
 		},
 		clearSongObject(){
