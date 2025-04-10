@@ -1105,7 +1105,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getLessonPlanHTML&ID=' + vm.songID)
 				.then(response => {
-					vm.lessonPlanArray = response.data.results;
+					vm.lessonPlanArray = response.data.RESULTS;
 					vm.lessonPlanObject = vm.lessonPlanArray[0];
 				})
 				.catch(error => {
@@ -1182,7 +1182,7 @@ export default {
 					songDetails: JSON.stringify(vm.songObject)
 				},
 				success: function (result) {
-					vm.songID =  result.results[0].COMPUTED_COLUMN_1;
+					vm.songID =  result.RESULTS[0].COMPUTED_COLUMN_1;
 					// console.log(result.results[0].COMPUTED_COLUMN_1);
 					// console.log('song ID' + vm.songID);
 					vm.text = 'New Song Saved'
