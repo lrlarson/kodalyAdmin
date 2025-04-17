@@ -220,7 +220,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getNewsArray')
 					.then(function (result) {
-						vm.newsArray = result.data.results;
+						vm.newsArray = result.data.RESULTS;
 						for(let i = 0; i < vm.newsArray.length; i++){
 							if (vm.newsArray[i].NEWSITEMPOSTSWITCH == 1){
 								vm.newsArray[i].NEWSITEMPOSTSWITCH = true;
@@ -234,7 +234,7 @@ export default {
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getNewsItem&ID=' + value.ID)
 					.then(function (result) {
-						vm.newsItemArray = result.data.results;
+						vm.newsItemArray = result.data.RESULTS;
 						vm.newsObject = vm.newsItemArray[0];
 						vm.picker = vm.newsObject.POSTDATE;
 						vm.editMode = true;
