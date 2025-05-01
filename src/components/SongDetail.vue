@@ -280,7 +280,7 @@
 
 								<td><v-img src="../assets/tai_ti.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">tai-ti</td>
-								<td><v-checkbox v-model="songObject.TA_TI"></v-checkbox></td>
+								<td><v-checkbox v-model="songObject.TAI_TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tim.gif" max-height="55%" max-width="44%" ></v-img> </td>
 								<td style="font-size: 20px">tim</td>
@@ -2201,7 +2201,7 @@ export default {
 					width:200,
 					showProgressDetails: true,
 				})
-				.use(XHRUpload, { endpoint: 'https://kodalycollection.org/uploadAudio.cfm'})
+				.use(XHRUpload, { endpoint: 'https://kodalycollection.org/uploadAudio.cfm',})
 		
 		uppy.on('complete', (result) => {
 			console.log('Upload complete! We’ve uploaded these files:', result.successful)
